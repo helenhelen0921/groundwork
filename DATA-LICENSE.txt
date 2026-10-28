@@ -1603,3 +1603,10 @@ Translators' notes were left out and the texts were divided into parts for
 reading. The derived files are shared under CC BY-SA 3.0.
 
 The Chinese titles and summaries were written for this app.
+
+------------------------------------------------------------
+zh-en.json : Chinese -> English lookup
+------------------------------------------------------------
+Built by reversing the Chinese senses in ECDICT (MIT licence, see above) for
+about 26,000 common English words. The hand-picked word families shown for
+common ideas (羊, 牛, 夹 …) were written for this app.

@@ -77,6 +77,63 @@ header { display: flex; justify-content: space-between; align-items: flex-end; g
 .tab { border: 0; background: transparent; color: var(--muted); border-radius: 999px; padding: 6px 12px; font-size: 13px; font-weight: 600; }
 .tab[aria-selected="true"] { background: var(--ink); color: var(--paper); }
 @media (max-width: 420px) { .tab { padding: 6px 9px; font-size: 12px; } }
+.nav { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+.navbtn { display: inline-flex; align-items: center; gap: 6px; border: 1px solid var(--line); background: var(--paper); color: var(--ink); border-radius: 999px; padding: 8px 14px; font-size: 13px; font-weight: 600; cursor: pointer; }
+.navbtn:hover { border-color: var(--ink); }
+.navbtn[aria-pressed="true"] { background: var(--ink); color: var(--paper); border-color: var(--ink); }
+.navbtn .ni { font-size: 13px; line-height: 1; opacity: .75; }
+.navbtn .nc { font-family: var(--mono); font-size: 11px; min-width: 18px; padding: 1px 6px; border-radius: 999px; background: var(--hivis); color: var(--on-hivis); text-align: center; }
+.navbtn .nc:empty { display: none; }
+@media (max-width: 420px) { .navbtn { padding: 7px 11px; font-size: 12px; } }
+
+/* ---------- Word book page ---------- */
+.wbpage { display: flex; flex-direction: column; gap: 14px; }
+.wbpage[hidden] { display: none; }
+.wb-top { display: flex; justify-content: space-between; align-items: flex-end; gap: 12px; flex-wrap: wrap; }
+.wb-top h2 { font-family: var(--display); font-size: 30px; margin: 2px 0 0; line-height: 1.1; }
+.wb-top .sub { color: var(--muted); font-size: 14px; margin: 6px 0 0; }
+.wb-actions { display: flex; gap: 6px; flex-wrap: wrap; align-items: center; }
+.wb-sort { display: inline-flex; border: 1px solid var(--line); border-radius: 999px; padding: 2px; background: var(--paper); }
+.sortb { border: 0; background: transparent; color: var(--muted); border-radius: 999px; padding: 5px 10px; font-size: 12px; font-weight: 600; cursor: pointer; }
+.sortb[aria-pressed="true"] { background: var(--ink); color: var(--paper); }
+.wb-list { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 380px), 1fr)); gap: 12px; align-items: start; }
+.wb-group { grid-column: 1 / -1; font-family: var(--mono); font-size: 11px; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); display: flex; align-items: center; gap: 8px; margin-top: 6px; }
+.wb-group::before { content: ""; width: 10px; height: 10px; border-radius: 50%; background: var(--oc, var(--line)); }
+.wb-card { background: var(--paper); border: 1px solid var(--line); border-left: 4px solid var(--oc, var(--line)); border-radius: 12px; padding: 12px 14px; display: flex; flex-direction: column; gap: 6px; min-width: 0; }
+.wb-line { display: flex; align-items: baseline; gap: 8px; flex-wrap: wrap; }
+.wb-word { font-family: var(--display); font-size: 22px; font-weight: 700; border: 0; background: none; color: var(--ink); padding: 0; cursor: pointer; text-align: left; }
+.wb-word:hover { text-decoration: underline; text-underline-offset: 3px; }
+.wb-ph { font-size: 13px; color: var(--muted); }
+.wb-line .ochip { align-self: center; }
+.wb-rm { margin-left: auto; border: 0; background: none; color: var(--muted); font-size: 20px; line-height: 1; padding: 0 2px; cursor: pointer; align-self: center; }
+.wb-rm:hover { color: var(--ink); }
+.wb-def { margin: 0; font-size: 14px; line-height: 1.45; }
+.wb-zh { margin: 0; font-family: var(--han); font-size: 15px; line-height: 1.45; }
+.wb-fam .zh-picked { padding: 10px; }
+.tab .ts { display: none; }
+@media (max-width: 520px) { .tab .tl { display: none; } .tab .ts { display: inline; } }
+.hz { font: inherit; color: inherit; background: none; border: 0; padding: 0; margin: 0; cursor: pointer; text-decoration: underline dotted; text-decoration-thickness: 1.5px; text-underline-offset: 4px; text-decoration-color: rgba(31,30,28,.4); }
+.hz:hover { text-decoration-style: solid; text-decoration-color: currentColor; }
+.slab h2 .hz { text-decoration-thickness: 2px; text-underline-offset: 6px; }
+.wb-path { margin: 0; font-size: 13px; color: var(--muted); overflow-wrap: anywhere; }
+.wb-meta { font-family: var(--mono); font-size: 11px; color: var(--muted); }
+.wb-known { font-family: var(--mono); font-size: 11px; color: var(--muted); margin: 4px 0 0; }
+.wb-known:empty { display: none; }
+.wb-word { transition: opacity .2s; }
+.wb-card.known-main .wb-word, .wb-card.known-main .wb-ph, .wb-card.known-main .ochip, .wb-card.known-main .wb-def, .wb-card.known-main .wb-zh, .wb-card.known-main .wb-path { opacity: .16; }
+.wb-fam { padding: 12px 12px 14px; margin-top: 4px; display: flex; flex-direction: column; gap: 8px; box-shadow: inset 0 1px 0 rgba(255,255,255,.25), 0 3px 0 var(--cc-dark) !important; }
+.wb-fam .slab-k { font-size: 10.5px; }
+.wb-fr { display: flex; flex-direction: column; gap: 4px; }
+.wb-fr + .wb-fr { padding-top: 8px; border-top: 1px dashed rgba(0,0,0,.18); }
+.wb-ft { font-size: 12px; font-weight: 600; color: rgba(31,30,28,.75); }
+.wb-fam .zw { min-width: 0; padding: 5px 9px; transition: opacity .2s, transform .1s; }
+.wb-fam .zw .ze { font-size: 16px; }
+.concrete .zw.known { opacity: .14; box-shadow: none; border-bottom-color: transparent; }
+.concrete .zw.known:hover { opacity: .4; }
+.wb-foot { display: flex; justify-content: space-between; align-items: center; gap: 8px; flex-wrap: wrap; margin-top: 2px; }
+.wb-empty { grid-column: 1 / -1; border: 1px dashed var(--line); border-radius: 12px; padding: 22px; text-align: center; }
+.wb-empty p { margin: 0; }
+.wb-empty .hint { margin-top: 6px; }
 body.reading .wordonly { display: none !important; }
 
 /* ---------- Stories reader ---------- */
@@ -181,6 +238,61 @@ form.search { display: flex; gap: 8px; }
 .res .c { font-family: var(--han); font-size: 20px; }
 .res .d { font-size: 12px; color: var(--muted); max-width: 18ch; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .hint { font-size: 13px; color: var(--muted); margin: 0; }
+.results:empty, #msg:empty { display: none; }
+/* poured concrete: grey slab, aggregate specks, formwork tie holes, word blocks */
+.concrete { --cc: #9a9893; --cc-dark: #7d7b76; --cc-ink: #1f1e1c; --block: #dcdad5; --block-edge: #aeaca6;
+  background-color: var(--cc);
+  background-image:
+    radial-gradient(circle at 30% 40%, rgba(255,255,255,.16) 0 1px, transparent 1.6px),
+    radial-gradient(circle at 70% 20%, rgba(0,0,0,.14) 0 1px, transparent 1.8px),
+    radial-gradient(circle at 50% 80%, rgba(0,0,0,.09) 0 1.5px, transparent 2.2px),
+    linear-gradient(180deg, rgba(255,255,255,.06), rgba(0,0,0,.08));
+  background-size: 11px 13px, 17px 15px, 29px 23px, 100% 100%;
+  color: var(--cc-ink); border: 0 !important; border-radius: 6px !important;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.25), inset 0 -2px 0 rgba(0,0,0,.12), 0 6px 0 var(--cc-dark), 0 10px 22px rgba(0,0,0,.18); }
+.concrete .label { color: rgba(31,30,28,.75); }
+.concrete .hint { color: rgba(31,30,28,.75); }
+.slab { position: relative; padding: 26px 22px 24px; display: flex; flex-direction: column; gap: 14px; margin-bottom: 10px; }
+.slab[hidden] { display: none; }
+.slab::before, .slab::after { content: ""; position: absolute; top: 12px; width: 9px; height: 9px; border-radius: 50%; background: var(--cc-dark); box-shadow: inset 0 1px 2px rgba(0,0,0,.5); }
+.slab::before { left: 12px; } .slab::after { right: 12px; }
+.slab-k { font-family: var(--mono); font-size: 12px; font-weight: 700; letter-spacing: .14em; text-transform: uppercase; color: rgba(31,30,28,.7); }
+.slab h2 { font-family: var(--display); font-size: 30px; line-height: 1.15; margin: 4px 0 0; }
+.slab-sub { margin: 6px 0 0; font-size: 15px; max-width: 62ch; }
+.slab-note { margin: 0; font-size: 14px; }
+.slab-try { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; padding-top: 4px; border-top: 1px dashed rgba(0,0,0,.18); }
+.slab-try .slab-k { margin-right: 4px; }
+.slab-chip { font-family: var(--han); font-size: 18px; width: 40px; height: 40px; border: 0; border-radius: 3px; background: var(--block); color: var(--cc-ink); border-bottom: 4px solid var(--block-edge); box-shadow: 0 2px 0 rgba(0,0,0,.18); cursor: pointer; }
+.slab-chip.on { background: var(--cc-ink); color: #f1efe9; border-bottom-color: #000; }
+.slab-hint { font-size: 12.5px; color: rgba(31,30,28,.7); margin-left: 4px; }
+.slab .zh-head, .slab-head .btn { margin-top: 8px; }
+.slab { margin: 6px 0 14px; }
+.concrete .zh-picked { background: rgba(0,0,0,.10); box-shadow: inset 0 1px 3px rgba(0,0,0,.18); }
+.concrete .zw { background: var(--block); color: var(--cc-ink); border: 0; border-radius: 3px; border-bottom: 5px solid var(--block-edge); box-shadow: 0 2px 0 rgba(0,0,0,.18); }
+.concrete .zw:hover { transform: translateY(-1px); border-color: var(--block-edge); }
+.concrete .zw.here { background: var(--cc-ink); color: #f1efe9; border-bottom-color: #000; }
+.concrete .zw.here .zg { color: #cfcac2; }
+.concrete .zw .zg { color: #5d5a55; }
+.concrete .zh-term { font-weight: 600; }
+.concrete .btn.ghost { background: rgba(255,255,255,.35); border-color: rgba(0,0,0,.2); color: var(--cc-ink); }
+.zhres { width: 100%; display: flex; flex-direction: column; gap: 12px; padding: 18px; margin-bottom: 8px; }
+.zh-head { display: flex; justify-content: space-between; align-items: center; gap: 8px; flex-wrap: wrap; }
+.zh-head h3 { margin: 0; font-family: var(--display); font-size: 22px; }
+.zh-picked { display: flex; flex-direction: column; gap: 10px; background: var(--bg); border-radius: 12px; padding: 12px; }
+.zh-st { font-weight: 600; font-size: 14px; margin-bottom: 4px; }
+.zh-row { display: flex; flex-wrap: wrap; gap: 6px; }
+.zw { border: 1px solid var(--line); background: var(--paper); color: var(--ink); border-radius: 10px; padding: 6px 10px; display: flex; flex-direction: column; gap: 1px; text-align: left; font: inherit; cursor: pointer; min-width: 84px; }
+.zw:hover { border-color: var(--ink); }
+.zw .zt { display: flex; align-items: baseline; gap: 6px; }
+.zw .ze { font-family: var(--display); font-size: 18px; }
+.zw .zo { font-size: 11px; font-weight: 600; color: var(--oc, var(--muted)); }
+.zw .zo::before { content: ""; display: inline-block; width: 7px; height: 7px; border-radius: 50%; background: var(--oc, transparent); margin-right: 3px; vertical-align: 1px; }
+.zw .zg { font-size: 12px; color: var(--muted); }
+.zh-all { display: flex; flex-direction: column; gap: 8px; }
+.zh-grid { display: flex; flex-direction: column; gap: 8px; }
+.zh-g { display: grid; grid-template-columns: 96px minmax(0, 1fr); gap: 8px; align-items: start; }
+.zh-term { font-family: var(--han); font-size: 16px; padding-top: 6px; }
+@media (max-width: 520px) { .zh-g { grid-template-columns: minmax(0, 1fr); gap: 2px; } }
 
 /* featured sites */
 .sites { display: grid; grid-template-columns: repeat(7, minmax(0, 1fr)); gap: 6px; }
@@ -258,6 +370,10 @@ form.search { display: flex; gap: 8px; }
 .chip.hivis { background: var(--hivis); color: var(--on-hivis); border-color: var(--hivis); }
 .save { border: 1.5px solid var(--line); background: transparent; color: var(--ink); border-radius: 999px; padding: 3px 11px; font-size: 12px; font-weight: 600; }
 .save[aria-pressed="true"] { border-color: var(--ink); background: var(--ink); color: var(--paper); }
+.save { display: inline-flex; align-items: center; gap: 5px; }
+.paw { width: 15px; height: 15px; fill: none; stroke: currentColor; stroke-width: 1.6; flex: none; }
+.save[aria-pressed="true"] .paw { fill: currentColor; stroke: none; }
+.navbtn .paw { width: 14px; height: 14px; fill: currentColor; stroke: none; display: block; }
 .build { grid-column: 1 / -1; margin-top: 10px; border-top: 1px dashed var(--line); padding-top: 12px; display: flex; flex-direction: column; gap: 8px; }
 .parts { display: flex; flex-wrap: wrap; gap: 8px; }
 .part { display: flex; align-items: center; gap: 8px; background: var(--bg); border-radius: 8px; padding: 6px 10px; }
@@ -537,8 +653,6 @@ form.search { display: flex; gap: 8px; }
 @media (prefers-reduced-motion: reduce) { .leaf { transition: none; } .rays, .spark { display: none; } .sun { animation-duration: .01s; } }
 
 /* saved */
-.saved { display: flex; flex-wrap: wrap; gap: 6px; }
-.wordbook { display: flex; flex-direction: column; gap: 8px; }
 .wb-head { display: flex; justify-content: space-between; align-items: center; gap: 8px; flex-wrap: wrap; }
 .wb-actions { display: flex; gap: 6px; }
 .btn.sm { padding: 6px 12px; font-size: 13px; }
@@ -571,10 +685,6 @@ form.search { display: flex; gap: 8px; }
 .wfam .more { font-size: 12.5px; color: var(--muted); }
 .board .ety { margin: 0 0 6px; max-width: 64ch; font-size: 15px; line-height: 1.6; }
 .board .src-link { color: var(--ink); font-size: 13px; }
-.saved .wb { display: inline-flex; align-items: baseline; gap: 6px; }
-.saved .wb small { font-family: var(--han); font-size: 13px; color: var(--muted); }
-.saved button.en { font-family: var(--display); font-size: 15px; padding: 4px 10px; }
-.saved button { font-family: var(--han); font-size: 20px; border: 1px solid var(--line); background: var(--paper); color: var(--ink); border-radius: 8px; padding: 2px 10px; }
 footer { font-size: 12px; color: var(--muted); display: flex; flex-direction: column; gap: 6px; }
 footer p { margin: 0; max-width: 70ch; }
 
@@ -591,11 +701,15 @@ footer p { margin: 0; max-width: 70ch; }
       <h1>Groundwork</h1>
       <p>Dig into words, layer by layer, down to their roots. 文字考古</p>
     </div>
-    <div class="tabs" role="tablist" aria-label="Language">
-      <button class="tab" role="tab" aria-selected="true" type="button" id="enTab">English words</button>
-      <button class="tab" role="tab" aria-selected="false" type="button" id="zhTab">汉字 Characters</button>
-      <button class="tab" role="tab" aria-selected="false" type="button" id="rdTab">Classics 原典</button>
-    </div>
+    <nav class="nav" aria-label="Sections">
+      <div class="tabs" role="tablist" aria-label="Language">
+        <button class="tab" role="tab" aria-selected="true" type="button" id="ideaTab"><span class="tl">One idea, many words</span><span class="ts">One idea</span></button>
+        <button class="tab" role="tab" aria-selected="false" type="button" id="enTab">English words</button>
+        <button class="tab" role="tab" aria-selected="false" type="button" id="zhTab">汉字 Characters</button>
+      </div>
+      <button class="navbtn" type="button" id="wbTab" aria-pressed="false"><span class="ni"><svg class="paw" viewBox="0 0 24 24" aria-hidden="true"><ellipse cx="12" cy="16.3" rx="4.7" ry="3.9"/><ellipse cx="5.5" cy="10.8" rx="2" ry="2.5" transform="rotate(-22 5.5 10.8)"/><ellipse cx="9.3" cy="6.5" rx="2.1" ry="2.7" transform="rotate(-8 9.3 6.5)"/><ellipse cx="14.7" cy="6.5" rx="2.1" ry="2.7" transform="rotate(8 14.7 6.5)"/><ellipse cx="18.5" cy="10.8" rx="2" ry="2.5" transform="rotate(22 18.5 10.8)"/></svg></span>Word book<span class="nc" id="wbCount"></span></button>
+      <button class="navbtn" type="button" id="rdTab" aria-pressed="false"><span class="ni" aria-hidden="true">❦</span>Classics</button>
+    </nav>
   </header>
 
   <form class="search" id="search" autocomplete="off">
@@ -607,21 +721,33 @@ footer p { margin: 0; max-width: 70ch; }
 
   <section class="reader" id="reader" aria-label="Classics" hidden></section>
 
+  <section class="wbpage" id="wbPage" aria-label="Word book" hidden>
+    <div class="wb-top">
+      <div>
+        <div class="label">Your collection</div>
+        <h2>Word book</h2>
+        <p class="sub" id="wbSub"></p>
+        <p class="wb-known" id="wbKnown"></p>
+      </div>
+      <div class="wb-actions">
+        <div class="wb-sort" role="group" aria-label="Sort">
+          <button type="button" class="sortb" data-sort="new" aria-pressed="true">Newest</button>
+          <button type="button" class="sortb" data-sort="az" aria-pressed="false">A–Z</button>
+          <button type="button" class="sortb" data-sort="origin" aria-pressed="false">Origin</button>
+        </div>
+        <button class="btn ghost sm" type="button" id="exportCsv">Export CSV</button>
+        <button class="btn ghost sm" type="button" id="copyList">Copy</button>
+      </div>
+    </div>
+    <div class="wb-list" id="saved"></div>
+    <p class="hint" id="wbMsg"></p>
+  </section>
+
+  <section class="slab concrete" id="slab" aria-label="One idea, many words" hidden></section>
+
   <section class="wordonly" aria-label="Excavation sites">
     <div class="label" style="margin-bottom:8px" id="sitesLabel">Excavation sites 发掘现场 · fully dug</div>
     <div class="sites" id="sites"></div>
-  </section>
-
-  <section class="wordbook" aria-label="Word book">
-    <div class="wb-head">
-      <div class="label">Word book 单词本 <span id="wbCount"></span></div>
-      <div class="wb-actions">
-        <button class="btn ghost sm" type="button" id="exportCsv">Export CSV 导出</button>
-        <button class="btn ghost sm" type="button" id="copyList">Copy 复制</button>
-      </div>
-    </div>
-    <div class="saved" id="saved"></div>
-    <p class="hint" id="wbMsg"></p>
   </section>
 
   <section class="board wordonly" id="board" aria-live="polite"></section>
@@ -840,10 +966,6 @@ function drawBoard(c) {
   if (d && TYPE[d.type]) row.append(el("span", "chip", `${TYPE[d.type][1]} · ${TYPE[d.type][0]}`));
   row.append(el("span", "chip" + (s ? " hivis" : ""), s ? "Fully excavated site" : SW[c] ? "Partly excavated" : "Surface survey only"));
   if (s && s.draft) row.append(el("span", "draft", "Draft · being checked"));
-  const save = el("button", "save"); save.type = "button";
-  const paint = () => { const on = getSaved().includes(c); save.setAttribute("aria-pressed", on); save.textContent = on ? "★ Saved" : "☆ Save"; };
-  save.addEventListener("click", () => { const l = getSaved(); setSaved(l.includes(c) ? l.filter(x => x !== c) : [c, ...l]); paint(); });
-  paint(); row.append(save);
   board.append(row);
 
   if (d) {
@@ -1007,7 +1129,7 @@ function drawVine() {
   const vine = el("div", "vine");
   const top = el("div");
   const en = isEn(cur), rootLang = en ? getBranches().rootLang : "";
-  top.append(el("div", "vroot" + (en ? " long" : ""), rootChar), el("div", "vroot-l", en ? `Root 词根 · ${langOf(rootLang)[0]} ${langOf(rootLang)[1]}` : `Root 词根 · ${(info(rootChar) || {}).py || ""}`));
+  top.append(el("div", "vroot" + (en ? " long" : ""), rootChar), el("div", "vroot-l", en ? `Root 词根 · ${langOf(rootLang)[0]}` : `Root 词根 · ${(info(rootChar) || {}).py || ""}`));
   vine.append(top);
   const ROW = 78, TOP = 76, H = TOP + list.length * ROW + 10;
   let dpath = `M30 46`;
@@ -1203,7 +1325,7 @@ function drawChest() {
       left.append(el("div", "fe", lg[0]));
       if (lg[2]) left.append(el("span", "fd", lg[2]));
       const gl = g.gl.find(Boolean);
-      li.append(left, el("div", "ft", g.terms.slice().reverse().join(" → ")), el("div", "fz", gl ? `${gl[0]}${gl[1] ? " · " + gl[1] : ""}` : lg[1]));
+      li.append(left, el("div", "ft", g.terms.slice().reverse().join(" → ")), el("div", "fz", gl ? `${gl[0]}${gl[1] ? " · " + gl[1] : ""}` : ""));
       ol.append(li);
     }
     const li = el("li"), left = el("div"); left.append(el("div", "fe", "English today"));
@@ -1267,7 +1389,10 @@ let EN = null, ENIDX = null;
 const isEn = k => typeof k === "string" && k.startsWith("en:");
 const enWord = k => k.slice(3);
 function isStory(k) { return typeof k === "string" && k.startsWith("story:"); }
-const label = k => isStory(k) ? storyLabel(k) : isEn(k) ? enWord(k) : k;
+/* key "idea:<Chinese>" is the One idea, many words page (the home page) */
+function isIdea(k) { return typeof k === "string" && k.startsWith("idea:"); }
+const ideaQ = k => k.slice(5) || "羊";
+const label = k => isIdea(k) ? ideaQ(k) : k === "book:" ? "Word book" : isStory(k) ? storyLabel(k) : isEn(k) ? enWord(k) : k;
 const EN_SITES = ["form", "measure", "salary", "philosophy", "water", "school", "act", "window"];
 const LANG = {
   eng: ["English", "英语", ""], enm: ["Middle English", "中古英语", "c. 1100–1500"], ang: ["Old English", "古英语", "c. 450–1100"],
@@ -1611,7 +1736,7 @@ function drawVineEn() {
   card.append(el("p", "sub", B.sub));
   const tree = el("div", "etree");
   const top = el("div", "etop");
-  top.append(el("div", "vroot long", B.rootChar), el("div", "vroot-l", B.rootLang === "eng" ? "Root 词根 · English" : `Root 词根 · ${langOf(B.rootLang)[0]} ${langOf(B.rootLang)[1]}`));
+  top.append(el("div", "vroot long", B.rootChar), el("div", "vroot-l", B.rootLang === "eng" ? "Root 词根 · English" : `Root 词根 · ${langOf(B.rootLang)[0]}`));
   tree.append(top);
   const trunk = el("div", "ebranch");
   const go = (btn, leaf, word, here) => {
@@ -1673,7 +1798,7 @@ function drawCousins(wrap, w) {
   card.append(el("p", "sub", `Words in other languages that grew from the same ${langOf(root[0])[0]} root ${root[1]}${g ? " (“" + g[0] + "”)" : ""}. Each side branch is one language.`));
   const tree = el("div", "etree");
   const top = el("div", "etop");
-  top.append(el("div", "vroot long", root[1]), el("div", "vroot-l", `Root 词根 · ${langOf(root[0])[0]} ${langOf(root[0])[1]}`));
+  top.append(el("div", "vroot long", root[1]), el("div", "vroot-l", `Root 词根 · ${langOf(root[0])[0]}`));
   tree.append(top);
   const trunk = el("div", "ebranch");
   groups.forEach(([lang, words], i) => {
@@ -1681,7 +1806,7 @@ function drawCousins(wrap, w) {
     const btn = el("button", "leafbtn"); btn.type = "button"; btn.setAttribute("aria-label", langOf(lang)[0]);
     const leaf = el("div", "eleaf lang"); leaf.append(el("span", "", langOf(lang)[0])); btn.append(leaf);
     btn.addEventListener("click", () => sunlight(btn, leaf));
-    const meta = el("div", "emeta"); meta.append(el("span", "ezh", langOf(lang)[1]));
+    const meta = el("div", "emeta");
     const main = el("div", "emain"); main.append(btn, meta);
     grp.append(main);
     const twig = el("div", "etwig");
@@ -1726,11 +1851,11 @@ function drawBoardEn(key) {
   const row = el("div", "row");
   if (enChain(w).length) {
     const o = originOf(enChain(w));
-    const chip = el("span", "ochip", `${ORIGIN[o][1]} · ${ORIGIN[o][0]}`); chip.style.setProperty("--oc", ORIGIN[o][2]);
+    const chip = el("span", "ochip", ORIGIN[o][0]); chip.style.setProperty("--oc", ORIGIN[o][2]);
     row.append(chip);
   }
   const save = el("button", "save"); save.type = "button";
-  const paint = () => { const on = getSaved().includes(key); save.setAttribute("aria-pressed", on); save.textContent = on ? "★ Saved" : "☆ Save"; };
+  const paint = () => { const on = getSaved().includes(key); save.setAttribute("aria-pressed", on); paintSave(save, on); };
   save.addEventListener("click", () => { const l = getSaved(); setSaved(l.includes(key) ? l.filter(x => x !== key) : [key, ...l]); paint(); });
   paint(); row.append(save);
   board.append(row);
@@ -1780,7 +1905,7 @@ function drawShaftEn() {
     const log = el("div", "log"); log.append(el("div", "m", DEPTHS[pos] + " m"), el("div", "", SOILS[pos]));
     const body = el("div", "body");
     const li = langOf(ly.lang);
-    const era = el("div", "era", ly.today ? "今天 Today" : `${li[1]} ${li[0]}`);
+    const era = el("div", "era", ly.today ? "Today" : li[0]);
     if (!ly.today && li[2]) era.append(el("small", "", li[2]));
     body.append(era);
     if (ly.today) {
@@ -1806,7 +1931,7 @@ function drawShaftEn() {
     if (!dug.has(ly.key)) {
       const cover = el("button", "cover"); cover.type = "button";
       cover.setAttribute("aria-label", `Dig ${ly.today ? "today" : li[0]}`);
-      cover.append(el("span", "tool", "⛏"), el("span", "", `Tap to dig · ${ly.today ? "今天 Today" : li[1] + " " + li[0]}`), el("i", "trowel", "⛏"));
+      cover.append(el("span", "tool", "⛏"), el("span", "", `Tap to dig · ${ly.today ? "Today" : li[0]}`), el("i", "trowel", "⛏"));
       cover.addEventListener("click", e => digOne(e, ly.key));
       L.append(cover);
     }
@@ -1827,60 +1952,197 @@ setSaved = function (list) {
   try { localStorage.setItem(SAVE_AT, JSON.stringify(at)); } catch {}
   _setSaved(list);
 };
-function entryRow(k) {
-  const at = savedAt()[k] || "";
-  if (isEn(k)) {
-    const w = enWord(k), v = EN && EN[w];
-    const chain = v ? enChain(w) : [];
-    const o = v ? ORIGIN[originOf(chain)][0] : "";
-    const root = chain.filter(n => n[0] !== "eng").slice(-1)[0];
-    const path = chain.filter(n => n[0] !== "eng").map(n => `${langOf(n[0])[0]} ${n[1]}`).join(" < ");
-    const e = DI(w);
-    const zhTxt = e && e.t ? e.t.join(" / ") : v ? v[3].map(z => z[0]).join(" / ") : "";
-    const parts = e && e.s ? e.s.map(pc => { const m = partMeaning(pc); return pc[0] + (m.en ? ` (${m.en})` : ""); }).join(" + ") : "";
-    const tags = e && e.g ? TAG_ORDER.filter(t => e.g.includes(t)).join(" ") : "";
-    return ["English", w, zhTxt, e && e.p ? "/" + e.p + "/" : "", o, root ? `${langOf(root[0])[0]} ${root[1]}` : "", path, parts, tags, at];
+const PAW = '<svg class="paw" viewBox="0 0 24 24" aria-hidden="true"><ellipse cx="12" cy="16.3" rx="4.7" ry="3.9"/><ellipse cx="5.5" cy="10.8" rx="2" ry="2.5" transform="rotate(-22 5.5 10.8)"/><ellipse cx="9.3" cy="6.5" rx="2.1" ry="2.7" transform="rotate(-8 9.3 6.5)"/><ellipse cx="14.7" cy="6.5" rx="2.1" ry="2.7" transform="rotate(8 14.7 6.5)"/><ellipse cx="18.5" cy="10.8" rx="2" ry="2.5" transform="rotate(22 18.5 10.8)"/></svg>';
+function paintSave(btn, on) { btn.innerHTML = PAW + (on ? "Saved" : "Save"); btn.title = on ? "In your word book. Tap to remove." : "Save to your word book"; }
+/* key "book:" is the word book page. English words only for now. */
+function isBook(k) { return k === "book:"; }
+const savedEn = () => getSaved().filter(isEn);
+let WB_SORT = "new";
+/* words you already know well: faded in the word book */
+const KNOWN_KEY = "groundwork.known";
+function getKnown() { try { return new Set(JSON.parse(localStorage.getItem(KNOWN_KEY) || "[]")); } catch { return new Set(); } }
+function toggleKnown(w) {
+  const k = getKnown(); k.has(w) ? k.delete(w) : k.add(w);
+  try { localStorage.setItem(KNOWN_KEY, JSON.stringify([...k])); } catch {}
+  for (const b of document.querySelectorAll(`#saved [data-kw="${CSS.escape(w)}"]`)) {
+    b.classList.toggle("known", k.has(w)); b.setAttribute("aria-pressed", k.has(w));
+    const card = b.closest(".wb-card"); if (b.classList.contains("wb-word") && card) card.classList.toggle("known-main", k.has(w));
   }
-  const d = info(k), sw = SW[k];
-  return ["汉字", k, d ? d.def : "", d ? d.py : "", d && TYPE[d.type] ? TYPE[d.type][1] : "", sw ? `${sw[0]}，${sw[1]}` : "", "", "", "", at];
+  knownNote();
+}
+function knownNote() {
+  const n = getKnown().size;
+  $("wbKnown").textContent = n ? `${n} word${n === 1 ? "" : "s"} marked as known` : "";
+}
+/* the same family the slab shows: "w · same meaning, other words" */
+/* the same block the slab draws for "w · same meaning, other words", but a tap marks a word as known */
+function famPanel(w, known) {
+  if (!ZH || !zhByWord()) return null;
+  const panel = el("div", "wb-fam concrete");
+  panel.append(el("div", "slab-k", `${w} · same meaning, other words`));
+  const k = pickedFor(w);
+  if (k) panel.append(pickedCard(k, w));
+  const terms = (zhByWord().get(w) || []).map(t => [t, ZH.t[t]])
+    .filter(([t, codes]) => new Set(codes.map(x => x >> 3)).size > 1)
+    .sort((a, b) => (a[0].length - b[0].length) || (b[1].length - a[1].length)).slice(0, 5);
+  if (terms.length) { const grid = el("div", "zh-grid"); for (const [t, codes] of terms) grid.append(termRow(t, codes, w, 8)); panel.append(grid); }
+  if (!k && !terms.length) return null;
+  for (const old of panel.querySelectorAll(".zw")) {
+    const x = old.querySelector(".ze").textContent, b = old.cloneNode(true);
+    b.classList.add("wbz"); b.dataset.kw = x; b.classList.toggle("known", known.has(x)); b.setAttribute("aria-pressed", known.has(x));
+    b.title = "Tap if you know this word well";
+    b.addEventListener("click", () => toggleKnown(x));
+    old.replaceWith(b);
+  }
+  return panel;
+}
+function wordFamily(w) {
+  const rows = [], seen = new Set([w]);
+  const k = ZH_GROUPS && pickedFor(w);
+  if (k) for (const [title, list] of ZH_GROUPS[k]) {
+    const ws = list.filter(x => !seen.has(x[0])).map(x => [x[0], x[2]]);
+    ws.forEach(x => seen.add(x[0]));
+    if (ws.length) rows.push({ t: title, ws });
+  }
+  if (ZH && zhByWord()) {
+    const terms = (zhByWord().get(w) || []).map(t => [t, ZH.t[t]])
+      .filter(([t, codes]) => new Set(codes.map(x => x >> 3)).size > 1)
+      .sort((a, b) => (a[0].length - b[0].length) || (b[1].length - a[1].length)).slice(0, 5);
+    for (const [, codes] of terms) {
+      const ws = [];
+      for (const c of [...codes].sort((a, b) => a - b)) {
+        const x = ZH.w[c >> 3]; if (seen.has(x)) continue; seen.add(x);
+        ws.push([x, wordOrigin(x)]);
+        if (ws.length >= 7) break;
+      }
+      if (ws.length) rows.push({ t: "", ws });
+    }
+  }
+  return rows;
+}
+try { WB_SORT = localStorage.getItem("groundwork.wbsort") || "new"; } catch {}
+const plainTags = e => e && e.g ? TAG_ORDER.filter(t => e.g.includes(t) && /^[\x20-\x7e]+$/.test(t)) : [];
+const MODERN_TOO = new Set(["bare", "art", "brake", "slew", "slain", "smitten", "wilt", "gat", "digged", "bade"]);
+function enFacts(w) {
+  const v = EN && EN[w], e = DI(w);
+  const chain = v ? enChain(w) : [];
+  const far = chain.filter(n => n[0] !== "eng" && !/-pro$|^p_/i.test(n[0]));
+  const root = far.slice(-1)[0];
+  const old = ARCHAIC[w] && !MODERN_TOO.has(w);
+  return {
+    w, e,
+    p: e && e.p && !old ? "/" + e.p + "/" : "",
+    zh: e && e.t ? e.t.slice(0, 2).join("；").slice(0, 70) : v && v[3] ? v[3].map(z => z[0]).slice(0, 4).join("、") : "",
+    def: ARCHAIC[w] && !MODERN_TOO.has(w) ? `old form of “${ARCHAIC[w]}”` : e && e.d && e.d.length ? e.d[0] : "",
+    o: wordOrigin(w),
+    root: root ? `${langOf(root[0])[0]} ${root[1]}` : "",
+    path: far.map(n => `${langOf(n[0])[0]} ${n[1]}`).join(" < "),
+    parts: e && e.s ? e.s.map(pc => { const m = partMeaning(pc); return pc[0] + (m.en ? ` (${m.en})` : ""); }).join(" + ") : "",
+    tags: plainTags(e).join(" ")
+  };
+}
+function entryRow(k) {
+  const f = enFacts(enWord(k)), known = getKnown();
+  const fam = wordFamily(f.w).map(r => r.ws.map(x => x[0]).join(", ")).join("; ");
+  return [f.w, f.p, f.zh, f.def, f.o && ORIGIN[f.o] ? ORIGIN[f.o][0] : "", fam, f.root, f.path, f.parts, f.tags, known.has(f.w) ? "yes" : "", savedAt()[k] || ""];
+}
+async function loadForBook() {
+  const en = savedEn();
+  await Promise.all([loadEN(), loadZh(), loadRoots(), ...[...new Set(en.map(k => enWord(k)[0]))].map(loadShard)]);
 }
 function drawSaved() {
-  const box = $("saved"); box.textContent = "";
-  const l = getSaved();
-  $("wbCount").textContent = l.length ? `· ${l.length}` : "";
+  const n = savedEn().length;
+  $("wbCount").textContent = n ? String(n) : "";
+  if (isBook(cur)) drawBook();
+}
+let bookDrawing = 0;
+async function drawBook() {
+  const box = $("saved"), my = ++bookDrawing;
+  const l = savedEn();
   $("exportCsv").disabled = !l.length; $("copyList").disabled = !l.length;
-  if (!l.length) { box.append(el("p", "hint", "Nothing saved yet. Tap ☆ Save on a word to add it to your word book.")); return; }
-  for (const c of l) {
-    const b = el("button", (isEn(c) ? "en " : "") + "wb"); b.type = "button";
-    b.append(document.createTextNode(label(c)));
-    const z = isEn(c) ? (EN && EN[enWord(c)] && EN[enWord(c)][3][0] ? EN[enWord(c)][3][0][0] : "") : ((info(c) || {}).py || "");
-    if (z) b.append(el("small", "", z));
-    b.addEventListener("click", () => open(c, true));
-    box.append(b);
+  for (const b of document.querySelectorAll(".sortb")) b.setAttribute("aria-pressed", b.dataset.sort === WB_SORT);
+  $("wbSub").textContent = l.length ? `${l.length} saved word${l.length === 1 ? "" : "s"}, each with its family of same-meaning words. Tap any word you already know well to fade it into the background; tap it again to bring it back.` : "";
+  knownNote();
+  if (!l.length) {
+    box.textContent = "";
+    const empty = el("div", "wb-empty");
+    empty.append(el("p", "", "Nothing saved yet."), el("p", "hint", "Tap the paw Save button on any English word, or on a word card while you read the Classics. The word and its family (other English words with the same meaning) will appear here."));
+    box.append(empty);
+    return;
+  }
+  if (!EN || !ZH || l.some(k => !DICT[enWord(k)[0]])) {
+    if (!box.childElementCount) box.append(el("p", "hint", "Loading…"));
+    await loadForBook();
+    if (my !== bookDrawing || !isBook(cur)) return;
+  }
+  const at = savedAt();
+  let rows = l.map(k => ({ k, f: enFacts(enWord(k)), at: at[k] || "" }));
+  const oName = r => r.f.o && ORIGIN[r.f.o] ? ORIGIN[r.f.o][0] : "~";
+  if (WB_SORT === "az") rows.sort((x, y) => x.f.w.localeCompare(y.f.w));
+  if (WB_SORT === "origin") rows.sort((x, y) => oName(x).localeCompare(oName(y)) || x.f.w.localeCompare(y.f.w));
+  box.textContent = "";
+  let group = null;
+  for (const r of rows) {
+    if (WB_SORT === "origin" && oName(r) !== group) {
+      group = oName(r);
+      const gh = el("div", "wb-group");
+      if (r.f.o && ORIGIN[r.f.o]) gh.style.setProperty("--oc", ORIGIN[r.f.o][2]);
+      gh.textContent = group === "~" ? "Origin not in our data" : group;
+      box.append(gh);
+    }
+    const card = el("article", "wb-card");
+    if (r.f.o && ORIGIN[r.f.o]) card.style.setProperty("--oc", ORIGIN[r.f.o][2]);
+    const known = getKnown();
+    const top = el("div", "wb-line");
+    const go = el("button", "wb-word" + (known.has(r.f.w) ? " known" : ""), r.f.w); go.type = "button";
+    go.dataset.kw = r.f.w; go.setAttribute("aria-pressed", known.has(r.f.w)); go.title = "Tap if you know this word well";
+    go.addEventListener("click", () => toggleKnown(r.f.w));
+    if (known.has(r.f.w)) card.classList.add("known-main");
+    top.append(go);
+    if (r.f.p) top.append(el("span", "wb-ph", r.f.p));
+    if (r.f.o && ORIGIN[r.f.o]) top.append(el("span", "ochip", ORIGIN[r.f.o][0]));
+    const rm = el("button", "wb-rm", "×"); rm.type = "button"; rm.title = "Remove from word book"; rm.setAttribute("aria-label", `Remove ${r.f.w}`);
+    rm.addEventListener("click", () => setSaved(getSaved().filter(z => z !== r.k)));
+    top.append(rm);
+    card.append(top);
+    if (r.f.zh) card.append(el("p", "wb-zh", r.f.zh));
+    if (r.f.def) card.append(el("p", "wb-def", r.f.def));
+    if (r.f.path) card.append(el("p", "wb-path", "from " + r.f.path));
+    else if (r.f.parts) card.append(el("p", "wb-path", r.f.parts));
+    const meta = [r.f.tags, r.at ? "saved " + r.at : ""].filter(Boolean).join(" · ");
+    const panel = famPanel(r.f.w, known);
+    if (panel) card.append(panel);
+    const foot = el("div", "wb-foot");
+    if (meta) foot.append(el("div", "wb-meta", meta));
+    const dig = el("button", "btn ghost sm", `Dig into ${r.f.w} →`); dig.type = "button";
+    dig.addEventListener("click", () => open(r.k, true));
+    foot.append(dig);
+    card.append(foot);
+    box.append(card);
   }
 }
-async function wordbookRows() {
-  const en = getSaved().filter(isEn);
-  if (en.length) await Promise.all([loadEN(), loadRoots(), ...[...new Set(en.map(k => enWord(k)[0]))].map(loadShard)]);
-  return getSaved().map(entryRow);
-}
+for (const b of document.querySelectorAll(".sortb")) b.addEventListener("click", () => {
+  WB_SORT = b.dataset.sort; try { localStorage.setItem("groundwork.wbsort", WB_SORT); } catch {}
+  drawBook();
+});
+async function wordbookRows() { await loadForBook(); return savedEn().map(entryRow); }
 function csvCell(x) { x = String(x == null ? "" : x); return /[",\n]/.test(x) ? `"${x.replace(/"/g, '""')}"` : x; }
 $("exportCsv").addEventListener("click", async () => {
   const rows = await wordbookRows();
-  const head = ["Type", "Word", "Chinese / meaning", "Pinyin / phonetic", "Origin / type", "Root", "Path", "Word parts", "Exam tags", "Saved on"];
+  const head = ["Word", "Phonetic", "Chinese", "Meaning", "Origin", "Same meaning, other words", "Root", "Path", "Word parts", "Exam tags", "Known", "Saved on"];
   const csv = "﻿" + [head, ...rows].map(r => r.map(csvCell).join(",")).join("\r\n");
   try {
     const url = URL.createObjectURL(new Blob([csv], { type: "text/csv;charset=utf-8" }));
     const a = document.createElement("a"); a.href = url; a.download = `groundwork-word-book-${new Date().toISOString().slice(0, 10)}.csv`;
     document.body.append(a); a.click(); a.remove(); setTimeout(() => URL.revokeObjectURL(url), 2000);
-    $("wbMsg").textContent = "Downloaded. Open it in Excel, Numbers or Google Sheets, or import it into Anki or Quizlet. 已下载。";
-  } catch { $("wbMsg").textContent = "This browser blocked the download. Try Copy instead. 下载被拦截，请用复制。"; }
+    $("wbMsg").textContent = "Downloaded. Open it in Excel, Numbers or Google Sheets, or import it into Anki or Quizlet.";
+  } catch { $("wbMsg").textContent = "This browser blocked the download. Try Copy instead."; }
 });
 $("copyList").addEventListener("click", async () => {
   const rows = await wordbookRows();
-  const text = rows.map(r => r[0] === "English" ? [r[1], r[3], r[2], r[7]].filter(Boolean).join("\t") : `${r[1]}\t${r[3]}\t${r[2]}`).join("\n");
-  try { await navigator.clipboard.writeText(text); $("wbMsg").textContent = "Copied. Paste it into Notes or a spreadsheet. 已复制。"; }
-  catch { $("wbMsg").textContent = "Copy didn’t work in this browser. Try Export CSV. 复制失败，请用导出。"; }
+  const text = rows.map(r => [r[0], r[1], r[2], r[3], r[4], r[5]].filter(Boolean).join("\t")).join("\n");
+  try { await navigator.clipboard.writeText(text); $("wbMsg").textContent = "Copied. Paste it into Notes or a spreadsheet."; }
+  catch { $("wbMsg").textContent = "Copy didn’t work in this browser. Try Export CSV."; }
 });
 
 /* ---------- Classics reader: original plays and poems ---------- */
@@ -2064,9 +2326,9 @@ function drawPart(box, au, work, n) {
   if (on) {
     for (const o of ["latin", "french", "greek", "norse", "germanic", "other"]) {
       const li = el("span", "li"); const sw = el("span", "sw"); sw.style.setProperty("--oc", ORIGIN[o][2]);
-      li.append(sw, document.createTextNode(`${ORIGIN[o][0]} ${ORIGIN[o][1]}`)); legend.append(li);
+      li.append(sw, document.createTextNode(ORIGIN[o][0])); legend.append(li);
     }
-    legend.append(el("span", "li plain", "No line = Old English, or not in our data 无下划线：古英语本土词，或暂无数据"));
+    legend.append(el("span", "li plain", "No line = Old English, or not in our data"));
   }
   box.append(legend);
   CUR_NAMES = new Set();
@@ -2127,11 +2389,11 @@ async function peek(btn) {
   else box.append(el("div", "pk-zh", "No meaning in our dictionary yet. 词典里还没有这个词。"));
   const row = el("div", "pk-row");
   const o = wordOrigin(w);
-  if (o) { const chip = el("span", "ochip", `${ORIGIN[o][1]} · ${ORIGIN[o][0]}`); chip.style.setProperty("--oc", ORIGIN[o][2]); row.append(chip); }
+  if (o) { const chip = el("span", "ochip", ORIGIN[o][0]); chip.style.setProperty("--oc", ORIGIN[o][2]); row.append(chip); }
   const dig = el("button", "btn sm", "⛏ Dig into it 挖下去"); dig.type = "button";
   dig.addEventListener("click", () => { closePeek(); open("en:" + w, true); });
   const key = "en:" + w, save = el("button", "save"); save.type = "button";
-  const paint = () => { const s2 = getSaved().includes(key); save.setAttribute("aria-pressed", s2); save.textContent = s2 ? "★ Saved" : "☆ Save"; };
+  const paint = () => { const s2 = getSaved().includes(key); save.setAttribute("aria-pressed", s2); paintSave(save, s2); };
   save.addEventListener("click", () => { const l = getSaved(); setSaved(l.includes(key) ? l.filter(z => z !== key) : [key, ...l]); paint(); });
   paint(); row.append(dig, save); box.append(row);
 }
@@ -2143,23 +2405,41 @@ function open(c, scroll, fromHistory) {
     trail.push(c);
     try { history.replaceState({ c }, "", "#" + encodeURIComponent(c)); } catch {}
   }
-  cur = c; dug = new Set(); mapOpen = false;
-  const fab = isStory(c);
-  document.body.classList.toggle("reading", fab); $("reader").hidden = !fab; $("rdTab").setAttribute("aria-selected", fab);
+  cur = c; dug = new Set(); mapOpen = false; SLAB_Q = null;
+  const fab = isStory(c), bk = isBook(c), idea = isIdea(c);
+  document.body.classList.toggle("reading", fab || bk || idea); $("reader").hidden = !fab; $("wbPage").hidden = !bk; $("slab").hidden = !idea;
+  $("rdTab").setAttribute("aria-pressed", fab); $("wbTab").setAttribute("aria-pressed", bk); $("ideaTab").setAttribute("aria-selected", idea);
   closePeek();
+  if (idea) {
+    lastIdea = c;
+    $("zhTab").setAttribute("aria-selected", false); $("enTab").setAttribute("aria-selected", false);
+    $("q").placeholder = "Chinese or English, e.g. 羊 / sheep"; $("q").style.fontFamily = "";
+    SLAB_Q = ideaQ(c);
+    drawSlab(); drawBack();
+    if (scroll) $("slab").scrollIntoView({ behavior: "smooth", block: "start" });
+    return;
+  }
+  if (bk) {
+    $("zhTab").setAttribute("aria-selected", false); $("enTab").setAttribute("aria-selected", false);
+    $("q").placeholder = "English word or 中文, e.g. measure / 羊"; $("q").style.fontFamily = "var(--display)";
+    $("wbMsg").textContent = "";
+    drawBook(); drawBack();
+    if (scroll) $("wbPage").scrollIntoView({ behavior: "smooth", block: "start" });
+    return;
+  }
   if (fab) {
     lastStory = c;
     $("zhTab").setAttribute("aria-selected", false); $("enTab").setAttribute("aria-selected", false);
-    $("q").placeholder = "Type an English word, e.g. measure"; $("q").style.fontFamily = "var(--display)";
+    $("q").placeholder = "English word or 中文, e.g. measure / 羊"; $("q").style.fontFamily = "var(--display)";
     drawReader(c).then(drawBack); drawBack();
     if (scroll) $("reader").scrollIntoView({ behavior: "smooth", block: "start" });
     return;
   }
   if (isEn(c)) lastEn = c; else lastZh = c;
   $("zhTab").setAttribute("aria-selected", !isEn(c)); $("enTab").setAttribute("aria-selected", isEn(c));
-  $("q").placeholder = isEn(c) ? "Type an English word, e.g. measure" : "Type a character 输入一个字, or an English meaning";
+  $("q").placeholder = isEn(c) ? "English word or 中文, e.g. measure / 羊" : "Type a character 输入一个字, or an English meaning";
   $("q").style.fontFamily = isEn(c) ? "var(--display)" : "";
-  if (isEn(c) && !EN) { loadEN().then(() => { drawSaved(); if (cur === c) { drawSites(); drawBoard(c); drawVine(); drawShaft(); drawJade(); } }); }
+  if (isEn(c) && !EN) { loadEN().then(() => { if (cur === c) { drawSites(); drawBoard(c); drawVine(); drawShaft(); drawJade(); } }); }
   if (isEn(c) && (!DICT[enWord(c)[0]] || !RT)) {
     Promise.all([loadShard(enWord(c)[0]), loadRoots()]).then(() => { if (cur === c) { drawBoard(c); if (dug.size === 0) drawShaft(); } });
   }
@@ -2172,7 +2452,7 @@ function open(c, scroll, fromHistory) {
 function drawBack() {
   const b = $("back"), prev = trail[trail.length - 2];
   b.hidden = !prev;
-  if (prev) { b.textContent = ""; const bk = el("span", "bk", label(prev)); if (isEn(prev) || isStory(prev)) { bk.style.fontFamily = "var(--display)"; bk.style.fontSize = "15px"; } b.append(el("span", "", "← Back"), bk); }
+  if (prev) { b.textContent = ""; const bk = el("span", "bk", label(prev)); if (isEn(prev) || isStory(prev) || isBook(prev)) { bk.style.fontFamily = "var(--display)"; bk.style.fontSize = "15px"; } b.append(el("span", "", "← Back"), bk); }
 }
 /* Back always goes one step back through the places you visited, using our own trail. */
 function stepBack() {
@@ -2184,13 +2464,199 @@ function stepBack() {
 }
 function goBack() { stepBack(); }
 
+
+/* ---------- Chinese -> English: one Chinese meaning, many English words ---------- */
+let ZH = null, ZHP = null;
+function loadZh() { return ZHP || (ZHP = fetch("zh-en.json").then(r => r.ok ? r.json() : null).catch(() => null).then(j => { ZH = j; })); }
+/* hand-picked families for everyday ideas; origin: latin / french / greek / norse / old_english / germanic / other */
+const ZH_GROUPS = {
+  "羊": [["The animal", [["sheep", "羊、绵羊", "old_english"], ["lamb", "小羊", "old_english"], ["ram", "公羊", "old_english"], ["ewe", "母羊", "old_english"], ["goat", "山羊", "old_english"], ["kid", "小山羊", "norse"]]],
+         ["The meat", [["mutton", "羊肉", "french"], ["lamb", "羔羊肉", "old_english"]]],
+         ["Around it", [["wool", "羊毛", "old_english"], ["fleece", "一整张羊毛", "old_english"], ["flock", "羊群", "old_english"], ["shepherd", "牧羊人", "old_english"]]]],
+  "牛": [["The animal", [["cow", "母牛、奶牛", "old_english"], ["bull", "公牛", "old_english"], ["ox", "（耕）牛", "old_english"], ["calf", "小牛", "old_english"], ["cattle", "牛（总称）", "french"]]],
+         ["The meat", [["beef", "牛肉", "french"], ["veal", "小牛肉", "french"], ["steak", "牛排", "norse"]]],
+         ["Around it", [["dairy", "乳制品、奶场", "old_english"], ["herd", "牛群", "old_english"], ["cowboy", "牛仔", "old_english"]]]],
+  "猪": [["The animal", [["pig", "猪", "old_english"], ["swine", "猪（总称、书面）", "old_english"], ["sow", "母猪", "old_english"], ["boar", "公猪、野猪", "old_english"], ["piglet", "小猪", "old_english"], ["hog", "（肥）猪", "other"]]],
+         ["The meat", [["pork", "猪肉", "french"], ["bacon", "培根", "french"], ["ham", "火腿", "old_english"], ["sausage", "香肠", "french"]]]],
+  "鸡": [["The animal", [["chicken", "鸡", "old_english"], ["hen", "母鸡", "old_english"], ["rooster", "公鸡", "old_english"], ["cock", "公鸡（英式）", "old_english"], ["chick", "小鸡", "old_english"]]],
+         ["The meat", [["chicken", "鸡肉", "old_english"], ["poultry", "禽肉、家禽", "french"]]],
+         ["Around it", [["egg", "蛋", "norse"], ["feather", "羽毛", "old_english"]]]],
+  "鹿": [["The animal", [["deer", "鹿", "old_english"], ["stag", "公鹿", "old_english"], ["doe", "母鹿", "old_english"], ["fawn", "小鹿", "french"]]],
+         ["The meat", [["venison", "鹿肉（原意：打猎得来的）", "french"]]]],
+  "夹": [["Things that hold", [["clip", "小夹子、回形针", "old_english"], ["peg", "晾衣夹", "germanic"], ["clamp", "夹钳、固定夹", "germanic"], ["tongs", "（食物）夹子、钳子", "old_english"], ["tweezers", "镊子", "french"], ["pliers", "钳子", "french"]]],
+         ["To hold tight", [["pinch", "捏、夹", "french"], ["grip", "紧紧夹住、握住", "old_english"], ["squeeze", "挤、夹紧", "old_english"], ["pick", "pick up：夹起、拿起", "old_english"]]],
+         ["Caught in the middle", [["sandwich", "夹在中间（来自三明治伯爵的名字）", "other"], ["wedge", "楔入、被夹住", "old_english"], ["stuck", "卡住、夹住", "old_english"]]]],
+  "切": [["Ways to cut", [["cut", "切（总称）", "norse"], ["chop", "剁、砍", "other"], ["slice", "切片", "french"], ["dice", "切丁", "french"], ["mince", "剁碎", "french"], ["carve", "（把肉）切开、雕刻", "old_english"], ["peel", "削皮", "french"], ["trim", "修剪", "old_english"]]]],
+  "拿": [["Ways to take", [["take", "拿走", "norse"], ["hold", "拿着", "old_english"], ["carry", "拿着走、搬", "french"], ["bring", "拿来", "old_english"], ["fetch", "去拿来", "old_english"], ["grab", "一把抓起", "germanic"], ["pick", "pick up：拿起", "old_english"], ["hand", "递", "old_english"]]]],
+  "看": [["Ways to look", [["look", "看（动作）", "old_english"], ["see", "看见", "old_english"], ["watch", "观看、盯着", "old_english"], ["read", "看（书）", "old_english"], ["stare", "盯着看", "old_english"], ["glance", "瞥一眼", "french"], ["gaze", "凝视", "other"], ["peek", "偷看", "other"], ["observe", "观察", "latin"], ["view", "观看、景色", "french"]]]],
+  "说": [["Ways to speak", [["say", "说（内容）", "old_english"], ["tell", "告诉", "old_english"], ["speak", "说话、讲（语言）", "old_english"], ["talk", "谈话", "old_english"], ["mention", "提到", "latin"], ["whisper", "低声说", "old_english"], ["shout", "喊", "norse"], ["announce", "宣布", "french"]]]],
+  "走": [["Ways to walk", [["walk", "走路", "old_english"], ["go", "去", "old_english"], ["leave", "离开", "old_english"], ["step", "迈步", "old_english"], ["wander", "闲逛", "old_english"], ["stroll", "散步", "germanic"], ["march", "行进", "french"], ["tiptoe", "踮脚走", "old_english"]]]],
+  "洗": [["Ways to wash", [["wash", "洗", "old_english"], ["rinse", "冲洗", "french"], ["scrub", "擦洗", "germanic"], ["bathe", "洗澡", "old_english"], ["shower", "淋浴", "old_english"], ["launder", "洗（衣服）", "french"]]]]
+};
+/* the hand-picked origins above also correct the automatic colours elsewhere (e.g. pinch is French) */
+for (const secs of Object.values(ZH_GROUPS)) for (const [, list] of secs) for (const [w, , o] of list) if (!ORIGIN_FIX[w]) ORIGIN_FIX[w] = o;
+function originChip(o) {
+  const c = el("span", "zo"); if (!o || !ORIGIN[o]) return c;
+  c.style.setProperty("--oc", ORIGIN[o][2]); c.textContent = ORIGIN[o][0];
+  return c;
+}
+function zhWordBtn(word, gloss, o) {
+  const b = el("button", "zw"); b.type = "button";
+  const top = el("span", "zt"); top.append(el("span", "ze", word), originChip(o));
+  b.append(top, el("span", "zg", gloss || ""));
+  b.addEventListener("click", () => { $("results").textContent = ""; $("msg").textContent = ""; open("en:" + word, true); });
+  return b;
+}
+/* which Chinese meanings each English word has (built once from zh-en.json) */
+let ZH_BY_WORD = null;
+function zhByWord() {
+  if (ZH_BY_WORD || !ZH) return ZH_BY_WORD;
+  ZH_BY_WORD = new Map();
+  for (const [t, codes] of Object.entries(ZH.t)) for (const c of codes) {
+    const w = ZH.w[c >> 3];
+    if (!ZH_BY_WORD.has(w)) ZH_BY_WORD.set(w, []);
+    ZH_BY_WORD.get(w).push(t);
+  }
+  return ZH_BY_WORD;
+}
+function pickedFor(word) { for (const [k, secs] of Object.entries(ZH_GROUPS)) for (const [, list] of secs) if (list.some(x => x[0] === word)) return k; return null; }
+function pickedCard(q, here) {
+  const card = el("div", "zh-picked");
+  card.append(el("div", "label", `Picked · ${q}: one Chinese idea, many English words`));
+  for (const [title, list] of ZH_GROUPS[q]) {
+    const sec = el("div", "zh-sec"); sec.append(el("div", "zh-st", title));
+    const row = el("div", "zh-row");
+    for (const [w, g, o] of list) { const b = zhWordBtn(w, g, o); if (w === here) b.classList.add("here"); row.append(b); }
+    sec.append(row); card.append(sec);
+  }
+  return card;
+}
+function termRow(t, codes, here, max = 6) {
+  const g = el("div", "zh-g");
+  const term = el("div", "zh-term"); term.append(hanLinks(t)); g.append(term);
+  const row = el("div", "zh-row");
+  const seen = new Set();
+  for (const c of [...codes].sort((a, b) => a - b)) {
+    const w = ZH.w[c >> 3]; if (seen.has(w)) continue; seen.add(w);
+    const btn = zhWordBtn(w, ZH.pos[c & 7], wordOrigin(w)); if (w === here) btn.classList.add("here");
+    row.append(btn);
+    if (seen.size >= max) break;
+  }
+  g.append(row);
+  return g;
+}
+/* every Chinese meaning that contains q, best first */
+function zhHits(q) {
+  const hits = [];
+  for (const [t, codes] of Object.entries(ZH.t)) if (t.includes(q)) hits.push([t, codes]);
+  const score = ([t, codes]) => (t === q ? -1e9 : 0) + Math.min(...codes.map(c => c >> 3)) + (t.startsWith(q) || t.endsWith(q) ? 0 : 4000) + t.length * 150;
+  return hits.sort((a, b) => score(a) - score(b));
+}
+function hitsBlock(q, hits, first) {
+  const all = el("div", "zh-all");
+  all.append(el("div", "label", `Every word with “${q}” in its Chinese meaning · ${hits.length} meanings`));
+  const grid = el("div", "zh-grid");
+  const draw = n => { grid.textContent = ""; for (const [t, codes] of hits.slice(0, n)) grid.append(termRow(t, codes)); };
+  draw(first);
+  all.append(grid);
+  if (hits.length > first) {
+    const more = el("button", "btn ghost sm", `Show all ${hits.length}`); more.type = "button";
+    more.addEventListener("click", () => { draw(hits.length); more.remove(); });
+    all.append(more);
+  }
+  return all;
+}
+let SLAB_Q = null;   /* a Chinese idea typed into the search box; cleared when another page opens */
+async function zhSearch(q) {
+  $("results").textContent = ""; $("msg").textContent = "";
+  if (!q) return;
+  open("idea:" + q, true);
+}
+
+/* ---------- The slab: one idea, many words (the heart of the app, at the top) ---------- */
+const SLAB_TRY = ["羊", "牛", "猪", "鸡", "鹿", "夹", "切", "拿", "看", "说", "走", "洗"];
+function slabTry(box) {
+  const row = el("div", "slab-try");
+  row.append(el("span", "slab-k", "Try"));
+  for (const q of SLAB_TRY) {
+    const b = el("button", "slab-chip" + (q === SLAB_Q ? " on" : ""), q); b.type = "button";
+    b.addEventListener("click", () => zhSearch(q));
+    row.append(b);
+  }
+  const hint = el("span", "slab-hint", "or type any Chinese word in the search box");
+  row.append(hint);
+  box.append(row);
+}
+async function drawSlab() {
+  if (!isIdea(cur)) return;
+  const box = $("slab"), c = cur, q0 = SLAB_Q;
+  box.textContent = "";
+  const head = el("div", "slab-head");
+  head.append(el("div", "slab-k", "One idea, many words"));
+  box.append(head);
+  if (!ZH || !EN) {
+    box.append(el("p", "slab-note", "Loading… 正在加载"));
+    await Promise.all([loadZh(), loadEN()]);
+    if (cur !== c || SLAB_Q !== q0) return;
+    box.textContent = ""; box.append(head);
+  }
+  if (!ZH) { box.hidden = true; return; }
+  box.hidden = false;
+  if (q0) { drawIdea(box, head, q0, true); slabTry(box); return; }
+  if (isEn(c)) {
+    const w = enWord(c);
+    head.append(el("h2", "", `${w} · same meaning, other words`),
+      el("p", "slab-sub", `Other English words that share a Chinese meaning with “${w}”. Where Chinese uses one word, English often has several, and they come from different languages.`));
+    const k = pickedFor(w);
+    if (k) box.append(pickedCard(k, w));
+    const terms = (zhByWord().get(w) || []).map(t => [t, ZH.t[t]])
+      .filter(([t, codes]) => new Set(codes.map(x => x >> 3)).size > 1)
+      .sort((a, b) => (a[0].length - b[0].length) || (b[1].length - a[1].length)).slice(0, 5);
+    if (terms.length) {
+      const grid = el("div", "zh-grid");
+      for (const [t, codes] of terms) grid.append(termRow(t, codes, w, 8));
+      box.append(grid);
+    } else if (!k) box.append(el("p", "slab-note", "No other common English word shares this Chinese meaning."));
+    slabTry(box);
+    return;
+  }
+  /* a Chinese character */
+  drawIdea(box, head, c, false);
+  slabTry(box);
+}
+/* every Chinese character becomes a link to its page in Characters */
+function hanLinks(text) {
+  const f = document.createDocumentFragment();
+  for (const ch of Array.from(text)) {
+    if (!HAN.test(ch)) { f.append(document.createTextNode(ch)); continue; }
+    const b = el("button", "hz", ch); b.type = "button"; b.title = `See ${ch} in Characters`;
+    b.addEventListener("click", e => { e.stopPropagation(); $("results").textContent = ""; $("msg").textContent = ""; open(ch, true); });
+    f.append(b);
+  }
+  return f;
+}
+function drawIdea(box, head, q, typed) {
+  const h2 = el("h2", ""); h2.append("「", hanLinks(q), "」 in English");
+  head.append(h2,
+    el("p", "slab-sub", `Chinese uses one word, ${q}, where English often needs several different words, and they come from different languages. Tap an English word to dig into it, or a Chinese character to open it in Characters.`));
+  if (typed && HAN.test(q)) {
+    const ch = el("button", "btn ghost sm", `Look up the character ${Array.from(q)[0]} →`); ch.type = "button";
+    ch.addEventListener("click", () => open(Array.from(q)[0], true));
+    head.append(ch);
+  }
+  if (ZH_GROUPS[q]) box.append(pickedCard(q));
+  const hits = zhHits(q);
+  if (hits.length) box.append(hitsBlock(q, hits, ZH_GROUPS[q] ? 8 : 12));
+  else if (!ZH_GROUPS[q]) box.append(el("p", "slab-note", `No English words found for ${q}.`));
+}
+
 /* ---------- Search ---------- */
 function stripTones(s) { return s.normalize("NFD").replace(/[̀-ͯ]/g, "").toLowerCase(); }
 $("search").addEventListener("submit", e => {
   e.preventDefault();
   const q = $("q").value.trim(); const res = $("results"); res.textContent = ""; $("msg").textContent = "";
   if (!q) return;
-  if ((isEn(cur) || isStory(cur)) && /^[A-Za-z][A-Za-z' -]*$/.test(q)) {
+  if ((isEn(cur) || isStory(cur) || isBook(cur) || isIdea(cur)) && /^[A-Za-z][A-Za-z' -]*$/.test(q)) {
     const run = async () => {
       const w = q.toLowerCase().replace(/[^a-z]/g, "");
       if (w.length < 2) return;
@@ -2203,6 +2669,7 @@ $("search").addEventListener("submit", e => {
     if (!EN) { $("msg").textContent = "Loading the English dictionary…"; loadEN().then(() => { $("msg").textContent = ""; run(); }); } else run();
     return;
   }
+  if ((isEn(cur) || isStory(cur) || isBook(cur) || isIdea(cur)) && HAN.test(q)) { zhSearch(q.replace(/[^\u4e00-\u9fff]/g, "")); return; }
   const hans = Array.from(q).filter(ch => HAN.test(ch));
   if (hans.length) {
     const c = hans[0];
@@ -2239,14 +2706,16 @@ $("allBtn").addEventListener("click", () => { for (const L of $("shaft").querySe
 $("refill").addEventListener("click", () => { dug = new Set(); drawShaft(); });
 $("back").addEventListener("click", goBack);
 $("enTab").addEventListener("click", () => { if (!isEn(cur)) { $("results").textContent = ""; $("msg").textContent = ""; open(lastEn || "en:form", false); } });
-$("zhTab").addEventListener("click", () => { if (isEn(cur) || isStory(cur)) { $("results").textContent = ""; $("msg").textContent = ""; open(lastZh || "申", false); } });
-$("rdTab").addEventListener("click", () => { if (!isStory(cur)) { $("results").textContent = ""; $("msg").textContent = ""; open(lastStory || "story:", false); } });
-let lastEn = null, lastZh = null;
+$("zhTab").addEventListener("click", () => { if (isEn(cur) || isStory(cur) || isBook(cur) || isIdea(cur)) { $("results").textContent = ""; $("msg").textContent = ""; open(lastZh || "申", false); } });
+$("rdTab").addEventListener("click", () => { if (!isStory(cur)) { $("results").textContent = ""; $("msg").textContent = ""; open(lastStory || "story:", true); } });
+$("wbTab").addEventListener("click", () => { if (!isBook(cur)) { $("results").textContent = ""; $("msg").textContent = ""; open("book:", true); } });
+$("ideaTab").addEventListener("click", () => { if (!isIdea(cur)) { $("results").textContent = ""; $("msg").textContent = ""; open(lastIdea || "idea:羊", false); } });
+let lastEn = null, lastZh = null, lastIdea = null;
 
 /* ---------- Boot ---------- */
 (async () => {
-  let start = "en:form";
-  try { const h = decodeURIComponent(location.hash.slice(1)); if (isEn(h) || isStory(h)) start = h; else if (h && HAN.test(h)) start = Array.from(h)[0]; } catch {}
+  let start = "idea:羊";
+  try { const h = decodeURIComponent(location.hash.slice(1)); if (isEn(h) || isStory(h) || isBook(h) || isIdea(h)) start = h; else if (h && HAN.test(h)) start = Array.from(h)[0]; } catch {}
   drawSaved();
   open(start, false);
   await loadDB();
