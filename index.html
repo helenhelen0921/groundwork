@@ -1,0 +1,1000 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Groundwork</title>
+<meta name="description" content="Dig into words layer by layer, from today down to their roots: Chinese characters now, English words next.">
+<meta name="theme-color" content="#3B2A1E">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Groundwork">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%233B2A1E'/%3E%3Crect y='30' width='64' height='12' fill='%236E4E34'/%3E%3Crect y='42' width='64' height='22' rx='0' fill='%23927257'/%3E%3Cpath d='M40 6 L33 30 M28 30 h12' stroke='%23F08A2E' stroke-width='5' stroke-linecap='round'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<!-- Fonts load without blocking the page: if Google Fonts is unreachable (e.g. in mainland China), system fonts are used straight away. -->
+<link rel="preload" as="style" id="webfonts" href="https://fonts.googleapis.com/css2?family=Zilla+Slab:wght@500;600;700&family=Figtree:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&family=Noto+Serif+SC:wght@500;700&display=swap">
+<style>
+/* Layout: a borehole log. Site board on top, then the shaft of soil strata, then the excavation map. */
+:root {
+  --bg: #E7E1D8;          /* dry clay */
+  --paper: #F4F0EA;       /* log sheet */
+  --ink: #2B2019;
+  --muted: #6E6156;
+  --line: #CFC5B8;
+  --hivis: #DCD8D3;       /* light stone grey */
+  --on-hivis: #2B2019;
+  --bark: #4A3426; --bark-2: #6B4C36; --gold: #FFD45E;
+  --chip: #EEEBE7; --on-chip: #3A332E;
+
+  /* strata, top to bottom */
+  --s1: #B8946B;  --s1-ink: #2B2019;   /* topsoil */
+  --s2: #9C7650;  --s2-ink: #FFF8F0;   /* subsoil */
+  --s3: #7E5C3D;  --s3-ink: #FBF4EC;   /* clay */
+  --s4: #5E4634;  --s4-ink: #F6EEE6;   /* weathered rock */
+  --s5: #3A302A;  --s5-ink: #F3ECE4;   /* bedrock */
+  --grass: #6E8A4C; --leaf: #6F9447; --leaf-2: #557A35; --leaf-ink: #FFFFFF;
+
+  --han: "Noto Serif SC", "Songti SC", "STSong", serif;
+  --display: "Zilla Slab", Georgia, serif;
+  --body: "Figtree", -apple-system, "PingFang SC", system-ui, sans-serif;
+  --mono: "IBM Plex Mono", ui-monospace, Menlo, monospace;
+}
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #1A1410; --paper: #241C16; --ink: #EFE6DC; --muted: #A99A8C; --line: #3A2F27;
+    --hivis: #D2CDC7; --on-hivis: #1A1410;
+    --bark: #3E2C20; --bark-2: #5C412E; --gold: #FFD45E;
+    --chip: #E6E2DD; --on-chip: #2B241F;
+    --s1: #8C6C4C; --s2: #73563C; --s3: #5C4330; --s4: #463427; --s5: #2B241F;
+    --s1-ink: #F7EEE4; --s2-ink: #F4EADF; --s3-ink: #F4EADF; --s4-ink: #F0E6DC; --s5-ink: #EDE4DA;
+    --grass: #56703A; --leaf: #5E8240; --leaf-2: #476832; --leaf-ink: #F4F8EE;
+    color-scheme: dark;
+  }
+}
+
+* { box-sizing: border-box; }
+html, body { margin: 0; }
+body {
+  background: var(--bg); color: var(--ink); font-family: var(--body); font-size: 15px; line-height: 1.5;
+  padding-left: max(16px, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px));
+  padding-top: max(18px, env(safe-area-inset-top, 0px));
+  padding-bottom: max(88px, env(safe-area-inset-bottom, 0px));
+}
+.wrap { max-width: 720px; margin: 0 auto; display: flex; flex-direction: column; gap: 22px; }
+a { color: inherit; }
+button { font-family: var(--body); cursor: pointer; }
+button:focus-visible, input:focus-visible, a:focus-visible { outline: 2px solid var(--ink); outline-offset: 2px; }
+.mono { font-family: var(--mono); }
+.label { font-family: var(--mono); font-size: 11px; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); }
+
+/* header */
+header { display: flex; justify-content: space-between; align-items: flex-end; gap: 12px; flex-wrap: wrap; }
+.brand h1 { font-family: var(--display); font-weight: 700; font-size: 32px; margin: 0; letter-spacing: -.01em; line-height: 1; }
+.brand p { margin: 6px 0 0; color: var(--muted); }
+.tabs { display: inline-flex; background: var(--paper); border: 1px solid var(--line); border-radius: 999px; padding: 3px; }
+.tab { border: 0; background: transparent; color: var(--muted); border-radius: 999px; padding: 6px 12px; font-size: 13px; font-weight: 600; }
+.tab[aria-selected="true"] { background: var(--ink); color: var(--paper); }
+.tab small { font-weight: 500; opacity: .75; }
+
+/* search */
+form.search { display: flex; gap: 8px; }
+.search input {
+  flex: 1; min-width: 0; font-family: var(--han); font-size: 22px; padding: 10px 14px; border-radius: 10px;
+  border: 1.5px solid var(--line); background: var(--paper); color: var(--ink);
+}
+.search input::placeholder { font-family: var(--body); font-size: 15px; color: var(--muted); }
+.btn { border: 1.5px solid color-mix(in srgb, var(--ink) 25%, var(--hivis)); background: var(--hivis); color: var(--on-hivis); font-weight: 600; border-radius: 10px; padding: 0 18px; font-size: 15px; }
+.btn.ghost { background: transparent; color: var(--ink); border: 1.5px solid var(--line); }
+.results { display: flex; flex-wrap: wrap; gap: 6px; }
+.res { border: 1px solid var(--line); background: var(--paper); color: var(--ink); border-radius: 8px; padding: 6px 10px; display: inline-flex; gap: 8px; align-items: baseline; text-align: left; }
+.res .c { font-family: var(--han); font-size: 20px; }
+.res .d { font-size: 12px; color: var(--muted); max-width: 18ch; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.hint { font-size: 13px; color: var(--muted); margin: 0; }
+
+/* featured sites */
+.sites { display: grid; grid-template-columns: repeat(7, minmax(0, 1fr)); gap: 6px; }
+@media (max-width: 520px) { .sites { grid-template-columns: repeat(4, minmax(0, 1fr)); } }
+.site {
+  border: 0; border-radius: 10px; padding: 10px 0 8px; color: var(--s1-ink);
+  background: linear-gradient(var(--grass) 0 5px, var(--s3) 5px 62%, var(--s5) 62%);
+  display: flex; flex-direction: column; align-items: center; gap: 2px;
+}
+.site .c { font-family: var(--han); font-size: 28px; font-weight: 700; line-height: 1.1; }
+.site .p { font-family: var(--mono); font-size: 10px; color: var(--s3-ink); }
+.site[aria-current="true"] { outline: 3px solid var(--ink); outline-offset: 2px; }
+
+/* site board */
+.board { background: var(--paper); border: 1px solid var(--line); border-radius: 14px; padding: 18px; display: grid; grid-template-columns: auto minmax(0, 1fr); gap: 4px 18px; align-items: center; }
+.board .big { font-family: var(--han); font-size: 88px; line-height: 1; font-weight: 700; grid-row: span 3; }
+.board .py { font-size: 18px; font-weight: 600; }
+.board .def { color: var(--muted); }
+.board .row { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+.chip { font-size: 12px; font-weight: 600; padding: 3px 9px; border-radius: 999px; background: var(--bg); border: 1px solid var(--line); }
+.chip.hivis { background: var(--hivis); color: var(--on-hivis); border-color: var(--hivis); }
+.save { border: 1.5px solid var(--line); background: transparent; color: var(--ink); border-radius: 999px; padding: 3px 11px; font-size: 12px; font-weight: 600; }
+.save[aria-pressed="true"] { border-color: var(--ink); background: var(--ink); color: var(--paper); }
+.build { grid-column: 1 / -1; margin-top: 10px; border-top: 1px dashed var(--line); padding-top: 12px; display: flex; flex-direction: column; gap: 8px; }
+.parts { display: flex; flex-wrap: wrap; gap: 8px; }
+.part { display: flex; align-items: center; gap: 8px; background: var(--bg); border-radius: 8px; padding: 6px 10px; }
+.part .pc { font-family: var(--han); font-size: 24px; }
+.part .pr { font-family: var(--mono); font-size: 10px; text-transform: uppercase; letter-spacing: .06em; color: var(--muted); }
+.part .pm { font-size: 13px; }
+.draft { font-family: var(--mono); font-size: 10px; letter-spacing: .06em; text-transform: uppercase; color: var(--muted); border: 1px dashed var(--muted); border-radius: 4px; padding: 1px 6px; }
+
+/* the shaft */
+.shaft-head { display: flex; justify-content: space-between; align-items: baseline; gap: 8px; flex-wrap: wrap; }
+.shaft-head h2 { font-family: var(--display); font-size: 22px; margin: 0; }
+.depth { font-family: var(--mono); font-size: 12px; color: var(--muted); }
+.shaft { position: relative; border-radius: 14px; overflow: hidden; }
+.surface { height: 14px; background: repeating-linear-gradient(90deg, var(--grass) 0 6px, color-mix(in srgb, var(--grass) 80%, black) 6px 9px); }
+.layer { position: relative; display: grid; grid-template-columns: 74px minmax(0, 1fr); min-height: 132px; }
+.layer .log { border-right: 1px solid rgba(0,0,0,.18); padding: 12px 8px; font-family: var(--mono); font-size: 11px; line-height: 1.35; display: flex; flex-direction: column; gap: 4px; }
+.layer .log .m { font-size: 15px; font-weight: 500; }
+.layer .body { padding: 14px 16px 16px; display: flex; flex-direction: column; gap: 6px; min-width: 0; }
+.layer .era { font-family: var(--display); font-weight: 600; font-size: 18px; }
+.date { display: inline-flex; flex-wrap: wrap; align-items: baseline; gap: 4px 10px; align-self: flex-start; background: var(--chip); color: var(--on-chip); border-radius: 6px; padding: 4px 10px 5px; margin: 2px 0 4px; box-shadow: 0 2px 0 rgba(0,0,0,.25); }
+.date .dy { font-family: var(--display); font-weight: 700; font-size: 26px; line-height: 1.05; letter-spacing: -.01em; }
+.date .dz { font-size: 12px; font-weight: 600; opacity: .92; }
+.layer .log .lw { margin-top: 4px; font-weight: 500; color: var(--on-chip); background: var(--chip); border-radius: 4px; padding: 1px 4px; align-self: flex-start; }
+.node .nd { display: inline-block; margin-top: 4px; font-family: var(--display); font-weight: 700; font-size: 15px; background: var(--hivis); color: var(--on-hivis); border-radius: 4px; padding: 0 6px; }
+.layer .era small { font-family: var(--mono); font-weight: 400; font-size: 11px; opacity: .8; margin-left: 6px; }
+.layer .en { font-size: 17px; font-weight: 600; }
+.layer .zh { font-size: 15px; opacity: .9; }
+.layer .quote { font-family: var(--han); font-size: 19px; }
+.layer .qen { font-size: 13px; opacity: .85; }
+.layer .note { font-size: 13px; opacity: .85; font-style: italic; }
+.l1 { background: var(--s1); color: var(--s1-ink); }
+.l2 { background: var(--s2); color: var(--s2-ink); }
+.l3 { background: var(--s3); color: var(--s3-ink); }
+.l4 { background: var(--s4); color: var(--s4-ink); }
+.l5 { background: var(--s5); color: var(--s5-ink); }
+/* soil texture */
+.layer::after { content: ""; position: absolute; inset: 0; pointer-events: none; opacity: .18;
+  background-image: radial-gradient(circle at 20% 30%, rgba(0,0,0,.6) 0 1px, transparent 1.5px), radial-gradient(circle at 70% 60%, rgba(255,255,255,.5) 0 1px, transparent 1.5px);
+  background-size: 23px 19px, 31px 27px; }
+.cover {
+  position: absolute; inset: 0; z-index: 2; border: 0; width: 100%; color: inherit; background: inherit;
+  display: flex; align-items: center; justify-content: center; gap: 10px; font-size: 15px; font-weight: 600;
+  cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='40' height='40' viewBox='0 0 40 40'%3E%3Cpath d='M30 4 L20 22' stroke='%23F6EEE6' stroke-width='5' stroke-linecap='round'/%3E%3Cpath d='M30 4 L20 22' stroke='%233B2A1E' stroke-width='2.5' stroke-linecap='round'/%3E%3Cpath d='M13 18 Q20 15 26 22 L18 36 Q8 30 13 18Z' fill='%23D6D2CC' stroke='%233B2A1E' stroke-width='2'/%3E%3C/svg%3E") 18 36, pointer;
+  background-image: repeating-linear-gradient(-12deg, rgba(0,0,0,.08) 0 2px, transparent 2px 11px);
+}
+.cover .tool { font-size: 22px; }
+.cover:disabled { cursor: default; opacity: .9; }
+.cover .lock { font-family: var(--mono); font-size: 12px; font-weight: 400; opacity: .8; }
+@property --p { syntax: "<percentage>"; inherits: true; initial-value: -30%; }
+.cover.gone {
+  pointer-events: none; animation: scrape 1.9s cubic-bezier(.45,.05,.4,1) forwards;
+  -webkit-mask-image: linear-gradient(100deg, transparent calc(var(--p) - 4%), rgba(0,0,0,.35) calc(var(--p) + 4%), rgba(0,0,0,.75) calc(var(--p) + 14%), #000 calc(var(--p) + 26%));
+          mask-image: linear-gradient(100deg, transparent calc(var(--p) - 4%), rgba(0,0,0,.35) calc(var(--p) + 4%), rgba(0,0,0,.75) calc(var(--p) + 14%), #000 calc(var(--p) + 26%));
+}
+.cover.gone > span { opacity: 0; transition: opacity .3s; }
+.cover .trowel { position: absolute; top: 50%; left: 0; font-size: 26px; transform: translate(-50%, -50%) rotate(-20deg); opacity: 0; pointer-events: none; }
+.cover.gone .trowel { opacity: 1; left: calc(var(--p) + 6%); animation: wobble .32s ease-in-out infinite alternate; }
+@keyframes scrape { 0% { --p: -30%; } 35% { --p: 30%; } 55% { --p: 46%; } 100% { --p: 125%; } }
+@keyframes wobble { from { transform: translate(-50%, -62%) rotate(-28deg); } to { transform: translate(-50%, -38%) rotate(-8deg); } }
+.smear { position: absolute; inset: 0; z-index: 3; pointer-events: none; opacity: 0;
+  background: repeating-linear-gradient(100deg, transparent 0 18px, rgba(0,0,0,.14) 18px 21px, transparent 21px 34px, rgba(255,255,255,.08) 34px 36px);
+  animation: smear 2.2s ease-out forwards; }
+@keyframes smear { 0% { opacity: 0; } 25% { opacity: 1; } 100% { opacity: 0; } }
+.dirt { position: absolute; z-index: 4; width: 6px; height: 5px; border-radius: 40% 60% 50% 45%; background: var(--s4); pointer-events: none; animation: fly 1.3s cubic-bezier(.2,.6,.4,1) forwards; }
+@keyframes fly { 45% { transform: translate(var(--dx), var(--dy)) rotate(var(--r)); opacity: 1; } 100% { transform: translate(calc(var(--dx) * 1.2), calc(var(--dy) + 70px)) rotate(var(--r)); opacity: 0; } }
+.layer .src-line { font-family: var(--mono); font-size: 11px; opacity: .8; }
+.layer .kx { font-family: var(--han); font-size: 16px; line-height: 1.75; }
+.layer .kx.more { font-size: 15px; opacity: .88; }
+.layer .wl-h { font-family: var(--mono); font-size: 11px; letter-spacing: .06em; text-transform: uppercase; opacity: .75; margin-top: 6px; }
+.layer .words { display: flex; flex-direction: column; gap: 2px; }
+.layer .words .w { display: flex; gap: 10px; align-items: baseline; flex-wrap: wrap; }
+.layer .words .wc { font-family: var(--han); font-size: 18px; }
+.layer .words .wp { font-size: 13px; font-weight: 600; }
+.layer .words .wg { font-size: 13px; opacity: .85; }
+.layer.empty .body { opacity: .7; }
+.layer.empty .en { font-weight: 500; font-size: 15px; }
+.unexcavated { padding: 22px 16px; text-align: center; font-family: var(--mono); font-size: 13px; background: repeating-linear-gradient(45deg, var(--s5) 0 14px, color-mix(in srgb, var(--s5) 85%, black) 14px 28px); color: var(--s5-ink); }
+.controls { display: flex; gap: 8px; flex-wrap: wrap; }
+.controls .btn { padding: 10px 18px; }
+
+/* excavation map: a jade disc (玉璧) buried in the pit; lightning cracks it open */
+.jade-wrap { display: flex; flex-direction: column; align-items: center; }
+.pit { position: relative; width: 100%; height: 250px; display: grid; place-items: center; border-radius: 14px; overflow: hidden; transition: height .7s ease, opacity .7s;
+  background: radial-gradient(60% 34% at 50% 82%, color-mix(in srgb, var(--s5) 80%, black) 0 60%, transparent 61%), linear-gradient(var(--s3), var(--s4)); }
+.pit::before { content: ""; position: absolute; inset: 0; opacity: .2; pointer-events: none;
+  background-image: radial-gradient(circle at 20% 30%, rgba(0,0,0,.6) 0 1px, transparent 1.5px), radial-gradient(circle at 70% 60%, rgba(255,255,255,.5) 0 1px, transparent 1.5px); background-size: 23px 19px, 31px 27px; }
+.pit.gone { height: 0; opacity: 0; }
+.jade { position: relative; width: 176px; height: 176px; border: 0; padding: 0; background: transparent; cursor: pointer; filter: drop-shadow(0 10px 10px rgba(0,0,0,.45)); animation: float 3.6s ease-in-out infinite; }
+@keyframes float { 50% { transform: translateY(-5px); } }
+.jhalf { position: absolute; inset: 0; border-radius: 50%; transition: transform 1s cubic-bezier(.3,.7,.3,1), opacity 1s;
+  background:
+    radial-gradient(circle at 34% 28%, rgba(255,255,255,.6), transparent 20%),
+    radial-gradient(circle, transparent 0 57%, rgba(10,50,35,.28) 58%, transparent 60%),
+    radial-gradient(circle, transparent 0 79%, rgba(10,50,35,.25) 80%, transparent 82%),
+    radial-gradient(circle at 50% 50%, rgba(255,255,255,.14) 0 1.6px, transparent 2.2px) 0 0 / 14px 14px,
+    radial-gradient(circle at 40% 40%, #B9E0C9 0%, #78B395 32%, #3F8467 70%, #24533F 100%);
+  -webkit-mask-image: radial-gradient(circle, transparent 0 20%, #000 21%); mask-image: radial-gradient(circle, transparent 0 20%, #000 21%); }
+.jhalf::after { content: ""; position: absolute; inset: 0; border-radius: 50%;
+  background: linear-gradient(115deg, transparent 35%, rgba(255,255,255,.45) 48%, transparent 60%) -180px 0 / 360px 100% no-repeat; animation: glint 4.5s ease-in-out infinite; }
+@keyframes glint { 0%, 55% { background-position: -180px 0; } 85%, 100% { background-position: 200px 0; } }
+.jade.vanish { animation: vanish .9s ease-in forwards; pointer-events: none; }
+/* a fine, forked bolt that strikes the jade */
+.pit .bolt { position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; z-index: 3; opacity: 0; }
+.pit .bolt path { fill: none; stroke: url(#bg); stroke-linecap: round; stroke-linejoin: round; vector-effect: non-scaling-stroke;
+  filter: drop-shadow(0 0 2px #FFF8DC) drop-shadow(0 0 7px rgba(255, 214, 102, .85)); stroke-dasharray: 120; stroke-dashoffset: 120; }
+.pit .bolt .b-main { stroke-width: 2.4; }
+.pit .bolt .b-fork { stroke-width: 1.2; opacity: .85; }
+.pit.strike .bolt { animation: flicker .75s ease-out forwards; }
+.pit.strike .bolt .b-main { animation: draw .22s ease-out forwards; }
+.pit.strike .bolt .b-fork { animation: draw .22s .08s ease-out forwards; }
+.pit.strike::after { content: ""; position: absolute; inset: 0; pointer-events: none; z-index: 2; background: radial-gradient(40% 50% at 50% 45%, rgba(255, 244, 200, .55), transparent 70%); animation: glow .7s ease-out forwards; }
+@keyframes draw { to { stroke-dashoffset: 0; } }
+@keyframes flicker { 0% { opacity: 0; } 8% { opacity: 1; } 22% { opacity: .35; } 34% { opacity: 1; } 70% { opacity: .9; } 100% { opacity: 0; } }
+@keyframes glow { 0% { opacity: 0; } 20% { opacity: 1; } 100% { opacity: 0; } }
+@keyframes vanish { 0% { transform: scale(1); opacity: 1; filter: drop-shadow(0 10px 10px rgba(0,0,0,.45)); }
+  40% { transform: scale(1.08); filter: drop-shadow(0 0 22px rgba(190,240,210,.9)) brightness(1.2); }
+  100% { transform: scale(.55); opacity: 0; filter: blur(8px) brightness(1.4); } }
+.jade-cap { margin: 10px 0 0; font-size: 13px; color: var(--muted); text-align: center; }
+/* an old book scroll (古籍书卷) */
+.scroll { width: 100%; display: none; flex-direction: column; opacity: 0; transition: opacity .8s ease; }
+.scroll.show { display: flex; }
+.scroll.open { opacity: 1; }
+.roller { position: relative; height: 18px; margin: 0 4px; border-radius: 9px; z-index: 1;
+  background: linear-gradient(#7A5538, #3E2A1C 55%, #6B4A30); box-shadow: 0 3px 6px rgba(0,0,0,.3); }
+.roller::before, .roller::after { content: ""; position: absolute; top: -3px; width: 14px; height: 24px; border-radius: 4px; background: linear-gradient(90deg, #2E1F15, #5A3E2A, #2E1F15); }
+.roller::before { left: -8px; } .roller::after { right: -8px; }
+.sheet { display: grid; grid-template-rows: 0fr; margin: -4px 14px; transition: grid-template-rows 1.8s cubic-bezier(.4,.1,.3,1); }
+.scroll.open .sheet { grid-template-rows: 1fr; }
+.sheet > .in { overflow: hidden; min-height: 0; }
+.paper { position: relative; color: #3A2A1E; padding: 28px 64px 48px 22px;
+  background:
+    var(--fox, linear-gradient(transparent, transparent)),
+    linear-gradient(90deg, rgba(110, 70, 30, .22), transparent 7%, transparent 93%, rgba(110, 70, 30, .22)),
+    linear-gradient(rgba(110, 70, 30, .16), transparent 8%, transparent 90%, rgba(110, 70, 30, .2)),
+    repeating-linear-gradient(90deg, transparent 0 41px, rgba(150, 52, 38, .13) 41px 42px),
+    radial-gradient(circle at 20% 30%, rgba(120, 90, 50, .08) 0 1px, transparent 2px) 0 0 / 17px 13px,
+    linear-gradient(90deg, #E9DDC4, #F3EBD8 12%, #F3EBD8 88%, #E6D8BD);
+  box-shadow: inset 0 0 0 1px rgba(90, 60, 30, .18), inset 0 0 30px rgba(120, 80, 40, .15); }
+.paper .ptext { opacity: 0; transition: opacity 1s ease 1.1s; display: flex; flex-direction: column; gap: 22px; }
+.paper .hole { position: absolute; z-index: 2; background: color-mix(in srgb, var(--s4) 75%, black); box-shadow: 0 0 0 2px rgba(150, 105, 55, .35), 0 0 5px 3px rgba(150, 105, 55, .22); }
+.pfam .pgrid { display: grid; grid-template-columns: repeat(auto-fill, minmax(108px, 1fr)); gap: 8px; }
+.pchar { display: grid; grid-template-columns: auto minmax(0, 1fr); grid-template-rows: auto auto; column-gap: 8px; align-items: center; text-align: left;
+  border: 1px solid rgba(90, 60, 30, .28); background: rgba(255, 250, 238, .35); color: #3A2A1E; border-radius: 4px; padding: 6px 8px; }
+.pchar:hover { background: rgba(255, 250, 238, .7); }
+.pchar .pc { grid-row: span 2; font-family: var(--han); font-size: 28px; line-height: 1; }
+.pchar .pp { font-size: 12px; font-weight: 600; }
+.pchar .pa { font-size: 11px; color: #6E5A48; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.pchar.here { border-color: #A8322A; cursor: default; }
+.scroll.open .paper .ptext { opacity: 1; }
+.paper h3 { font-family: var(--han); font-size: 20px; font-weight: 700; margin: 0 0 14px; }
+.tiqian { position: absolute; top: 22px; right: 16px; opacity: .9; writing-mode: vertical-rl; font-family: var(--han); font-weight: 700; font-size: 18px; letter-spacing: .25em;
+  padding: 12px 6px; background: #EFE4CC; border: 1px solid rgba(90, 60, 30, .35); box-shadow: 1px 1px 0 rgba(90, 60, 30, .15); }
+.seal { position: absolute; right: 16px; bottom: 18px; width: 36px; height: 36px; display: grid; place-items: center; font-family: var(--han); font-size: 22px; font-weight: 700;
+  color: #F6E8DC; background: #A8322A; border-radius: 4px; transform: rotate(-4deg); box-shadow: inset 0 0 0 2px rgba(246,232,220,.5); opacity: .92; }
+.paper .flow::before { background: rgba(60, 40, 30, .3); }
+.paper .flow li::before { background: #F3EBD8; border-color: #4A3426; }
+.paper .flow li:last-child::before { background: #4A3426; }
+.paper .flow .fe { color: #7A6655; }
+.paper .flow .ft { color: #2B2019; }
+.paper .flow .fz { color: #5E4D40; font-family: var(--han); }
+.paper .flow .fd { background: #E2DCD3; color: #3A332E; }
+.mapcard { border-radius: 14px; color: #F4ECE2; padding: 20px 18px 0; overflow: hidden;
+  background: radial-gradient(120% 60% at 50% 0%, var(--s3) 0%, var(--s4) 60%, var(--s5) 100%); display: flex; flex-direction: column; gap: 16px; }
+#vineWrap .mapcard { margin-top: 10px; }
+.mapcard h3 { font-family: var(--display); font-size: 20px; margin: 0 0 10px; }
+/* back */
+.back { position: fixed; z-index: 20; left: max(16px, env(safe-area-inset-left, 0px)); bottom: max(16px, env(safe-area-inset-bottom, 0px));
+  display: inline-flex; align-items: center; gap: 8px; border: 1.5px solid var(--line); background: var(--paper); color: var(--ink);
+  border-radius: 999px; padding: 8px 14px; font-weight: 600; font-size: 14px; box-shadow: 0 4px 14px rgba(0,0,0,.18); }
+.back .bk { font-family: var(--han); font-size: 18px; }
+@media (prefers-reduced-motion: reduce) { .jade, .jhalf::after { animation: none; } .pit, .scroll, .sheet, .paper .ptext { transition: none; } .pit .bolt, .pit.strike::after { display: none; } }
+/* minimal flow */
+.flow { list-style: none; margin: 0; padding: 0; position: relative; display: flex; flex-direction: column; gap: 14px; }
+.flow::before { content: ""; position: absolute; left: 6px; top: 8px; bottom: 8px; width: 2px; background: rgba(244,236,226,.35); }
+.flow li { position: relative; padding-left: 26px; display: grid; grid-template-columns: 92px minmax(0, 1fr); gap: 2px 12px; align-items: baseline; }
+.flow li::before { content: ""; position: absolute; left: 0; top: 5px; width: 14px; height: 14px; border-radius: 50%; background: var(--s5); border: 2px solid rgba(244,236,226,.8); }
+.flow li:last-child::before { background: #F4ECE2; }
+.flow .fe { font-family: var(--mono); font-size: 11px; letter-spacing: .06em; text-transform: uppercase; color: rgba(244,236,226,.72); }
+.flow .fd { display: inline-block; margin-top: 3px; font-family: var(--mono); font-size: 11px; background: var(--chip); color: var(--on-chip); border-radius: 3px; padding: 0 5px; }
+.flow .ft { font-weight: 600; }
+.flow .fz { font-size: 13px; color: rgba(244,236,226,.75); grid-column: 2; }
+@media (max-width: 420px) { .flow li { grid-template-columns: minmax(0, 1fr); } .flow .fz { grid-column: 1; } }
+/* vine */
+.vine { position: relative; }
+.vine svg.stem { position: absolute; left: 0; top: 0; width: 64px; height: 100%; overflow: visible; }
+.vine .stem path { fill: none; stroke: #7FA356; stroke-width: 4; stroke-linecap: round; }
+.vine .stem .tendril { stroke-width: 2; stroke: #93B86A; }
+.vine .vroot { position: relative; z-index: 1; display: inline-grid; place-items: center; width: 54px; height: 54px; margin-left: 3px; border-radius: 50%;
+  font-family: var(--han); font-size: 28px; font-weight: 700; color: #5A3412;
+  background: radial-gradient(circle at 40% 35%, #FFF3B8 0%, #FFD45E 45%, #F2A93B 100%); box-shadow: 0 0 16px 4px rgba(255, 205, 90, .55); }
+.vine .vroot::before { content: ""; position: absolute; inset: -16px; border-radius: 50%; z-index: -1;
+  background: repeating-conic-gradient(from 0deg, rgba(255, 214, 102, .75) 0 7deg, transparent 7deg 22.5deg);
+  -webkit-mask-image: radial-gradient(circle, transparent 50%, #000 52%, transparent 74%); mask-image: radial-gradient(circle, transparent 50%, #000 52%, transparent 74%);
+  animation: turn 24s linear infinite; }
+@keyframes turn { to { transform: rotate(360deg); } }
+@media (prefers-reduced-motion: reduce) { .vine .vroot::before { animation: none; } }
+.vine .vroot-l { font-family: var(--mono); font-size: 11px; letter-spacing: .06em; text-transform: uppercase; color: rgba(244,236,226,.72); margin: 6px 0 0 4px; }
+.vrow { position: relative; z-index: 1; height: 78px; display: grid; grid-template-columns: 58px 62px minmax(0, 1fr); align-items: center; gap: 10px; }
+.vrow:nth-child(odd) { padding-left: 8px; }
+.leafbtn { position: relative; grid-column: 2; border: 0; padding: 0; background: transparent; cursor: pointer; }
+.leaf { width: 56px; height: 56px; border-radius: 4px 56px 4px 56px; background: linear-gradient(135deg, var(--leaf) 0 50%, var(--leaf-2) 50% 100%); color: var(--leaf-ink);
+  display: grid; place-items: center; position: relative; transform: rotate(-14deg); transition: transform .3s, box-shadow .4s; box-shadow: inset 0 0 0 1px rgba(0,0,0,.15), 0 3px 6px rgba(0,0,0,.25); }
+.vrow:nth-child(even) .leaf { transform: rotate(14deg); border-radius: 56px 4px 56px 4px; background: linear-gradient(45deg, var(--leaf-2) 0 50%, var(--leaf) 50% 100%); }
+.leaf::after { content: ""; position: absolute; width: 74%; height: 1.5px; background: rgba(255,255,255,.35); transform: rotate(45deg); }
+.vrow:nth-child(even) .leaf::after { transform: rotate(-45deg); }
+.leaf .bc { font-family: var(--han); font-size: 26px; line-height: 1; position: relative; z-index: 1; transform: rotate(14deg); }
+.vrow:nth-child(even) .leaf .bc { transform: rotate(-14deg); }
+.leafbtn:hover .leaf { transform: rotate(0deg) scale(1.08); }
+.leaf.lit { box-shadow: inset 0 0 0 1px rgba(255,255,255,.4), 0 0 20px 8px color-mix(in srgb, var(--gold) 70%, transparent); }
+.bt { grid-column: 3; font-size: 13px; line-height: 1.35; min-width: 0; }
+.bt b { font-weight: 600; color: #FFF6E6; }
+.bt .py { color: rgba(244,236,226,.9); }
+.bt .mn { display: block; color: rgba(244,236,226,.75); }
+.bt .you { display: inline-block; font-family: var(--mono); font-size: 10px; letter-spacing: .06em; text-transform: uppercase; background: var(--chip); color: var(--on-chip); border-radius: 3px; padding: 0 5px; margin-right: 6px; }
+.vrow.here .leaf { outline: 2px solid #FFF6E6; outline-offset: 3px; }
+.mapcard .ground { height: 16px; margin: 0 -18px; background: linear-gradient(var(--grass) 0 4px, color-mix(in srgb, var(--s5) 85%, black) 4px); }
+.mapcard .sub { font-size: 13px; color: rgba(244,236,226,.8); margin: 0 0 8px; }
+
+/* sunlight */
+.sun { position: absolute; left: 50%; top: 50%; width: 150px; height: 150px; margin: -75px 0 0 -75px; pointer-events: none; z-index: 3; border-radius: 50%;
+  background: radial-gradient(circle, rgba(255,236,170,.95) 0 10%, rgba(255,212,94,.55) 30%, rgba(255,212,94,0) 68%); animation: sun 1.6s ease-out forwards; }
+.rays { position: absolute; left: 50%; top: 50%; width: 190px; height: 190px; margin: -95px 0 0 -95px; pointer-events: none; z-index: 3; border-radius: 50%;
+  background: repeating-conic-gradient(from 0deg, rgba(255,222,120,.75) 0 4deg, transparent 4deg 22deg);
+  -webkit-mask-image: radial-gradient(circle, transparent 18%, #000 30%, transparent 70%); mask-image: radial-gradient(circle, transparent 18%, #000 30%, transparent 70%);
+  animation: rays 1.8s ease-out forwards; }
+.spark { position: absolute; left: 50%; top: 50%; z-index: 4; pointer-events: none; color: var(--gold); font-size: 14px; text-shadow: 0 0 6px rgba(255,212,94,.9); animation: spark 1.5s ease-out forwards; }
+@keyframes sun { 0% { transform: scale(.2); opacity: 0; } 25% { opacity: 1; } 100% { transform: scale(1.3); opacity: 0; } }
+@keyframes rays { 0% { transform: scale(.3) rotate(0deg); opacity: 0; } 30% { opacity: 1; } 100% { transform: scale(1.15) rotate(40deg); opacity: 0; } }
+@keyframes spark { 0% { transform: translate(-50%, -50%) scale(.4); opacity: 0; } 20% { opacity: 1; } 100% { transform: translate(calc(-50% + var(--sx)), calc(-50% + var(--sy))) scale(1); opacity: 0; } }
+@media (prefers-reduced-motion: reduce) { .leaf { transition: none; } .rays, .spark { display: none; } .sun { animation-duration: .01s; } }
+
+/* saved */
+.saved { display: flex; flex-wrap: wrap; gap: 6px; }
+.saved button { font-family: var(--han); font-size: 20px; border: 1px solid var(--line); background: var(--paper); color: var(--ink); border-radius: 8px; padding: 2px 10px; }
+footer { font-size: 12px; color: var(--muted); display: flex; flex-direction: column; gap: 6px; }
+footer p { margin: 0; max-width: 70ch; }
+
+@media (prefers-reduced-motion: reduce) {
+  .cover.gone { animation: none; display: none; }
+  .dirt, .smear { display: none; }
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <div class="brand">
+      <h1>Groundwork</h1>
+      <p>Dig into words, layer by layer, down to their roots. 文字考古</p>
+    </div>
+    <div class="tabs" role="tablist" aria-label="Language">
+      <button class="tab" role="tab" aria-selected="true" type="button">汉字 Characters</button>
+      <button class="tab" role="tab" aria-selected="false" type="button" id="enTab">English <small>soon</small></button>
+    </div>
+  </header>
+
+  <form class="search" id="search" autocomplete="off">
+    <input id="q" aria-label="Character or English word" placeholder="Type a character 输入一个字, or an English word">
+    <button class="btn" type="submit">Dig</button>
+  </form>
+  <div class="results" id="results"></div>
+  <p class="hint" id="msg"></p>
+
+  <section aria-label="Excavation sites">
+    <div class="label" style="margin-bottom:8px">Excavation sites 发掘现场 · fully dug</div>
+    <div class="sites" id="sites"></div>
+  </section>
+
+  <section aria-label="Saved">
+    <div class="label" style="margin-bottom:8px">Saved 收藏</div>
+    <div class="saved" id="saved"></div>
+  </section>
+
+  <section class="board" id="board" aria-live="polite"></section>
+
+  <section id="vineWrap" aria-label="Branches"></section>
+
+  <section aria-label="Dig">
+    <div class="shaft-head">
+      <h2>Dig down 往下挖</h2>
+      <span class="depth" id="depth"></span>
+    </div>
+    <div class="shaft" id="shaft"></div>
+    <div class="controls" style="margin-top:10px">
+      <button class="btn" type="button" id="digBtn">⛏ Dig deeper</button>
+      <button class="btn ghost" type="button" id="allBtn">Dig to the bottom</button>
+      <button class="btn ghost" type="button" id="refill">Fill it back in</button>
+    </div>
+  </section>
+
+  <section id="mapWrap" aria-label="Excavation map"></section>
+
+  <button class="back" id="back" type="button" hidden></button>
+
+  <footer>
+    <p>Character data (pinyin, English definitions and structure) comes from <a href="https://github.com/skishore/makemeahanzi" target="_blank" rel="noopener">Make Me a Hanzi</a> by Shaunak Kishore, derived from Unicode’s Unihan database and CJKlib. It is used under the LGPL-3.0; see <a href="DATA-LICENSE.txt">DATA-LICENSE.txt</a>.</p>
+    <p>Kangxi Dictionary (1716) text, which is in the public domain, comes from <a href="https://github.com/shunshi-ai/kangxi-mcp" target="_blank" rel="noopener">shunshi-kangxi-core</a> (MIT). Common words come from <a href="https://cc-cedict.org/wiki/" target="_blank" rel="noopener">CC-CEDICT</a> (CC BY-SA 4.0), via cedict-json; words.json is shared under the same licence.</p>
+    <p>Shuowen Jiezi entries for other characters come from the <a href="https://github.com/shuowenjiezi/shuowen" target="_blank" rel="noopener">shuowen.org</a> data set, used under the Apache License 2.0; simplified characters were matched to traditional forms with <a href="https://github.com/BYVoid/OpenCC" target="_blank" rel="noopener">OpenCC</a>.</p>
+    <p>Quotations from the Shuowen Jiezi and classical texts are in the public domain. The layer stories for the excavation sites are curated by Helen. Only the Shuowen (c. AD 100) and oracle bone (c. 1200 BC) layers carry dates; the others are approximate periods.</p>
+  </footer>
+</div>
+
+<script>
+/* Turn the preloaded font stylesheet on once it arrives; the page never waits for it. */
+(() => { const l = document.getElementById("webfonts"); if (l) l.rel = "stylesheet"; })();
+
+/* ---------- Curated excavation sites ---------- */
+const SITES = {
+  "申": { py: "shēn", def: "to apply; to state; to extend", draft: true,
+    layers: {
+      today:   { en: "to apply, to state formally", zh: "申请、申报", ex: "申请 shēnqǐng · to apply" },
+      modern:  { en: "to declare, to explain officially", zh: "申明、申诉", ex: "申明 shēnmíng · to declare" },
+      ancient: { en: "to explain, to say again and again", zh: "陈述、反复说明", quote: "申之以孝悌之义", src: "《孟子》", qen: "Teach them again and again about respect for family." },
+      shuowen: { quote: "申，神也。", qen: "Shen means “spirit, the divine”." },
+      oracle:  { en: "a bolt of lightning", zh: "像闪电曲折的样子", note: "Lightning was seen as a power from heaven." }
+    },
+    flow: [["Oracle bones", "lightning", "闪电"], ["Shuowen", "spirit, the divine", "神"], ["Classical", "to stretch out, to explain", "伸展、陈述"], ["Modern", "to declare", "申明"], ["Today", "to apply", "申请"]],
+    branches: [["电", "diàn", "雨 rain", "lightning, electricity"], ["神", "shén", "示 altar", "god, spirit"], ["伸", "shēn", "亻 person", "to stretch"]] },
+
+  "要": { py: "yào", def: "to want; important", draft: true,
+    layers: {
+      today:   { en: "to want; important", zh: "想要、重要", ex: "重要 zhòngyào · important" },
+      modern:  { en: "to need, to ask for", zh: "需要、要求", ex: "要求 yāoqiú · to demand" },
+      ancient: { en: "a promise, an agreement", zh: "约定", quote: "久要不忘平生之言", src: "《论语》", qen: "Never forget an old promise." },
+      shuowen: { quote: "要，身中也。", qen: "Yao means the middle of the body: the waist." },
+      oracle:  { en: "a person with hands on the waist", zh: "像人双手叉腰", note: "Not clearly found in oracle bones. This is the earliest clear form." }
+    },
+    flow: [["Earliest form", "the waist", "腰"], ["Shuowen", "the middle of the body", "身中"], ["Classical", "a promise; the key point", "约定、要点"], ["Modern", "to need, to ask for", "需要"], ["Today", "to want; important", "想要、重要"]],
+    branches: [["腰", "yāo", "月 body", "the waist (took over the first meaning)"]] },
+
+  "自": { py: "zì", def: "self; from", draft: true,
+    layers: {
+      today:   { en: "self; from", zh: "自己、来自", ex: "自己 zìjǐ · oneself" },
+      modern:  { en: "self, by oneself", zh: "自由、自然", ex: "自由 zìyóu · freedom" },
+      ancient: { en: "from", zh: "从、由", quote: "有朋自远方来", src: "《论语》", qen: "A friend comes from far away." },
+      shuowen: { quote: "自，鼻也。象鼻形。", qen: "Zi means nose. It is a picture of a nose." },
+      oracle:  { en: "a nose", zh: "像鼻子的形状", note: "People point to their nose when they say “me”." }
+    },
+    flow: [["Oracle bones", "a nose", "鼻子"], ["Shuowen", "nose", "鼻"], ["Classical", "from; oneself", "从、自己"], ["Modern", "self", "自由"], ["Today", "self; from", "自己、来自"]],
+    branches: [["鼻", "bí", "畀 (sound bì)", "nose (took over the first meaning)"], ["息", "xī", "心 heart", "breath, rest"]] },
+
+  "其": { py: "qí", def: "his, her, its; that", draft: true,
+    layers: {
+      today:   { en: "its, that (formal)", zh: "其他、其实", ex: "其实 qíshí · actually" },
+      modern:  { en: "that, it (in writing)", zh: "其中、尤其", ex: "尤其 yóuqí · especially" },
+      ancient: { en: "his, her, its, their", zh: "代词：他的、它的", quote: "其为人也孝弟", src: "《论语》", qen: "He is a person who respects his parents and elders." },
+      shuowen: { quote: "箕，簸也。", qen: "Ji is a basket for winnowing grain. 其 is listed as its old form." },
+      oracle:  { en: "a winnowing basket", zh: "像簸箕", note: "Early on it was borrowed for its sound to mean “his, its”." }
+    },
+    flow: [["Oracle bones", "a winnowing basket", "簸箕"], ["Shuowen", "basket (under 箕)", "箕"], ["Classical", "his, its (borrowed)", "代词"], ["Modern", "that, it", "其中"], ["Today", "its, that", "其他、其实"]],
+    branches: [["箕", "jī", "竹 bamboo", "winnowing basket (took over the first meaning)"], ["旗", "qí", "㫃 flag", "flag"], ["期", "qī", "月 moon", "a period of time"]] },
+
+  "莫": { py: "mò", def: "do not; no one", draft: true,
+    layers: {
+      today:   { en: "do not; no one (in idioms)", zh: "莫名其妙", ex: "莫名其妙 mòmíng-qímiào · baffling" },
+      modern:  { en: "do not; there is no", zh: "莫非、莫过于", ex: "莫非 mòfēi · could it be that" },
+      ancient: { en: "no one", zh: "没有人", quote: "莫我知也夫", src: "《论语》", qen: "No one understands me!" },
+      shuowen: { quote: "莫，日且冥也。", qen: "Mo means the sun is about to set." },
+      oracle:  { en: "the sun sinking into the grass", zh: "太阳落在草丛中", note: "The first meaning was “evening”." }
+    },
+    flow: [["Oracle bones", "sunset among grass", "日落草中"], ["Shuowen", "the sun about to set", "日且冥"], ["Classical", "no one; do not (borrowed)", "没有人、不要"], ["Modern", "there is no", "莫非"], ["Today", "do not (idioms)", "莫名其妙"]],
+    branches: [["暮", "mù", "日 sun", "evening (took over the first meaning)"], ["墓", "mù", "土 earth", "tomb"], ["幕", "mù", "巾 cloth", "curtain"], ["慕", "mù", "心 heart", "to admire"]] },
+
+  "北": { py: "běi", def: "north", draft: true,
+    layers: {
+      today:   { en: "north", zh: "北方", ex: "北京 Běijīng · Beijing" },
+      modern:  { en: "north, northern", zh: "北方、北部", ex: "北方 běifāng · the north" },
+      ancient: { en: "to be beaten and run away", zh: "败逃", quote: "追亡逐北", src: "贾谊《过秦论》", qen: "Chase those who fled." },
+      shuowen: { quote: "北，乖也。从二人相背。", qen: "Bei means to turn against. Two people back to back." },
+      oracle:  { en: "two people back to back", zh: "两人背靠背", note: "Facing south, the north is at your back." }
+    },
+    flow: [["Oracle bones", "two people back to back", "相背"], ["Shuowen", "to turn against", "乖"], ["Classical", "to run away; north", "败逃、北方"], ["Modern", "north", "北方"], ["Today", "north", "北"]],
+    branches: [["背", "bèi", "月 body", "the back (took over the first meaning)"]] },
+
+  "然": { py: "rán", def: "so; right; but", draft: true,
+    layers: {
+      today:   { en: "so, like this; but", zh: "然后、虽然", ex: "然后 ránhòu · then" },
+      modern:  { en: "however; of course", zh: "然而、当然", ex: "当然 dāngrán · of course" },
+      ancient: { en: "right, so", zh: "对、这样", quote: "不以为然", src: "成语", qen: "To think it is not right." },
+      shuowen: { quote: "然，烧也。", qen: "Ran means to burn." },
+      oracle:  { en: "meat over a fire", zh: "火上烤肉", note: "Not clearly found in oracle bones. The bronze form shows meat 肉, a dog 犬 and fire 火." }
+    },
+    flow: [["Earliest form", "meat over fire", "火上烤肉"], ["Shuowen", "to burn", "烧"], ["Classical", "right, so (borrowed)", "对、这样"], ["Modern", "however", "然而"], ["Today", "so; but", "然后、虽然"]],
+    branches: [["燃", "rán", "火 fire", "to burn (took over the first meaning)"]] }
+};
+const SITE_ORDER = ["申", "要", "自", "其", "莫", "北", "然"];
+
+const STRATA = [
+  { key: "today",   era: "Today",       zh: "今天",   depth: "0.0", soil: "Topsoil",        when: "" },
+  { key: "modern",  era: "Modern",      zh: "近代",   depth: "1.5", soil: "Subsoil",        when: "" },
+  { key: "ancient", era: "Classical",   zh: "古代",   depth: "3.0", soil: "Clay",           when: "" },
+  { key: "shuowen", era: "Shuowen",     zh: "说文",   depth: "4.5", soil: "Weathered rock", when: "c. AD 100" },
+  { key: "oracle",  era: "Oracle bones", zh: "甲骨文", depth: "6.0", soil: "Bedrock",        when: "c. 1200 BC" }
+];
+const TYPE = { p: ["Picture", "象形"], i: ["Combined meaning", "会意"], s: ["Sound + meaning", "形声"] };
+
+/* ---------- Data ---------- */
+let DB = null, SW = {}, KX = {}, WORDS = {}, PHON = new Map(), COMP = new Map();
+const $ = id => document.getElementById(id);
+const el = (tag, cls, text) => { const e = document.createElement(tag); if (cls) e.className = cls; if (text != null) e.textContent = text; return e; };
+const HAN = /\p{Script=Han}/u;
+
+async function loadDB() {
+  try {
+    const r = await fetch("hanzi.json");
+    if (!r.ok) throw new Error(r.status);
+    DB = await r.json();
+    for (const [c, v] of Object.entries(DB)) {
+      const ph = v[5]; if (ph) { if (!PHON.has(ph)) PHON.set(ph, []); PHON.get(ph).push(c); }
+      for (const part of new Set(Array.from(v[2] || "").filter(x => HAN.test(x) && x !== c))) {
+        if (!COMP.has(part)) COMP.set(part, []); COMP.get(part).push(c);
+      }
+    }
+  } catch (e) {
+    DB = null;
+    $("msg").textContent = "The character dictionary didn’t load, so only the seven excavation sites work right now.";
+  }
+  try { const r = await fetch("shuowen.json"); if (r.ok) SW = await r.json(); } catch {}
+}
+async function loadExtras() {
+  try { const r = await fetch("words.json"); if (r.ok) WORDS = await r.json(); } catch {}
+  try { const r = await fetch("kangxi.json"); if (r.ok) KX = await r.json(); } catch {}
+}
+
+/* Turn Xu Shen's structure formula into plain English. */
+function glossShuowen(ex) {
+  const nm = c => { const m = meaningOf(c) || (info(c) || {}).def || ""; return m ? `${c} (${m.trim()})` : c; };
+  const out = [];
+  let m;
+  if ((m = ex.match(/从(.)(.)省聲/))) out.push(`Made of ${nm(m[1])}, with a shortened ${m[2]} giving the sound.`);
+  else if ((m = ex.match(/从(.)(.)聲/))) out.push(`Made of ${nm(m[1])}, with ${m[2]} giving the sound.`);
+  else if ((m = ex.match(/从(.)从(.)/))) out.push(`Made of ${nm(m[1])} and ${nm(m[2])}.`);
+  if (/象.*形/.test(ex)) out.push("Xu Shen calls it a picture of the thing itself.");
+  return out.join(" ");
+}
+function info(c) {
+  const v = DB && DB[c];
+  if (!v) return null;
+  return { py: v[0], def: v[1], dec: v[2], type: v[3], hint: v[4], phon: v[5], sem: v[6], rad: v[7], lvl: v[8] || 0 };
+}
+
+/* ---------- State ---------- */
+let cur = null, dug = new Set(), maxDepth = 5, trail = [], pushed = false;
+const SAVE_KEY = "groundwork.saved";
+function getSaved() { try { return JSON.parse(localStorage.getItem(SAVE_KEY) || "[]"); } catch { return []; } }
+function setSaved(list) { try { localStorage.setItem(SAVE_KEY, JSON.stringify(list)); } catch {} drawSaved(); }
+
+/* ---------- Render: sites row ---------- */
+function drawSites() {
+  const box = $("sites"); box.textContent = "";
+  for (const c of SITE_ORDER) {
+    const b = el("button", "site"); b.type = "button";
+    b.append(el("span", "c", c), el("span", "p", SITES[c].py));
+    b.setAttribute("aria-current", c === cur);
+    b.addEventListener("click", () => open(c, true));
+    box.append(b);
+  }
+}
+
+/* ---------- Render: site board ---------- */
+function drawBoard(c) {
+  const s = SITES[c], d = info(c);
+  const board = $("board"); board.textContent = "";
+  board.append(el("div", "big", c));
+  board.append(el("div", "py", (s && s.py) || (d && d.py) || ""));
+  board.append(el("div", "def", (s && s.def) || (d && d.def) || "No dictionary entry."));
+  const row = el("div", "row");
+  if (d && TYPE[d.type]) row.append(el("span", "chip", `${TYPE[d.type][1]} · ${TYPE[d.type][0]}`));
+  row.append(el("span", "chip" + (s ? " hivis" : ""), s ? "Fully excavated site" : SW[c] ? "Partly excavated" : "Surface survey only"));
+  if (s && s.draft) row.append(el("span", "draft", "Draft · being checked"));
+  const save = el("button", "save"); save.type = "button";
+  const paint = () => { const on = getSaved().includes(c); save.setAttribute("aria-pressed", on); save.textContent = on ? "★ Saved" : "☆ Save"; };
+  save.addEventListener("click", () => { const l = getSaved(); setSaved(l.includes(c) ? l.filter(x => x !== c) : [c, ...l]); paint(); });
+  paint(); row.append(save);
+  board.append(row);
+
+  if (d) {
+    const build = el("div", "build");
+    build.append(el("div", "label", "How it’s built 构造"));
+    const parts = el("div", "parts");
+    if (d.type === "s" && (d.sem || d.phon)) {
+      if (d.sem) parts.append(part(d.sem, "Meaning 表意", d.hint || meaningOf(d.sem)));
+      if (d.phon) parts.append(part(d.phon, "Sound 表音", (info(d.phon) || {}).py || ""));
+    } else {
+      const comps = Array.from(d.dec || "").filter(x => HAN.test(x));
+      for (const p of comps.slice(0, 4)) parts.append(part(p, "Part 部件", meaningOf(p)));
+    }
+    if (parts.childElementCount) build.append(parts);
+    if (d.hint && d.type !== "s") build.append(el("div", "", d.hint));
+    board.append(build);
+  }
+}
+function meaningOf(c) { const d = info(c); return d ? (d.def || "").split(/[;,]/)[0] : ""; }
+function part(c, role, m) {
+  const p = el("div", "part");
+  const t = el("div"); t.append(el("div", "pr", role), el("div", "pm", m || ""));
+  p.append(el("div", "pc", c), t);
+  return p;
+}
+
+/* ---------- Render: shaft ---------- */
+function drawShaft() {
+  const shaft = $("shaft"); shaft.textContent = "";
+  shaft.append(el("div", "surface"));
+  const s = SITES[cur], d = info(cur);
+  const sw = SW[cur];
+  const kx = KX[cur];
+  const shown = STRATA.map((st, i) => [st, i]).filter(([st]) => s || st.key === "today" || (st.key === "shuowen" && sw) || (st.key === "ancient" && kx));
+  maxDepth = shown.length;
+  shown.forEach(([st, i]) => {
+    const L = el("div", `layer l${i + 1}`); L.dataset.k = st.key;
+    const log = el("div", "log");
+    log.append(el("div", "m", st.depth + " m"), el("div", "", st.soil));
+    const body = el("div", "body");
+    const era = el("div", "era", `${st.zh} ${st.era}`);
+    body.append(era);
+    if (st.when) { const dt = el("div", "date"); dt.append(el("span", "dy", st.when), el("span", "dz", st.key === "shuowen" ? "东汉 · 许慎《说文解字》" : "商代晚期 · 殷墟甲骨")); body.append(dt); log.append(el("div", "lw", st.when)); }
+    let data;
+    if (s) data = s.layers[st.key];
+    else if (st.key === "today") data = { en: d ? d.def : "No entry in the dictionary.", zh: "", ex: d ? d.py : "" };
+    else if (st.key === "ancient") data = { kangxi: kx };
+    else data = { quote: `${sw[0]}，${sw[1]}`, src: sw[2] ? `（${sw[2]}）` : "", qen: glossShuowen(sw[1]), note: sw[0] !== cur ? `Listed under its traditional form ${sw[0]}.` : "" };
+    if (data.quote) { const q = el("div", "quote", data.quote); body.append(q); if (data.src) q.append(el("span", "qen", "  " + data.src)); }
+    if (data.qen) body.append(el("div", "qen", data.qen));
+    if (data.en) body.append(el("div", "en", data.en));
+    if (data.zh) body.append(el("div", "zh", data.zh));
+    if (data.ex) body.append(el("div", "qen mono", data.ex));
+    if (data.note) body.append(el("div", "note", data.note));
+    if (data.kangxi) {
+      body.append(el("div", "src-line", `《康熙字典》Kangxi Dictionary, 1716 · Qing dynasty${data.kangxi[0] !== cur ? " · under " + data.kangxi[0] : ""}`));
+      data.kangxi[1].forEach((seg, k) => body.append(el("div", k ? "kx more" : "kx", seg)));
+      if (data.kangxi[2]) body.append(el("div", "note", `+ ${data.kangxi[2]} more senses in the full entry. 原书还有 ${data.kangxi[2]} 条释义。`));
+      body.append(el("div", "note", "Classical Chinese, in the dictionary’s original words."));
+    }
+    if (st.key === "today" && (WORDS[cur] || []).length) {
+      const wl = el("div", "words");
+      for (const w of WORDS[cur]) { const r = el("div", "w"); r.append(el("span", "wc", w[0]), el("span", "wp", w[1]), el("span", "wg", w[2])); wl.append(r); }
+      body.append(el("div", "wl-h", "Common words 常用词"), wl);
+    }
+    L.append(log, body);
+    if (!dug.has(st.key)) {
+      const cover = el("button", "cover"); cover.type = "button";
+      cover.setAttribute("aria-label", `Dig ${st.era}`);
+      cover.append(el("span", "tool", "⛏"), el("span", "", `Tap to dig · ${st.zh} ${st.era}`), el("i", "trowel", "⛏"));
+      cover.addEventListener("click", e => digOne(e, st.key));
+      L.append(cover);
+    }
+    shaft.append(L);
+  });
+  $("depth").textContent = maxDepth > 1 ? `${dug.size}/${maxDepth} layers dug · tap any layer` : `${dug.size}/1 layer dug`;
+  $("digBtn").disabled = dug.size >= maxDepth;
+  $("allBtn").disabled = dug.size >= maxDepth;
+  $("refill").disabled = dug.size === 0;
+}
+
+function burst(x, y, host) {
+  if (matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+  for (let k = 0; k < 18; k++) {
+    const p = el("span", "dirt");
+    p.style.animationDelay = (Math.random() * 0.9) + "s";
+    const a = -Math.PI * (0.15 + Math.random() * 0.7), r = 30 + Math.random() * 70;
+    p.style.left = (x + (Math.random() - .5) * 40) + "px"; p.style.top = y + "px";
+    p.style.setProperty("--dx", Math.cos(a) * r + "px");
+    p.style.setProperty("--dy", Math.sin(a) * r + "px");
+    p.style.setProperty("--r", (Math.random() * 360) + "deg");
+    host.append(p); setTimeout(() => p.remove(), 2400);
+  }
+}
+
+function digOne(e, key) {
+  const layers = [...$("shaft").querySelectorAll(".layer")];
+  if (key == null) { const L0 = layers.find(x => !dug.has(x.dataset.k)); if (!L0) return; key = L0.dataset.k; }
+  if (dug.has(key)) return;
+  const L = layers.find(x => x.dataset.k === key), cover = L && L.querySelector(".cover");
+  if (cover) {
+    const rect = L.getBoundingClientRect();
+    const x = e && e.clientX ? e.clientX - rect.left : rect.width / 2;
+    const y = e && e.clientY ? e.clientY - rect.top : rect.height / 2;
+    burst(x, y, L);
+    cover.classList.add("gone");
+    if (!matchMedia("(prefers-reduced-motion: reduce)").matches) { const sm = el("div", "smear"); L.append(sm); setTimeout(() => sm.remove(), 2300); }
+  }
+  dug.add(key);
+  if (cover) cover.disabled = true;
+  setTimeout(() => {
+    drawShaft();
+  }, matchMedia("(prefers-reduced-motion: reduce)").matches ? 0 : 1900);
+}
+
+/* ---------- Render: excavation map ---------- */
+let mapOpen = false;
+
+/* Characters that share a root with the current one. */
+function getBranches() {
+  const s = SITES[cur], d = info(cur);
+  const list = [];
+  if (s) for (const b of s.branches) list.push({ c: b[0], py: b[1], add: b[2], m: b[3] });
+  const seen = new Set(list.map(x => x.c).concat(cur));
+  const simpl = c => { const di = info(c); return di && !/^(old|ancient) form|traditional/i.test(di.def || ""); };
+  const addFrom = (pool, base) => {
+    const rank = c => { const l = (info(c) || {}).lvl; return l === 1 ? 0 : l === 2 ? 1 : 2; };
+    for (const c of [...pool].sort((a, b) => rank(a) - rank(b))) {
+      if (rank(c) === 2 && list.length >= 5) continue;
+      if (seen.has(c) || list.length >= 8) continue;
+      const di = info(c); if (!di || !simpl(c)) continue;
+      seen.add(c);
+      const comps = Array.from(di.dec || "").filter(x => HAN.test(x) && x !== base && x !== cur);
+      const extra = di.sem && di.sem !== base && di.sem !== cur ? di.sem : comps[0];
+      list.push({ c, py: di.py, add: extra ? extra + " " + meaningOf(extra) : "", m: (di.def || "").split(";")[0] });
+    }
+  };
+  let rootChar = cur, sub = `Characters that grew from ${cur}. Tap a leaf to visit it.`;
+  if (!s && d && d.phon) {
+    rootChar = d.phon;
+    list.push({ c: cur, py: d.py, add: d.sem ? d.sem + " " + meaningOf(d.sem) : "", m: (d.def || "").split(";")[0], here: true });
+    addFrom(PHON.get(d.phon) || [], d.phon);
+    sub = `These all use ${d.phon} for the sound. The added part changes the meaning. Tap a leaf to visit it.`;
+  }
+  addFrom((PHON.get(rootChar) || []).concat(COMP.get(rootChar) || []), rootChar);
+  return { list, rootChar, sub };
+}
+
+/* Branches: a vine of characters that share a root. */
+function drawVine() {
+  const wrap = $("vineWrap"); wrap.textContent = "";
+  const { list, rootChar, sub } = getBranches();
+  const card = el("div", "mapcard");
+  const head = el("div", "shaft-head"); head.append(el("h2", "", "Branches 同根分支"));
+  wrap.append(head);
+  if (!list.length) { card.append(el("p", "sub", "No branches found in the dictionary for this character.")); wrap.append(card); return; }
+  card.append(el("p", "sub", sub));
+  const vine = el("div", "vine");
+  const top = el("div");
+  top.append(el("div", "vroot", rootChar), el("div", "vroot-l", `Root 词根 · ${(info(rootChar) || {}).py || ""}`));
+  vine.append(top);
+  const ROW = 78, TOP = 76, H = TOP + list.length * ROW + 10;
+  let dpath = `M30 46`;
+  const tendrils = [], stems = [];
+  list.forEach((b, i) => {
+    const y = TOP + i * ROW + ROW / 2, x = i % 2 ? 22 : 38;
+    dpath += ` S${i % 2 ? 44 : 16} ${y - ROW / 2} ${x} ${y}`;
+    stems.push(`M${x} ${y} Q${(x + 70) / 2} ${y - 16} ${i % 2 ? 66 : 74} ${y - 2}`);
+    if (i % 2 === 0) tendrils.push(`M${x - 2} ${y + 14} c-12 2 -14 14 -6 16 c6 1 6 -7 1 -7`);
+  });
+  vine.insertAdjacentHTML("afterbegin", `<svg class="stem" viewBox="0 0 64 ${H}" preserveAspectRatio="xMinYMin meet" style="height:${H}px" aria-hidden="true"><path d="${dpath}"/>${stems.map(p => `<path d="${p}" style="stroke-width:3"/>`).join("")}${tendrils.map(p => `<path class="tendril" d="${p}"/>`).join("")}</svg>`);
+  const rows = el("div");
+  list.forEach(b => {
+    const row = el("div", "vrow" + (b.here ? " here" : ""));
+    const btn = el("button", "leafbtn"); btn.type = "button"; btn.setAttribute("aria-label", `Visit ${b.c} ${b.py}`);
+    const leaf = el("div", "leaf"); leaf.append(el("span", "bc", b.c)); btn.append(leaf);
+    const t = el("div", "bt");
+    if (b.here) t.append(el("span", "you", "You are here"));
+    if (b.add) t.append(el("b", "", "+ " + b.add + " "));
+    t.append(el("span", "py", b.py), el("span", "mn", b.m));
+    btn.addEventListener("click", () => {
+      sunlight(btn, leaf);
+      if (b.here) return;
+      const calm = matchMedia("(prefers-reduced-motion: reduce)").matches;
+      setTimeout(() => open(b.c, true), calm ? 150 : 1000);
+    });
+    row.append(el("div"), btn, t);
+    rows.append(row);
+  });
+  vine.append(rows);
+  card.append(vine, el("div", "ground"));
+  wrap.append(card);
+}
+
+/* The map: a jade disc buried at the bottom. Lightning strikes, the jade fades, and a worn old scroll unrolls. */
+function seeded(str) { let h = 2166136261; for (const ch of str) { h ^= ch.codePointAt(0); h = Math.imul(h, 16777619); } return () => { h ^= h << 13; h ^= h >>> 17; h ^= h << 5; return ((h >>> 0) % 10000) / 10000; }; }
+function tornEdge(rnd) {
+  const pts = [];
+  const n = 26;
+  for (let k = 0; k <= n; k++) pts.push(`${(k / n * 100).toFixed(1)}% ${(rnd() * 1.6).toFixed(1)}%`);
+  for (let k = 1; k <= n; k++) pts.push(`${(100 - rnd() * 2.6).toFixed(1)}% ${(k / n * 100).toFixed(1)}%`);
+  const bite = 0.15 + rnd() * 0.45, bw = 0.12 + rnd() * 0.1;
+  for (let k = n - 1; k >= 0; k--) {
+    const x = k / n, deep = Math.abs(x - bite) < bw ? 2.5 + rnd() * 3 : rnd() * 1.6;
+    pts.push(`${(x * 100).toFixed(1)}% ${(100 - deep).toFixed(1)}%`);
+  }
+  for (let k = n - 1; k >= 1; k--) pts.push(`${(rnd() * 2.6).toFixed(1)}% ${(k / n * 100).toFixed(1)}%`);
+  return `polygon(${pts.join(", ")})`;
+}
+
+function drawJade() {
+  const wrap = $("mapWrap"); wrap.textContent = "";
+  const s = SITES[cur], d = info(cur), sw = SW[cur];
+  const head = el("div", "shaft-head"); head.append(el("h2", "", "Excavation map 发掘图"));
+  wrap.append(head);
+  const box = el("div", "jade-wrap");
+  const pit = el("div", "pit");
+  const jade = el("button", "jade"); jade.type = "button";
+  jade.setAttribute("aria-expanded", mapOpen);
+  jade.setAttribute("aria-label", "Open the jade to read the map");
+  jade.append(el("span", "jhalf"));
+  pit.append(jade);
+  pit.insertAdjacentHTML("beforeend", `<svg class="bolt" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true">
+    <defs><linearGradient id="bg" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#FFFFFF" stop-opacity=".2"/><stop offset=".5" stop-color="#FFF6D2"/><stop offset="1" stop-color="#FFE08A"/></linearGradient></defs>
+    <path class="b-main" d="M57 -2 L53 9 L56 13 L50 24 L53 28 L49 38 L50 44"/>
+    <path class="b-fork" d="M53 9 L47 15 L45 21"/>
+    <path class="b-fork" d="M50 24 L57 30 L59 35"/>
+    <path class="b-fork" d="M53 28 L46 32"/>
+  </svg>`);
+  const cap = el("p", "jade-cap", "Tap the jade to read how the meaning changed. 点开玉璧，看字义流变");
+  box.append(pit, cap);
+
+  /* the scroll */
+  const rnd = seeded(cur);
+  const scroll = el("div", "scroll");
+  const sheet = el("div", "sheet"), inner = el("div", "in"), paper = el("div", "paper");
+  paper.style.clipPath = tornEdge(rnd);
+  const spots = [];
+  for (let k = 0; k < 7; k++) spots.push(`radial-gradient(${(14 + rnd() * 40).toFixed(0)}px ${(10 + rnd() * 30).toFixed(0)}px at ${(rnd() * 100).toFixed(0)}% ${(rnd() * 100).toFixed(0)}%, rgba(140, 92, 40, ${(0.1 + rnd() * 0.14).toFixed(2)}), transparent 70%)`);
+  paper.style.setProperty("--fox", spots.join(", "));
+  for (let k = 0; k < 3; k++) {
+    const h = el("span", "hole");
+    h.style.left = (8 + rnd() * 84) + "%"; h.style.top = (10 + rnd() * 80) + "%";
+    const z = 5 + rnd() * 7; h.style.width = z + "px"; h.style.height = (z * (0.7 + rnd() * 0.5)) + "px";
+    h.style.borderRadius = `${40 + rnd() * 30}% ${50 + rnd() * 30}% ${40 + rnd() * 30}% ${55 + rnd() * 30}%`;
+    paper.append(h);
+  }
+  inner.append(paper); sheet.append(inner);
+  scroll.append(el("div", "roller"), sheet, el("div", "roller"));
+  box.append(scroll);
+  wrap.append(box);
+
+  const title = el("div", "tiqian", `${cur}字源流`);
+  const seal = el("div", "seal", cur);
+  const ol = el("ol", "flow");
+  const kx = KX[cur];
+  const kxShort = kx ? (kx[1][0].replace(/【[^】]*】|〔[^〕]*〕/g, "").split("。").map(x => x.trim()).filter(x => x && !/切|^𠀤|^又/.test(x)).slice(0, 2).join("。") + "。") : "";
+  const flow = s ? s.flow : [
+    ["Structure", d ? (d.type === "s" && d.sem && d.phon ? `${d.sem} ${d.hint || meaningOf(d.sem)} + ${d.phon} for the sound` : (d.hint || (TYPE[d.type] || ["—"])[0])) : "—", d && TYPE[d.type] ? TYPE[d.type][1] : ""],
+    ...(sw ? [["Shuowen", glossShuowen(sw[1]) || "listed in the Shuowen", `${sw[0]}，${sw[1].split("。")[0]}。`]] : []),
+    ...(kx ? [["Kangxi 1716", "Classical senses 古代释义", kxShort]] : []),
+    ["Today", d ? d.def : "—", (WORDS[cur] || []).map(w => w[0]).join("、")]
+  ];
+  for (const f of flow) {
+    const li = el("li");
+    const left = el("div"); left.append(el("div", "fe", f[0]));
+    if (/shuowen/i.test(f[0])) left.append(el("span", "fd", "c. AD 100"));
+    if (/oracle|earliest/i.test(f[0])) left.append(el("span", "fd", "c. 1200 BC"));
+    li.append(left, el("div", "ft", f[1]), el("div", "fz", f[2]));
+    ol.append(li);
+  }
+  const text = el("div", "ptext");
+  text.append(el("h3", "", "字义流变 Meaning over time"), ol);
+  const { list, rootChar } = getBranches();
+  if (list.length) {
+    const fam = el("div", "pfam");
+    fam.append(el("h3", "", `同源字 Same root · ${rootChar}`));
+    const grid = el("div", "pgrid");
+    for (const b of list) {
+      const t = el("button", "pchar" + (b.here ? " here" : "")); t.type = "button";
+      t.append(el("span", "pc", b.c), el("span", "pp", b.py), el("span", "pa", b.add ? "+ " + b.add : b.m));
+      if (!b.here) t.addEventListener("click", () => open(b.c, true));
+      grid.append(t);
+    }
+    fam.append(grid);
+    text.append(fam);
+  }
+  paper.append(title, text, seal);
+
+  const openIt = (instant) => {
+    mapOpen = true; jade.setAttribute("aria-expanded", "true");
+    const calm = instant || matchMedia("(prefers-reduced-motion: reduce)").matches;
+    if (!calm) pit.classList.add("strike");
+    setTimeout(() => jade.classList.add("vanish"), calm ? 0 : 420);
+    setTimeout(() => { pit.classList.add("gone"); cap.hidden = true; scroll.classList.add("show"); }, calm ? 0 : 1250);
+    setTimeout(() => scroll.classList.add("open"), calm ? 0 : 1600);
+  };
+  jade.addEventListener("click", () => { if (!mapOpen) openIt(false); });
+  if (mapOpen) openIt(true);
+}
+
+function sunlight(host, leaf) {
+  host.querySelectorAll(".sun, .rays, .spark").forEach(x => x.remove());
+  leaf.classList.add("lit"); setTimeout(() => leaf.classList.remove("lit"), 2200);
+  host.append(el("span", "sun"), el("span", "rays"));
+  if (!matchMedia("(prefers-reduced-motion: reduce)").matches) {
+    for (let k = 0; k < 9; k++) {
+      const sp = el("span", "spark", k % 3 ? "✦" : "✧");
+      const a = (k / 9) * Math.PI * 2 + Math.random() * .4, r = 46 + Math.random() * 30;
+      sp.style.setProperty("--sx", Math.cos(a) * r + "px"); sp.style.setProperty("--sy", Math.sin(a) * r - 12 + "px");
+      sp.style.animationDelay = (Math.random() * .25) + "s"; sp.style.fontSize = (10 + Math.random() * 10) + "px";
+      host.append(sp);
+    }
+  }
+  setTimeout(() => host.querySelectorAll(".sun, .rays, .spark").forEach(x => x.remove()), 2000);
+}
+
+/* ---------- Saved ---------- */
+function drawSaved() {
+  const box = $("saved"); box.textContent = "";
+  const l = getSaved();
+  if (!l.length) { box.append(el("p", "hint", "Nothing saved yet. Tap ☆ Save on a character.")); return; }
+  for (const c of l) { const b = el("button", "", c); b.type = "button"; b.addEventListener("click", () => open(c, true)); box.append(b); }
+}
+
+/* ---------- Open a character ---------- */
+function open(c, scroll, fromHistory) {
+  if (!fromHistory && c !== cur) {
+    trail.push(c);
+    try { if (cur) { history.pushState({ c }, "", "#" + encodeURIComponent(c)); pushed = true; } else history.replaceState({ c }, "", "#" + encodeURIComponent(c)); } catch { pushed = false; }
+  }
+  cur = c; dug = new Set(); mapOpen = false;
+  drawSites(); drawBoard(c); drawVine(); drawShaft(); drawJade(); drawBack();
+  if (scroll) $("board").scrollIntoView({ behavior: "smooth", block: "start" });
+}
+function drawBack() {
+  const b = $("back"), prev = trail[trail.length - 2];
+  b.hidden = !prev;
+  if (prev) { b.textContent = ""; b.append(el("span", "", "← Back"), el("span", "bk", prev)); }
+}
+function goBack() {
+  if (trail.length < 2) return;
+  if (pushed && history.state && history.state.c === cur) { history.back(); return; }
+  trail.pop(); open(trail[trail.length - 1], true, true);
+}
+window.addEventListener("popstate", e => {
+  let c = e.state && e.state.c;
+  if (!c) { try { const h = decodeURIComponent(location.hash.slice(1)); if (h && HAN.test(h)) c = Array.from(h)[0]; } catch {} }
+  if (!c || c === cur) return;
+  if (trail[trail.length - 2] === c) trail.pop(); else trail.push(c);
+  open(c, true, true);
+});
+
+/* ---------- Search ---------- */
+function stripTones(s) { return s.normalize("NFD").replace(/[̀-ͯ]/g, "").toLowerCase(); }
+$("search").addEventListener("submit", e => {
+  e.preventDefault();
+  const q = $("q").value.trim(); const res = $("results"); res.textContent = ""; $("msg").textContent = "";
+  if (!q) return;
+  const hans = Array.from(q).filter(ch => HAN.test(ch));
+  if (hans.length) {
+    const c = hans[0];
+    if (!SITES[c] && !info(c)) { $("msg").textContent = `“${c}” isn’t in the dictionary yet.`; return; }
+    open(c, true);
+    if (hans.length > 1) for (const h of [...new Set(hans)].slice(1, 12)) addResult(h);
+    return;
+  }
+  if (!DB) { $("msg").textContent = "The dictionary is still loading. Try again in a moment."; return; }
+  const words = stripTones(q);
+  const hits = [];
+  for (const [c, v] of Object.entries(DB)) {
+    const def = (v[1] || "").toLowerCase();
+    if (new RegExp("\\b" + words.replace(/[^a-z ]/g, "") + "\\b").test(def) || stripTones(v[0]).replace(/[^a-z]/g, "") === words.replace(/[^a-z]/g, "")) hits.push(c);
+    if (hits.length >= 400) break;
+  }
+  hits.sort((x, y) => ((info(x).lvl || 9) - (info(y).lvl || 9)));
+  if (!hits.length) { $("msg").textContent = `No characters found for “${q}”.`; return; }
+  const top = hits.slice(0, 24);
+  $("msg").textContent = `${hits.length > 24 ? "Top 24 of " + hits.length : hits.length} characters for “${q}”, common ones first. Tap one to dig.`;
+  for (const c of top) addResult(c);
+});
+function addResult(c) {
+  const d = info(c);
+  const b = el("button", "res"); b.type = "button";
+  b.append(el("span", "c", c), el("span", "d", d ? d.py + " · " + d.def : ""));
+  b.addEventListener("click", () => open(c, true));
+  $("results").append(b);
+}
+
+/* ---------- Controls ---------- */
+$("digBtn").addEventListener("click", () => digOne(null));
+$("allBtn").addEventListener("click", () => { for (const st of STRATA) dug.add(st.key); drawShaft(); });
+$("refill").addEventListener("click", () => { dug = new Set(); drawShaft(); });
+$("back").addEventListener("click", goBack);
+$("enTab").addEventListener("click", () => { $("msg").textContent = "The English mode is coming soon. 英文模式即将上线。"; });
+
+/* ---------- Boot ---------- */
+(async () => {
+  let start = "申";
+  try { const h = decodeURIComponent(location.hash.slice(1)); if (h && HAN.test(h)) start = Array.from(h)[0]; } catch {}
+  drawSaved();
+  open(start, false);
+  await loadDB();
+  open(cur, false, true);
+  await loadExtras();
+  drawShaft(); drawJade();
+})();
+</script>
+</body>
+</html>
