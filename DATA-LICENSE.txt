@@ -1435,3 +1435,171 @@ the avoidance of doubt, this paragraph does not form part of the public
 licenses.
 
 Creative Commons may be contacted at creativecommons.org.
+
+===== en.json =====
+en.json holds English word origins and word families from Gerard de Melo's Etymological Wordnet (http://www1.icsi.berkeley.edu/~demelo/etymwn/),
+which is derived from Wiktionary and licensed under Creative Commons Attribution-ShareAlike 3.0. The data was taken from the ety package
+(https://github.com/jmsv/ety-python, MIT License), reformatted, filtered to common words, and combined with Chinese meanings matched from CC-CEDICT (CC BY-SA 4.0).
+en.json is a modified work and is shared under CC BY-SA.
+
+The word list used to choose common English words is SCOWL (http://wordlist.aspell.net/), via the wordlist-english npm package:
+
+The collective work is Copyright 2000-2016 by Kevin Atkinson as well
+as any of the copyrights mentioned below:
+
+  Copyright 2000-2016 by Kevin Atkinson
+
+  Permission to use, copy, modify, distribute and sell these word
+  lists, the associated scripts, the output created from the scripts,
+  and its documentation for any purpose is hereby granted without fee,
+  provided that the above copyright notice appears in all copies and
+  that both that copyright notice and this permission notice appear in
+  supporting documentation. Kevin Atkinson makes no representations
+  about the suitability of this array for any purpose. It is provided
+  "as is" without express or implied warranty.
+
+Alan Beale <biljir@pobox.com> also deserves special credit as he has,
+in addition to providing the 12Dicts package and being a major
+contributor to the ENABLE word list, given me an incredible amount of
+feedback and created a number of special lists (those found in the
+Supplement) in order to help improve the overall quality of SCOWL.
+
+The 10 level includes the 1000 most common English words (according to
+the Moby (TM) Words II [MWords] package), a subset of the 1000 most
+common words on the Internet (again, according to Moby Words II), and
+frequently class 16 from Brian Kelk's "UK English Wordlist
+with Frequency Classification".
+
+The MWords package was explicitly placed in the public domain:
+
+    The Moby lexicon project is complete and has
+    been place into the public domain. Use, sell,
+    rework, excerpt and use in any way on any platform.
+
+    Placing this material on internal or public servers is
+    also encouraged. The compiler is not aware of any
+    export restrictions so freely distribute world-wide.
+
+    You can verify the public domain status by contacting
+
+    Grady Ward
+    3449 Martha Ct.
+    Arcata, CA  95521-4884
+
+    grady@netcom.com
+    grady@northcoast.com
+
+The "UK English Wordlist With Frequency Classification" is also in the
+Public Domain:
+
+  Date: Sat, 08 Jul 2000 20:27:21 +0100
+  From: Brian Kelk <Brian.Kelk@cl.cam.ac.uk>
+
+  > I was wondering what the copyright status of your "UK English
+  > Wordlist With Frequency Classification" word list as it seems to
+  > be lacking any copyright notice.
+
+  There were many many sources in total, but any text marked
+  "copyright" was avoided. Locally-written documentation was one
+  source. An earlier version of the list resided in a filespace called
+  PUBLIC on the University mainframe, because it was considered public
+  domain.
+
+ety package licence:
+MIT License
+
+Copyright (c) 2018-present James Vickery
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+
+------------------------------------------------------------
+dict-a.json … dict-z.json : ECDICT (English–Chinese dictionary)
+------------------------------------------------------------
+Phonetic transcriptions, Chinese senses, English definitions, exam tags and
+word-form data are taken (trimmed and reformatted) from ECDICT by Linwei
+(skywind3000): https://github.com/skywind3000/ECDICT
+
+MIT License
+
+Copyright (c) 2025 Linwei
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+
+------------------------------------------------------------
+dict-*.json word parts : MorphyNet
+------------------------------------------------------------
+Prefix/suffix derivations (e.g. measure -> measurement, -ment) come from
+MorphyNet: Khuyagbaatar Batsuren, Gábor Bella and Fausto Giunchiglia,
+"MorphyNet: a Large Multilingual Database of Derivational and Inflectional
+Morphology" (SIGMORPHON 2021). https://github.com/kbatsuren/MorphyNet
+Licensed under Creative Commons Attribution-ShareAlike 3.0
+(https://creativecommons.org/licenses/by-sa/3.0/). The derived data in this
+project is shared under the same licence.
+
+------------------------------------------------------------
+roots.json : Greek and Latin roots
+------------------------------------------------------------
+The roots table (root forms, meanings, origin language, source word and
+example words) is adapted from the Wikipedia article "List of Greek and Latin
+roots in English" and its sub-pages, by Wikipedia contributors:
+https://en.wikipedia.org/wiki/List_of_Greek_and_Latin_roots_in_English
+Text licensed under Creative Commons Attribution-ShareAlike 4.0
+(https://creativecommons.org/licenses/by-sa/4.0/). Changes: columns were
+shortened and reformatted, and each root is linked to words in this app's
+dictionary. roots.json is shared under CC BY-SA 4.0.
+
+------------------------------------------------------------
+plays.json and play-*.json : classic plays and poems (public domain)
+------------------------------------------------------------
+Shakespeare: Hamlet, Macbeth, King Lear, Othello and the Sonnets, from the
+Standard Ebooks editions (https://standardebooks.org/ebooks/william-shakespeare).
+The texts are in the public domain; Standard Ebooks dedicates its own work on
+these editions to the public domain under CC0 1.0.
+
+Sophocles, seven plays, translated by Francis Storr (1912), from the Standard
+Ebooks editions (https://standardebooks.org/ebooks/sophocles). Public domain;
+Standard Ebooks work under CC0 1.0.
+
+Euripides, nineteen plays, translated by Edward P. Coleridge (1891) (The
+Bacchae translated by Theodore Alois Buckley, 1850), and Aeschylus, seven
+plays, translated by Herbert Weir Smyth (1926; Agamemnon lightly modernised
+by the Perseus Project), from the Perseus Digital Library's canonical-greekLit
+repository (https://github.com/PerseusDL/canonical-greekLit). The translations
+are in the public domain; the Perseus TEI markup is licensed under Creative
+Commons Attribution-ShareAlike 3.0 (https://creativecommons.org/licenses/by-sa/3.0/).
+Translators' notes were left out and the texts were divided into parts for
+reading. The derived files are shared under CC BY-SA 3.0.
+
+The Chinese titles and summaries were written for this app.

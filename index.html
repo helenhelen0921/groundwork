@@ -12,7 +12,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <!-- Fonts load without blocking the page: if Google Fonts is unreachable (e.g. in mainland China), system fonts are used straight away. -->
-<link rel="preload" as="style" id="webfonts" href="https://fonts.googleapis.com/css2?family=Zilla+Slab:wght@500;600;700&family=Figtree:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&family=Noto+Serif+SC:wght@500;700&display=swap">
+<link rel="preload" as="style" id="webfonts" href="https://fonts.googleapis.com/css2?family=Zilla+Slab:wght@500;600;700&family=Figtree:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&family=Noto+Serif+SC:wght@500;700&family=IM+Fell+English:ital@0;1&display=swap">
 <style>
 /* Layout: a borehole log. Site board on top, then the shaft of soil strata, then the excavation map. */
 :root {
@@ -38,6 +38,7 @@
   --display: "Zilla Slab", Georgia, serif;
   --body: "Figtree", -apple-system, "PingFang SC", system-ui, sans-serif;
   --mono: "IBM Plex Mono", ui-monospace, Menlo, monospace;
+  --antique: "IM Fell English", "Iowan Old Style", Georgia, serif;
 }
 @media (prefers-color-scheme: dark) {
   :root {
@@ -75,6 +76,95 @@ header { display: flex; justify-content: space-between; align-items: flex-end; g
 .tabs { display: inline-flex; background: var(--paper); border: 1px solid var(--line); border-radius: 999px; padding: 3px; }
 .tab { border: 0; background: transparent; color: var(--muted); border-radius: 999px; padding: 6px 12px; font-size: 13px; font-weight: 600; }
 .tab[aria-selected="true"] { background: var(--ink); color: var(--paper); }
+@media (max-width: 420px) { .tab { padding: 6px 9px; font-size: 12px; } }
+body.reading .wordonly { display: none !important; }
+
+/* ---------- Stories reader ---------- */
+.reader { display: flex; flex-direction: column; gap: 14px; }
+.reader[hidden] { display: none; }
+.rd-head h2 { font-family: var(--display); font-size: 30px; margin: 0; line-height: 1.1; }
+.rd-head .zt { font-size: 15px; color: var(--muted); margin-top: 2px; }
+.rd-head .sub { color: var(--muted); font-size: 14px; margin: 6px 0 0; max-width: 62ch; }
+.rd-nav { display: flex; justify-content: space-between; align-items: center; gap: 8px; flex-wrap: wrap; }
+.rd-nav .count { font-family: var(--mono); font-size: 12px; color: var(--muted); }
+.fgrid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 8px; }
+.fcard { text-align: left; border: 1px solid var(--line); background: var(--paper); color: var(--ink); border-radius: 12px; padding: 10px 12px; display: grid; grid-template-columns: 30px minmax(0, 1fr); gap: 0 8px; font: inherit; cursor: pointer; }
+.fcard:hover { border-color: var(--ink); }
+.fcard .no { font-family: var(--mono); font-size: 12px; color: var(--muted); grid-row: span 3; padding-top: 3px; }
+.fcard .ft { font-family: var(--display); font-size: 18px; line-height: 1.2; }
+.fcard .fz { font-size: 13px; color: var(--muted); }
+.fcard .fn { font-family: var(--mono); font-size: 11px; color: var(--muted); margin-top: 2px; }
+.fcard.read .fn::after { content: " · read ✓"; }
+.fcard > :not(.no) { grid-column: 2; }
+.fcard .no { grid-row: 1 / span 6; }
+.fcard .fs { font-size: 13px; line-height: 1.45; margin-top: 4px; }
+.fgrid.book, .fgrid { grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); }
+.bshelf { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 12px; }
+.bcard { text-align: left; border: 0; border-radius: 16px; padding: 20px 20px 18px; display: flex; flex-direction: column; gap: 4px; font: inherit; cursor: pointer; color: #fff; min-height: 220px; box-shadow: inset 0 0 0 1px rgba(255,255,255,.12); }
+.bcard.shakespeare { background: linear-gradient(160deg, #5b2a2e, #2f1517); }
+.bcard.greek { background: linear-gradient(160deg, #1f3d55, #13222f); }
+.bcard:hover { filter: brightness(1.08); }
+.bcard .bt { font-family: var(--display); font-size: 26px; line-height: 1.1; }
+.bcard .bz { font-size: 16px; opacity: .9; }
+.bcard .bby { font-family: var(--mono); font-size: 12px; opacity: .8; margin-top: 6px; }
+.bcard .bab { font-size: 14px; line-height: 1.5; opacity: .92; margin-top: 8px; }
+.bcard .bn { font-family: var(--mono); font-size: 12px; opacity: .85; margin-top: auto; padding-top: 12px; }
+.story p.verse { font-style: italic; padding-left: 1.4em; line-height: 1.6; }
+.story.play p.verse { font-style: normal; padding-left: 0; line-height: 1.65; margin-bottom: 8px; }
+.story p.verse .vl { display: block; padding-left: 1.2em; text-indent: -1.2em; }
+.story.play .speech { margin: 0 0 16px; }
+.story.play .speech p { margin-bottom: 8px; }
+.story.play .who { font-family: var(--mono); font-size: 12px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); margin-bottom: 2px; }
+.story.play .sd { font-style: italic; color: var(--muted); font-size: 16px; margin: 4px 0 14px; }
+.story.play .ode { font-family: var(--mono); font-size: 11px; letter-spacing: .06em; text-transform: uppercase; color: var(--muted); margin: 6px 0 2px; }
+.story.sonnet p.verse { font-size: 21px; line-height: 1.8; }
+.bcard.aeschylus { background: linear-gradient(160deg, #24455e, #142634); }
+.bcard.sophocles { background: linear-gradient(160deg, #2c4a3e, #172a23); }
+.bcard.euripides { background: linear-gradient(160deg, #4b3a62, #261d33); }
+.plist { display: grid; grid-template-columns: repeat(auto-fill, minmax(210px, 1fr)); gap: 8px; }
+.pitem, .sitem { text-align: left; border: 1px solid var(--line); background: var(--paper); color: var(--ink); border-radius: 12px; padding: 10px 12px; display: flex; flex-direction: column; gap: 2px; font: inherit; cursor: pointer; }
+.pitem:hover, .sitem:hover { border-color: var(--ink); }
+.pitem .ph { font-family: var(--display); font-size: 18px; }
+.pitem .pz { font-size: 13px; color: var(--muted); }
+.pitem .pn { font-family: var(--mono); font-size: 11px; color: var(--muted); margin-top: 2px; }
+.pitem.read .pn::after, .sitem.read .sn::after { content: " ✓"; }
+.sgrid { display: grid; grid-template-columns: repeat(auto-fill, minmax(230px, 1fr)); gap: 6px; }
+.sitem { flex-direction: row; align-items: baseline; gap: 10px; padding: 8px 12px; }
+.sitem .sn { font-family: var(--mono); font-size: 12px; color: var(--muted); min-width: 2.6em; }
+.sitem .sf { font-family: var(--display); font-size: 15px; line-height: 1.3; }
+.ffilter { display: flex; gap: 6px; flex-wrap: wrap; }
+.ffilter button[aria-pressed="true"] { background: var(--ink); color: var(--paper); border-color: var(--ink); }
+.story { background: var(--paper); border: 1px solid var(--line); border-radius: 14px; padding: 20px 22px; }
+.story p { font-family: var(--display); font-size: 20px; line-height: 1.75; margin: 0 0 14px; max-width: 64ch; }
+.story p:last-child { margin-bottom: 0; }
+@media (max-width: 520px) { .story { padding: 16px; } .story p { font-size: 18px; line-height: 1.7; } }
+.story .tok { white-space: nowrap; }
+.fw { display: inline; border: 0; padding: 0 1px; margin: 0 -1px; background: none; font: inherit; color: inherit; cursor: pointer; border-radius: 4px; }
+.fw:hover { background: var(--chip); }
+.fw.on { background: var(--ink); color: var(--paper); }
+.story.colors .fw[data-o] { text-decoration: underline; text-decoration-color: var(--oc); text-decoration-thickness: 3px; text-underline-offset: 5px; }
+.legend { display: flex; flex-wrap: wrap; gap: 6px 12px; align-items: center; font-size: 13px; }
+.legend .li { display: inline-flex; align-items: center; gap: 5px; }
+.legend .sw { width: 18px; height: 4px; border-radius: 2px; background: var(--oc); }
+.legend .plain { color: var(--muted); }
+.moral { background: var(--s2); color: var(--s2-ink); border-radius: 14px; padding: 14px 18px; }
+.moral .label { color: inherit; opacity: .85; }
+.moral p { font-family: var(--display); font-size: 20px; font-style: italic; margin: 4px 0 0; }
+.moral details { margin-top: 8px; font-size: 15px; }
+.moral summary { cursor: pointer; font-size: 13px; font-weight: 600; }
+.rd-src { font-size: 12.5px; color: var(--muted); }
+.rd-src a { color: inherit; }
+.peek { position: fixed; left: 50%; bottom: 12px; transform: translateX(-50%); width: min(560px, calc(100vw - 24px)); z-index: 30; background: var(--paper); color: var(--ink); border: 1px solid var(--line); border-radius: 16px; box-shadow: 0 10px 40px rgba(40, 25, 10, .28); padding: 14px 16px; display: flex; flex-direction: column; gap: 6px; max-height: 60vh; overflow: auto; }
+.peek[hidden] { display: none; }
+.peek .pk-top { display: flex; align-items: baseline; gap: 10px; flex-wrap: wrap; padding-right: 28px; }
+.peek .pk-w { font-family: var(--display); font-size: 28px; font-weight: 700; line-height: 1.1; }
+.peek .pk-ph { font-family: var(--mono); font-size: 14px; color: var(--muted); }
+.peek .pk-from { font-size: 13px; color: var(--muted); }
+.peek .pk-zh { font-size: 15px; }
+.peek .pk-zh b { font-family: var(--mono); font-size: 12px; color: var(--muted); margin-right: 6px; }
+.peek .pk-row { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; margin-top: 4px; }
+.peek .pk-x { position: absolute; top: 8px; right: 10px; border: 0; background: none; font-size: 22px; line-height: 1; color: var(--muted); cursor: pointer; padding: 4px 6px; }
+
 .tab small { font-weight: 500; opacity: .75; }
 
 /* search */
@@ -101,6 +191,60 @@ form.search { display: flex; gap: 8px; }
   display: flex; flex-direction: column; align-items: center; gap: 2px;
 }
 .site .c { font-family: var(--han); font-size: 28px; font-weight: 700; line-height: 1.1; }
+.sites.en { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+.site.en .c { font-family: var(--display); font-size: 17px; font-weight: 700; padding: 6px 0 4px; }
+.board .big.en { font-family: var(--display); font-size: clamp(40px, 11vw, 64px); letter-spacing: -.01em; word-break: break-word; }
+@media (max-width: 560px) { .board:has(.big.en) { grid-template-columns: minmax(0, 1fr); } .board .big.en { grid-row: auto; } }
+.ochip { font-size: 12px; font-weight: 600; padding: 3px 9px; border-radius: 999px; color: #fff; background: var(--oc, var(--muted)); }
+.layer .terms { font-family: var(--display); font-style: italic; font-size: 22px; font-weight: 600; overflow-wrap: anywhere; }
+.layer .terms .arrow-l { font-style: normal; opacity: .6; margin: 0 6px; font-size: 16px; }
+.layer .gl { font-size: 14px; }
+.layer .gl b { font-family: var(--display); font-style: italic; font-weight: 600; }
+.layer .zhw { display: flex; flex-wrap: wrap; gap: 4px 14px; }
+.layer .zhw span { font-family: var(--han); font-size: 18px; }
+.layer .zhw small { font-family: var(--body); font-size: 12px; opacity: .8; margin-left: 4px; }
+.vine .vroot.long { width: auto; min-width: 54px; height: 48px; padding: 0 16px; border-radius: 999px; font-family: var(--display); font-style: italic; font-size: 17px; }
+.vine .vroot.long::before { border-radius: 999px; }
+.vrow.en { grid-template-columns: 58px auto minmax(0, 1fr); }
+.vrow.en .leaf { width: auto; min-width: 64px; height: 44px; padding: 0 16px; border-radius: 4px 26px 4px 26px; transform: rotate(-4deg); }
+.vrow.en:nth-child(even) .leaf { border-radius: 26px 4px 26px 4px; transform: rotate(4deg); }
+.vrow.en .leaf .bc { font-family: var(--display); font-size: 16px; font-weight: 600; transform: none !important; }
+.vrow.en .leaf::after { display: none; }
+.etree { position: relative; }
+.mapcard.cousins { margin-top: 12px; }
+.mapcard h3 { color: #FBF3E8; }
+.eleaf.lang { font-family: var(--body); font-size: 15px; background: linear-gradient(135deg, #8E9F4E 0 50%, #77883E 50% 100%); }
+.etop { padding-left: 2px; }
+.ebranch { position: relative; margin-top: 10px; padding-left: 30px; display: flex; flex-direction: column; gap: 14px; }
+.ebranch::before { content: ""; position: absolute; left: 12px; top: -10px; bottom: 8px; width: 5px; border-radius: 3px; background: linear-gradient(#8FB462, #5E8A3C); }
+.egroup { position: relative; display: flex; flex-direction: column; gap: 6px; }
+.egroup::before { content: ""; position: absolute; left: -18px; top: 22px; width: 22px; height: 3px; border-radius: 2px; background: #7FA356; transform: rotate(-16deg); transform-origin: left center; }
+.emain { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+.eleaf { position: relative; display: inline-flex; align-items: center; height: 44px; padding: 0 18px; border-radius: 4px 26px 4px 26px; color: var(--leaf-ink);
+  background: linear-gradient(135deg, var(--leaf) 0 50%, var(--leaf-2) 50% 100%); box-shadow: inset 0 0 0 1px rgba(0,0,0,.15), 0 3px 6px rgba(0,0,0,.25);
+  font-family: var(--display); font-size: 17px; font-weight: 600; transition: transform .3s, box-shadow .4s; }
+.egroup.alt .eleaf { border-radius: 26px 4px 26px 4px; }
+.eleaf.here { outline: 2px solid #FFF6E6; outline-offset: 3px; }
+.leafbtn:hover .eleaf, .leafbtn:hover .sleaf { transform: scale(1.06); }
+.eleaf.lit, .sleaf.lit { box-shadow: inset 0 0 0 1px rgba(255,255,255,.4), 0 0 18px 6px color-mix(in srgb, var(--gold) 70%, transparent); }
+.emeta { display: flex; gap: 8px; align-items: baseline; flex-wrap: wrap; }
+.emeta .ezh { font-family: var(--han); font-size: 16px; color: rgba(244,236,226,.9); }
+.emeta .you { display: inline-block; font-family: var(--mono); font-size: 10px; letter-spacing: .06em; text-transform: uppercase; background: var(--chip); color: var(--on-chip); border-radius: 3px; padding: 0 5px; }
+.etwig { position: relative; display: flex; flex-wrap: wrap; gap: 8px 10px; margin-left: 26px; padding: 10px 0 2px 16px; }
+.etwig::before { content: ""; position: absolute; left: 0; top: -6px; width: 16px; height: 22px; border-left: 3px solid #7FA356; border-bottom: 3px solid #7FA356; border-bottom-left-radius: 14px; }
+.etwig::after { content: ""; position: absolute; left: 16px; right: 12px; top: 13px; height: 3px; border-radius: 2px; background: #7FA356; opacity: .9; }
+.leafbtn.small { position: relative; z-index: 1; }
+.sleaf { display: inline-flex; align-items: center; height: 30px; padding: 0 12px; border-radius: 3px 16px 3px 16px; font-family: var(--display); font-size: 14px; font-weight: 600;
+  color: #24361A; background: linear-gradient(135deg, #B9D48A 0 50%, #A3C374 50% 100%); box-shadow: inset 0 0 0 1px rgba(0,0,0,.12), 0 2px 4px rgba(0,0,0,.2); transition: transform .3s, box-shadow .4s; }
+.sleaf.here { outline: 2px solid #FFF6E6; outline-offset: 2px; }
+@media (prefers-reduced-motion: reduce) { .eleaf, .sleaf { transition: none; } }
+.vrow.cousin .leaf { background: linear-gradient(135deg, #8DAA5F 0 50%, #76944B 50% 100%); }
+.pchar.cousin { cursor: default; opacity: .9; }
+.pchar.en .pc { font-family: var(--display); font-size: 17px; font-weight: 600; }
+.pchar.en { grid-template-columns: minmax(0, 1fr); }
+.pchar.en .pc { grid-row: auto; }
+.seal.en { font-family: var(--display); font-size: 20px; }
+.tiqian.en { font-size: 16px; }
 .site .p { font-family: var(--mono); font-size: 10px; color: var(--s3-ink); }
 .site[aria-current="true"] { outline: 3px solid var(--ink); outline-offset: 2px; }
 
@@ -279,7 +423,54 @@ form.search { display: flex; gap: 8px; }
   background: radial-gradient(120% 60% at 50% 0%, var(--s3) 0%, var(--s4) 60%, var(--s5) 100%); display: flex; flex-direction: column; gap: 16px; }
 #vineWrap .mapcard { margin-top: 10px; }
 .mapcard h3 { font-family: var(--display); font-size: 20px; margin: 0 0 10px; }
+.chest { position: relative; width: 200px; height: 150px; border: 0; padding: 0; background: transparent; cursor: pointer; filter: drop-shadow(0 12px 10px rgba(0,0,0,.45)); animation: float 3.6s ease-in-out infinite; }
+.c-box { position: absolute; left: 0; right: 0; bottom: 0; height: 92px; border-radius: 6px 6px 10px 10px;
+  background: repeating-linear-gradient(0deg, rgba(0,0,0,.18) 0 2px, transparent 2px 23px), linear-gradient(#8A5A32, #5E3A1E); box-shadow: inset 0 0 0 3px #3B2412; }
+.c-lid { position: absolute; left: 0; right: 0; top: 4px; height: 62px; border-radius: 100px 100px 6px 6px / 46px 46px 6px 6px; transform-origin: 50% 100%; transition: transform .9s cubic-bezier(.3,1.4,.5,1); z-index: 2;
+  background: repeating-linear-gradient(90deg, rgba(0,0,0,.14) 0 2px, transparent 2px 40px), linear-gradient(#9C693D, #6B4423); box-shadow: inset 0 0 0 3px #3B2412; }
+.c-band { position: absolute; top: 0; bottom: 0; left: 26px; width: 14px; background: linear-gradient(90deg, #B8922E, #F1D36C 45%, #A07A22); box-shadow: inset 0 0 0 1px rgba(60,40,10,.5); }
+.c-band.r { left: auto; right: 26px; }
+.c-lid .c-band { border-radius: 8px 8px 0 0; }
+.c-lock { position: absolute; left: 50%; top: 8px; width: 30px; height: 36px; margin-left: -15px; border-radius: 6px; background: linear-gradient(#F1D36C, #B8922E); box-shadow: inset 0 0 0 1px rgba(60,40,10,.6); }
+.c-lock::after { content: ""; position: absolute; left: 50%; top: 10px; width: 8px; height: 14px; margin-left: -4px; border-radius: 4px 4px 2px 2px; background: #3B2412; }
+.c-glow { position: absolute; left: 10%; right: 10%; top: 40px; height: 40px; border-radius: 50%; background: radial-gradient(closest-side, rgba(255,226,140,.95), rgba(255,200,80,0)); opacity: 0; z-index: 1; transition: opacity .6s .2s, transform 1s .2s; }
+.chest.open { animation: none; }
+.chest.open .c-lid { transform: perspective(500px) rotateX(-115deg) translateY(-4px); }
+.chest.open .c-glow { opacity: 1; transform: translateY(-46px) scale(1.8, 2.6); }
+.chest.vanish { animation: vanish .7s ease-in forwards; pointer-events: none; }
+/* parchment */
+.parch-wrap { width: 100%; display: none; flex-direction: column; opacity: 0; transition: opacity .8s ease; }
+.parch-wrap.show { display: flex; }
+.parch-wrap.open { opacity: 1; }
+.parch-wrap.open .sheet { grid-template-rows: 1fr; }
+.curl { position: relative; z-index: 1; height: 22px; margin: 0 2px; border-radius: 11px; background: linear-gradient(#F0DDB4, #C9A672 55%, #E5CC9C); box-shadow: 0 3px 6px rgba(60,30,10,.35), inset 0 -2px 3px rgba(90,50,20,.35); }
+.parch { position: relative; color: #3B2414; padding: 30px 24px 56px;
+  background: var(--fox, linear-gradient(transparent, transparent)), radial-gradient(130% 90% at 50% 40%, #F2E2BE 0%, #E6CD9C 60%, #C9A26A 100%);
+  box-shadow: inset 0 0 40px rgba(110, 60, 20, .45), inset 0 0 0 1px rgba(90, 50, 20, .25); }
+.parch .ptext { opacity: 0; transition: opacity 1s ease 1.1s; display: flex; flex-direction: column; gap: 18px; }
+.parch-wrap.open .parch .ptext { opacity: 1; }
+.p-kicker { font-family: var(--antique); font-style: italic; font-size: 16px; text-align: center; opacity: .8; }
+.p-title { font-family: var(--antique); font-size: 40px; font-weight: 400; text-align: center; margin: -10px 0 4px; letter-spacing: .02em; }
+.parch h4 { font-family: var(--antique); font-size: 20px; font-weight: 400; margin: 0 0 8px; border-bottom: 1px solid rgba(90,50,20,.3); padding-bottom: 4px; }
+.parch .flow::before { background: rgba(80, 45, 20, .35); }
+.parch .flow li::before { background: #EBD6AB; border-color: #5B3A1F; }
+.parch .flow li:last-child::before { background: #5B3A1F; }
+.parch .flow .fe { color: #7A5232; font-family: var(--antique); font-size: 14px; letter-spacing: 0; text-transform: none; }
+.parch .flow .ft { font-family: var(--antique); font-style: italic; font-size: 18px; font-weight: 400; color: #3B2414; }
+.parch .flow .fz { color: #6A4A30; }
+.parch .flow .fd { background: rgba(90,50,20,.12); color: #5B3A1F; }
+.parch .pgrid { display: grid; grid-template-columns: repeat(auto-fill, minmax(110px, 1fr)); gap: 8px; }
+.parch .pchar { border-color: rgba(90,50,20,.3); background: rgba(255,248,230,.35); color: #3B2414; }
+.parch .pchar .pc { font-family: var(--antique); font-size: 18px; }
+.kin { display: flex; flex-direction: column; gap: 6px; }
+.kin .kr { display: grid; grid-template-columns: 96px minmax(0, 1fr); gap: 10px; align-items: baseline; }
+.kin .kl { font-family: var(--antique); font-size: 15px; color: #7A5232; }
+.kin .kw { font-family: var(--antique); font-style: italic; font-size: 17px; }
+.wax { position: absolute; right: 22px; bottom: 16px; width: 50px; height: 50px; display: grid; place-items: center; color: #F5D9C8; font-family: var(--antique); font-size: 26px;
+  background: radial-gradient(circle at 35% 30%, #D2584A, #8E1F1A 70%); border-radius: 48% 52% 46% 54% / 52% 46% 54% 48%; box-shadow: 0 2px 4px rgba(60,10,5,.45), inset 0 0 0 4px rgba(120,20,15,.6); transform: rotate(-8deg); }
+@media (prefers-reduced-motion: reduce) { .chest { animation: none; } .c-lid, .c-glow, .parch-wrap, .parch .ptext { transition: none; } }
 /* back */
+.back[hidden] { display: none !important; }
 .back { position: fixed; z-index: 20; left: max(16px, env(safe-area-inset-left, 0px)); bottom: max(16px, env(safe-area-inset-bottom, 0px));
   display: inline-flex; align-items: center; gap: 8px; border: 1.5px solid var(--line); background: var(--paper); color: var(--ink);
   border-radius: 999px; padding: 8px 14px; font-weight: 600; font-size: 14px; box-shadow: 0 4px 14px rgba(0,0,0,.18); }
@@ -347,6 +538,42 @@ form.search { display: flex; gap: 8px; }
 
 /* saved */
 .saved { display: flex; flex-wrap: wrap; gap: 6px; }
+.wordbook { display: flex; flex-direction: column; gap: 8px; }
+.wb-head { display: flex; justify-content: space-between; align-items: center; gap: 8px; flex-wrap: wrap; }
+.wb-actions { display: flex; gap: 6px; }
+.btn.sm { padding: 6px 12px; font-size: 13px; }
+.board .ph { font-family: var(--mono); font-size: 15px; color: var(--muted); }
+.board .tags { display: flex; flex-wrap: wrap; gap: 5px; }
+.tag { font-family: var(--mono); font-size: 11px; font-weight: 600; letter-spacing: .02em; padding: 2px 8px; border-radius: 999px; background: var(--chip); color: var(--on-chip); }
+.tag.ielts { background: var(--s3); color: var(--s3-ink); }
+.board .senses { display: flex; flex-direction: column; gap: 2px; font-size: 15px; }
+.board .senses b { font-family: var(--mono); font-size: 12px; font-weight: 600; color: var(--muted); margin-right: 6px; }
+.board .endef { color: var(--muted); font-size: 14px; font-style: italic; }
+.board .endef + .endef { margin-top: -2px; }
+.wparts { display: flex; flex-wrap: wrap; align-items: stretch; gap: 6px; }
+.wparts .plus { align-self: center; color: var(--muted); font-family: var(--display); font-size: 20px; }
+.wp { border: 1.5px solid var(--line); background: var(--bg); color: var(--ink); border-radius: 10px; padding: 7px 12px 8px; text-align: left; display: flex; flex-direction: column; gap: 1px; min-width: 64px; font: inherit; cursor: pointer; }
+.wp:disabled { cursor: default; }
+.wp .wk { font-family: var(--mono); font-size: 10px; letter-spacing: .07em; text-transform: uppercase; color: var(--muted); }
+.wp .wl { font-family: var(--display); font-size: 22px; line-height: 1.15; }
+.wp .wm { font-size: 12.5px; line-height: 1.3; max-width: 22ch; }
+.wp.r { background: var(--s2); border-color: var(--s2); color: var(--s2-ink); }
+.wp.r .wk { color: var(--s2-ink); opacity: .8; }
+.wp[aria-expanded="true"] { outline: 2.5px solid var(--ink); outline-offset: 2px; }
+.wfam[hidden] { display: none; }
+.wfam { background: var(--bg); border-radius: 12px; padding: 12px 14px; display: flex; flex-direction: column; gap: 8px; }
+.wfam h4 { margin: 0; font-family: var(--display); font-size: 20px; font-weight: 600; }
+.wfam h4 small { font-family: var(--body); font-size: 13px; font-weight: 400; color: var(--muted); margin-left: 8px; }
+.wfam .fm { font-size: 14px; }
+.wfam .fl { display: flex; flex-wrap: wrap; gap: 6px; }
+.wfam .fl button { font: inherit; font-family: var(--display); font-size: 16px; border: 1px solid var(--line); background: var(--paper); color: var(--ink); border-radius: 999px; padding: 3px 11px; cursor: pointer; }
+.wfam .fl button.here { background: var(--ink); color: var(--paper); border-color: var(--ink); }
+.wfam .more { font-size: 12.5px; color: var(--muted); }
+.board .ety { margin: 0 0 6px; max-width: 64ch; font-size: 15px; line-height: 1.6; }
+.board .src-link { color: var(--ink); font-size: 13px; }
+.saved .wb { display: inline-flex; align-items: baseline; gap: 6px; }
+.saved .wb small { font-family: var(--han); font-size: 13px; color: var(--muted); }
+.saved button.en { font-family: var(--display); font-size: 15px; padding: 4px 10px; }
 .saved button { font-family: var(--han); font-size: 20px; border: 1px solid var(--line); background: var(--paper); color: var(--ink); border-radius: 8px; padding: 2px 10px; }
 footer { font-size: 12px; color: var(--muted); display: flex; flex-direction: column; gap: 6px; }
 footer p { margin: 0; max-width: 70ch; }
@@ -365,8 +592,9 @@ footer p { margin: 0; max-width: 70ch; }
       <p>Dig into words, layer by layer, down to their roots. 文字考古</p>
     </div>
     <div class="tabs" role="tablist" aria-label="Language">
-      <button class="tab" role="tab" aria-selected="true" type="button">汉字 Characters</button>
-      <button class="tab" role="tab" aria-selected="false" type="button" id="enTab">English <small>soon</small></button>
+      <button class="tab" role="tab" aria-selected="true" type="button" id="enTab">English words</button>
+      <button class="tab" role="tab" aria-selected="false" type="button" id="zhTab">汉字 Characters</button>
+      <button class="tab" role="tab" aria-selected="false" type="button" id="rdTab">Classics 原典</button>
     </div>
   </header>
 
@@ -377,21 +605,30 @@ footer p { margin: 0; max-width: 70ch; }
   <div class="results" id="results"></div>
   <p class="hint" id="msg"></p>
 
-  <section aria-label="Excavation sites">
-    <div class="label" style="margin-bottom:8px">Excavation sites 发掘现场 · fully dug</div>
+  <section class="reader" id="reader" aria-label="Classics" hidden></section>
+
+  <section class="wordonly" aria-label="Excavation sites">
+    <div class="label" style="margin-bottom:8px" id="sitesLabel">Excavation sites 发掘现场 · fully dug</div>
     <div class="sites" id="sites"></div>
   </section>
 
-  <section aria-label="Saved">
-    <div class="label" style="margin-bottom:8px">Saved 收藏</div>
+  <section class="wordbook" aria-label="Word book">
+    <div class="wb-head">
+      <div class="label">Word book 单词本 <span id="wbCount"></span></div>
+      <div class="wb-actions">
+        <button class="btn ghost sm" type="button" id="exportCsv">Export CSV 导出</button>
+        <button class="btn ghost sm" type="button" id="copyList">Copy 复制</button>
+      </div>
+    </div>
     <div class="saved" id="saved"></div>
+    <p class="hint" id="wbMsg"></p>
   </section>
 
-  <section class="board" id="board" aria-live="polite"></section>
+  <section class="board wordonly" id="board" aria-live="polite"></section>
 
-  <section id="vineWrap" aria-label="Branches"></section>
+  <section class="wordonly" id="vineWrap" aria-label="Branches"></section>
 
-  <section aria-label="Dig">
+  <section class="wordonly" aria-label="Dig">
     <div class="shaft-head">
       <h2>Dig down 往下挖</h2>
       <span class="depth" id="depth"></span>
@@ -404,12 +641,18 @@ footer p { margin: 0; max-width: 70ch; }
     </div>
   </section>
 
-  <section id="mapWrap" aria-label="Excavation map"></section>
+  <section class="wordonly" id="mapWrap" aria-label="Excavation map"></section>
+
+  <div class="peek" id="peek" role="dialog" aria-label="Word" hidden></div>
 
   <button class="back" id="back" type="button" hidden></button>
 
   <footer>
     <p>Character data (pinyin, English definitions and structure) comes from <a href="https://github.com/skishore/makemeahanzi" target="_blank" rel="noopener">Make Me a Hanzi</a> by Shaunak Kishore, derived from Unicode’s Unihan database and CJKlib. It is used under the LGPL-3.0; see <a href="DATA-LICENSE.txt">DATA-LICENSE.txt</a>.</p>
+    <p>The classics are public domain. Shakespeare’s plays and sonnets and Francis Storr’s Sophocles (1912) come from <a href="https://standardebooks.org/" target="_blank" rel="noopener">Standard Ebooks</a> (CC0). E. P. Coleridge’s Euripides (1891; <i>Bacchae</i> tr. T. A. Buckley, 1850) and Herbert Weir Smyth’s Aeschylus (1926) come from the <a href="https://www.perseus.tufts.edu/" target="_blank" rel="noopener">Perseus Digital Library</a> (markup CC BY-SA 3.0). Chinese titles and summaries were added for this app.</p>
+    <p>When you are online, English etymologies are looked up live from <a href="https://en.wiktionary.org/" target="_blank" rel="noopener">Wiktionary</a> (text under CC BY-SA). Without a connection, the page uses its own data below.</p>
+    <p>Pronunciation, Chinese meanings, English definitions and exam tags come from <a href="https://github.com/skywind3000/ECDICT" target="_blank" rel="noopener">ECDICT</a> (MIT). Greek and Latin roots are adapted from Wikipedia’s <a href="https://en.wikipedia.org/wiki/List_of_Greek_and_Latin_roots_in_English" target="_blank" rel="noopener">List of Greek and Latin roots in English</a> (CC BY-SA 4.0). Prefix and suffix families come from <a href="https://github.com/kbatsuren/MorphyNet" target="_blank" rel="noopener">MorphyNet</a> (CC BY-SA 3.0). roots.json and the dict folder are shared under CC BY-SA.</p>
+    <p>English word origins come from Gerard de Melo’s <a href="http://www1.icsi.berkeley.edu/~demelo/etymwn/" target="_blank" rel="noopener">Etymological Wordnet</a> (built from Wiktionary, CC BY-SA), as packaged in <a href="https://github.com/jmsv/ety-python" target="_blank" rel="noopener">ety</a>; the word list is <a href="http://wordlist.aspell.net/" target="_blank" rel="noopener">SCOWL</a> by Kevin Atkinson; Chinese meanings are matched from CC-CEDICT. en.json is shared under CC BY-SA.</p>
     <p>Kangxi Dictionary (1716) text, which is in the public domain, comes from <a href="https://github.com/shunshi-ai/kangxi-mcp" target="_blank" rel="noopener">shunshi-kangxi-core</a> (MIT). Common words come from <a href="https://cc-cedict.org/wiki/" target="_blank" rel="noopener">CC-CEDICT</a> (CC BY-SA 4.0), via cedict-json; words.json is shared under the same licence.</p>
     <p>Shuowen Jiezi entries for other characters come from the <a href="https://github.com/shuowenjiezi/shuowen" target="_blank" rel="noopener">shuowen.org</a> data set, used under the Apache License 2.0; simplified characters were matched to traditional forms with <a href="https://github.com/BYVoid/OpenCC" target="_blank" rel="noopener">OpenCC</a>.</p>
     <p>Quotations from the Shuowen Jiezi and classical texts are in the public domain. The layer stories for the excavation sites are curated by Helen. Only the Shuowen (c. AD 100) and oracle bone (c. 1200 BC) layers carry dates; the others are approximate periods.</p>
@@ -559,11 +802,23 @@ function info(c) {
 let cur = null, dug = new Set(), maxDepth = 5, trail = [], pushed = false;
 const SAVE_KEY = "groundwork.saved";
 function getSaved() { try { return JSON.parse(localStorage.getItem(SAVE_KEY) || "[]"); } catch { return []; } }
-function setSaved(list) { try { localStorage.setItem(SAVE_KEY, JSON.stringify(list)); } catch {} drawSaved(); }
+let setSaved = function (list) { try { localStorage.setItem(SAVE_KEY, JSON.stringify(list)); } catch {} drawSaved(); };
 
 /* ---------- Render: sites row ---------- */
 function drawSites() {
   const box = $("sites"); box.textContent = "";
+  box.classList.toggle("en", isEn(cur));
+  $("sitesLabel").textContent = isEn(cur) ? "Try these words 试试这些词" : "Excavation sites 发掘现场 · fully dug";
+  if (isEn(cur)) {
+    for (const w of EN_SITES) {
+      const b = el("button", "site en"); b.type = "button";
+      b.append(el("span", "c", w), el("span", "p", EN && EN[w] && EN[w][3][0] ? EN[w][3][0][0] : ""));
+      b.setAttribute("aria-current", "en:" + w === cur);
+      b.addEventListener("click", () => open("en:" + w, true));
+      box.append(b);
+    }
+    return;
+  }
   for (const c of SITE_ORDER) {
     const b = el("button", "site"); b.type = "button";
     b.append(el("span", "c", c), el("span", "p", SITES[c].py));
@@ -575,6 +830,7 @@ function drawSites() {
 
 /* ---------- Render: site board ---------- */
 function drawBoard(c) {
+  if (isEn(c)) return drawBoardEn(c);
   const s = SITES[c], d = info(c);
   const board = $("board"); board.textContent = "";
   board.append(el("div", "big", c));
@@ -616,6 +872,7 @@ function part(c, role, m) {
 
 /* ---------- Render: shaft ---------- */
 function drawShaft() {
+  if (isEn(cur)) return drawShaftEn();
   const shaft = $("shaft"); shaft.textContent = "";
   shaft.append(el("div", "surface"));
   const s = SITES[cur], d = info(cur);
@@ -708,6 +965,7 @@ let mapOpen = false;
 
 /* Characters that share a root with the current one. */
 function getBranches() {
+  if (isEn(cur)) return EN && EN[enWord(cur)] ? enBranches(enWord(cur)) : { list: [], rootChar: "", sub: "" };
   const s = SITES[cur], d = info(cur);
   const list = [];
   if (s) for (const b of s.branches) list.push({ c: b[0], py: b[1], add: b[2], m: b[3] });
@@ -738,16 +996,18 @@ function getBranches() {
 
 /* Branches: a vine of characters that share a root. */
 function drawVine() {
+  if (isEn(cur)) return drawVineEn();
   const wrap = $("vineWrap"); wrap.textContent = "";
   const { list, rootChar, sub } = getBranches();
   const card = el("div", "mapcard");
   const head = el("div", "shaft-head"); head.append(el("h2", "", "Branches 同根分支"));
   wrap.append(head);
-  if (!list.length) { card.append(el("p", "sub", "No branches found in the dictionary for this character.")); wrap.append(card); return; }
+  if (!list.length) { card.append(el("p", "sub", isEn(cur) ? "No related English words found in our data for this word." : "No branches found in the dictionary for this character.")); wrap.append(card); return; }
   card.append(el("p", "sub", sub));
   const vine = el("div", "vine");
   const top = el("div");
-  top.append(el("div", "vroot", rootChar), el("div", "vroot-l", `Root 词根 · ${(info(rootChar) || {}).py || ""}`));
+  const en = isEn(cur), rootLang = en ? getBranches().rootLang : "";
+  top.append(el("div", "vroot" + (en ? " long" : ""), rootChar), el("div", "vroot-l", en ? `Root 词根 · ${langOf(rootLang)[0]} ${langOf(rootLang)[1]}` : `Root 词根 · ${(info(rootChar) || {}).py || ""}`));
   vine.append(top);
   const ROW = 78, TOP = 76, H = TOP + list.length * ROW + 10;
   let dpath = `M30 46`;
@@ -761,7 +1021,7 @@ function drawVine() {
   vine.insertAdjacentHTML("afterbegin", `<svg class="stem" viewBox="0 0 64 ${H}" preserveAspectRatio="xMinYMin meet" style="height:${H}px" aria-hidden="true"><path d="${dpath}"/>${stems.map(p => `<path d="${p}" style="stroke-width:3"/>`).join("")}${tendrils.map(p => `<path class="tendril" d="${p}"/>`).join("")}</svg>`);
   const rows = el("div");
   list.forEach(b => {
-    const row = el("div", "vrow" + (b.here ? " here" : ""));
+    const row = el("div", "vrow" + (b.here ? " here" : "") + (b.en ? " en" : "") + (b.cousin ? " cousin" : ""));
     const btn = el("button", "leafbtn"); btn.type = "button"; btn.setAttribute("aria-label", `Visit ${b.c} ${b.py}`);
     const leaf = el("div", "leaf"); leaf.append(el("span", "bc", b.c)); btn.append(leaf);
     const t = el("div", "bt");
@@ -770,9 +1030,9 @@ function drawVine() {
     t.append(el("span", "py", b.py), el("span", "mn", b.m));
     btn.addEventListener("click", () => {
       sunlight(btn, leaf);
-      if (b.here) return;
+      if (b.here || b.cousin) return;
       const calm = matchMedia("(prefers-reduced-motion: reduce)").matches;
-      setTimeout(() => open(b.c, true), calm ? 150 : 1000);
+      setTimeout(() => open(b.en ? "en:" + b.c : b.c, true), calm ? 150 : 1000);
     });
     row.append(el("div"), btn, t);
     rows.append(row);
@@ -799,6 +1059,7 @@ function tornEdge(rnd) {
 }
 
 function drawJade() {
+  if (isEn(cur)) return drawChest();
   const wrap = $("mapWrap"); wrap.textContent = "";
   const s = SITES[cur], d = info(cur), sw = SW[cur];
   const head = el("div", "shaft-head"); head.append(el("h2", "", "Excavation map 发掘图"));
@@ -817,7 +1078,7 @@ function drawJade() {
     <path class="b-fork" d="M50 24 L57 30 L59 35"/>
     <path class="b-fork" d="M53 28 L46 32"/>
   </svg>`);
-  const cap = el("p", "jade-cap", "Tap the jade to read how the meaning changed. 点开玉璧，看字义流变");
+  const cap = el("p", "jade-cap", isEn(cur) ? "Tap the jade to see how the word travelled. 点开玉璧，看词源流变" : "Tap the jade to read how the meaning changed. 点开玉璧，看字义流变");
   box.append(pit, cap);
 
   /* the scroll */
@@ -840,12 +1101,20 @@ function drawJade() {
   box.append(scroll);
   wrap.append(box);
 
-  const title = el("div", "tiqian", `${cur}字源流`);
-  const seal = el("div", "seal", cur);
+  const en = isEn(cur);
+  const title = el("div", "tiqian" + (en ? " en" : ""), en ? "词源流" : `${cur}字源流`);
+  const seal = el("div", "seal" + (en ? " en" : ""), en ? enWord(cur)[0].toUpperCase() : cur);
   const ol = el("ol", "flow");
   const kx = KX[cur];
   const kxShort = kx ? (kx[1][0].replace(/【[^】]*】|〔[^〕]*〕/g, "").split("。").map(x => x.trim()).filter(x => x && !/切|^𠀤|^又/.test(x)).slice(0, 2).join("。") + "。") : "";
-  const flow = s ? s.flow : [
+  const enFlow = () => {
+    const w = enWord(cur), v = EN && EN[w]; if (!v) return [["Today", w, ""]];
+    const { groups } = enLayers(w);
+    const f = groups.slice().reverse().map(g => { const li = langOf(g.lang); const gl = g.gl.find(Boolean); return [li[0] + (li[2] ? " · " + li[2] : ""), g.terms.slice().reverse().join(" → "), gl ? `${gl[0]}${gl[1] ? " · " + gl[1] : ""}` : li[1]]; });
+    f.push(["Today", w, v[3].map(z => z[0]).join("、")]);
+    return f;
+  };
+  const flow = en ? enFlow() : s ? s.flow : [
     ["Structure", d ? (d.type === "s" && d.sem && d.phon ? `${d.sem} ${d.hint || meaningOf(d.sem)} + ${d.phon} for the sound` : (d.hint || (TYPE[d.type] || ["—"])[0])) : "—", d && TYPE[d.type] ? TYPE[d.type][1] : ""],
     ...(sw ? [["Shuowen", glossShuowen(sw[1]) || "listed in the Shuowen", `${sw[0]}，${sw[1].split("。")[0]}。`]] : []),
     ...(kx ? [["Kangxi 1716", "Classical senses 古代释义", kxShort]] : []),
@@ -860,16 +1129,16 @@ function drawJade() {
     ol.append(li);
   }
   const text = el("div", "ptext");
-  text.append(el("h3", "", "字义流变 Meaning over time"), ol);
+  text.append(el("h3", "", en ? "词源流变 How the word travelled" : "字义流变 Meaning over time"), ol);
   const { list, rootChar } = getBranches();
   if (list.length) {
     const fam = el("div", "pfam");
-    fam.append(el("h3", "", `同源字 Same root · ${rootChar}`));
+    fam.append(el("h3", "", en ? `同源词 Same root · ${rootChar}` : `同源字 Same root · ${rootChar}`));
     const grid = el("div", "pgrid");
     for (const b of list) {
-      const t = el("button", "pchar" + (b.here ? " here" : "")); t.type = "button";
+      const t = el("button", "pchar" + (b.here ? " here" : "") + (b.en ? " en" : "") + (b.cousin ? " cousin" : "")); t.type = "button";
       t.append(el("span", "pc", b.c), el("span", "pp", b.py), el("span", "pa", b.add ? "+ " + b.add : b.m));
-      if (!b.here) t.addEventListener("click", () => open(b.c, true));
+      if (!b.here && !b.cousin) t.addEventListener("click", () => open(b.en ? "en:" + b.c : b.c, true));
       grid.append(t);
     }
     fam.append(grid);
@@ -889,6 +1158,93 @@ function drawJade() {
   if (mapOpen) openIt(true);
 }
 
+
+/* English map: a treasure chest. Lightning strikes, the lid opens, and a parchment unrolls. */
+function drawChest() {
+  const wrap = $("mapWrap"); wrap.textContent = "";
+  const w = enWord(cur), v = EN && EN[w];
+  const head = el("div", "shaft-head"); head.append(el("h2", "", "Excavation map 发掘图"));
+  wrap.append(head);
+  const box = el("div", "jade-wrap");
+  const pit = el("div", "pit");
+  const chest = el("button", "chest"); chest.type = "button";
+  chest.setAttribute("aria-expanded", mapOpen); chest.setAttribute("aria-label", "Open the treasure chest to read the map");
+  chest.innerHTML = `<span class="c-glow"></span><span class="c-lid"><span class="c-band"></span><span class="c-band r"></span></span><span class="c-box"><span class="c-band"></span><span class="c-band r"></span><span class="c-lock"></span></span>`;
+  pit.append(chest);
+  pit.insertAdjacentHTML("beforeend", `<svg class="bolt" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true">
+    <defs><linearGradient id="bg2" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#FFFFFF" stop-opacity=".2"/><stop offset=".5" stop-color="#FFF6D2"/><stop offset="1" stop-color="#FFE08A"/></linearGradient></defs>
+    <path class="b-main" style="stroke:url(#bg2)" d="M57 -2 L53 9 L56 13 L50 24 L53 28 L49 38 L50 46"/>
+    <path class="b-fork" style="stroke:url(#bg2)" d="M53 9 L47 15 L45 21"/>
+    <path class="b-fork" style="stroke:url(#bg2)" d="M50 24 L57 30 L59 35"/>
+  </svg>`);
+  const cap = el("p", "jade-cap", "Tap the chest to see how the word travelled. 点开宝箱，看词源流变");
+  box.append(pit, cap);
+
+  const scroll = el("div", "parch-wrap");
+  const sheet = el("div", "sheet"), inner = el("div", "in");
+  const rnd = seeded(cur);
+  const paper = el("div", "parch");
+  paper.style.clipPath = tornEdge(rnd);
+  const spots = [];
+  for (let k = 0; k < 6; k++) spots.push(`radial-gradient(${(20 + rnd() * 50).toFixed(0)}px ${(14 + rnd() * 34).toFixed(0)}px at ${(rnd() * 100).toFixed(0)}% ${(rnd() * 100).toFixed(0)}%, rgba(120, 70, 20, ${(0.1 + rnd() * 0.12).toFixed(2)}), transparent 70%)`);
+  paper.style.setProperty("--fox", spots.join(", "));
+  inner.append(paper); sheet.append(inner);
+  scroll.append(el("div", "curl"), sheet, el("div", "curl bottom"));
+  box.append(scroll);
+  wrap.append(box);
+
+  const text = el("div", "ptext");
+  text.append(el("div", "p-kicker", "The journey of"), el("h3", "p-title", w));
+  if (v || enChain(w).length) {
+    const { groups } = enLayers(w);
+    const ol = el("ol", "flow");
+    for (const g of groups.slice().reverse()) {
+      const li = el("li"), left = el("div"), lg = langOf(g.lang);
+      left.append(el("div", "fe", lg[0]));
+      if (lg[2]) left.append(el("span", "fd", lg[2]));
+      const gl = g.gl.find(Boolean);
+      li.append(left, el("div", "ft", g.terms.slice().reverse().join(" → ")), el("div", "fz", gl ? `${gl[0]}${gl[1] ? " · " + gl[1] : ""}` : lg[1]));
+      ol.append(li);
+    }
+    const li = el("li"), left = el("div"); left.append(el("div", "fe", "English today"));
+    li.append(left, el("div", "ft", w), el("div", "fz", v ? v[3].map(z => z[0]).join("、") : "")); ol.append(li);
+    text.append(ol);
+    const B = enBranches(w);
+    if (B.list.length) {
+      const fam = el("div", "pfam"); fam.append(el("h4", "", "Kin in English 英语同根词"));
+      const grid = el("div", "pgrid");
+      for (const b of B.list.slice(0, 12)) {
+        const t = el("button", "pchar en" + (b.here ? " here" : "")); t.type = "button";
+        t.append(el("span", "pc", b.c), el("span", "pp", b.py));
+        if (!b.here) t.addEventListener("click", () => open("en:" + b.c, true));
+        grid.append(t);
+      }
+      fam.append(grid); text.append(fam);
+    }
+    const c = cousinsOf(w);
+    if (c) {
+      const fam = el("div", "pfam"); fam.append(el("h4", "", "Kin abroad 其他语言的亲戚"));
+      const grid = el("div", "kin");
+      for (const [lang, words] of c[1]) { const r = el("div", "kr"); r.append(el("span", "kl", langOf(lang)[0]), el("span", "kw", words.join(", "))); grid.append(r); }
+      fam.append(grid); text.append(fam);
+    }
+  }
+  const seal = el("div", "wax", w[0].toUpperCase());
+  paper.append(text, seal);
+
+  const openIt = (instant) => {
+    mapOpen = true; chest.setAttribute("aria-expanded", "true");
+    const calm = instant || matchMedia("(prefers-reduced-motion: reduce)").matches;
+    if (!calm) pit.classList.add("strike");
+    setTimeout(() => chest.classList.add("open"), calm ? 0 : 380);
+    setTimeout(() => chest.classList.add("vanish"), calm ? 0 : 1300);
+    setTimeout(() => { pit.classList.add("gone"); cap.hidden = true; scroll.classList.add("show"); }, calm ? 0 : 2000);
+    setTimeout(() => scroll.classList.add("open"), calm ? 0 : 2300);
+  };
+  chest.addEventListener("click", () => { if (!mapOpen) openIt(false); });
+  if (mapOpen) openIt(true);
+}
+
 function sunlight(host, leaf) {
   host.querySelectorAll(".sun, .rays, .spark").forEach(x => x.remove());
   leaf.classList.add("lit"); setTimeout(() => leaf.classList.remove("lit"), 2200);
@@ -905,41 +1261,928 @@ function sunlight(host, leaf) {
   setTimeout(() => host.querySelectorAll(".sun, .rays, .spark").forEach(x => x.remove()), 2000);
 }
 
-/* ---------- Saved ---------- */
+
+/* ================= English words ================= */
+let EN = null, ENIDX = null;
+const isEn = k => typeof k === "string" && k.startsWith("en:");
+const enWord = k => k.slice(3);
+function isStory(k) { return typeof k === "string" && k.startsWith("story:"); }
+const label = k => isStory(k) ? storyLabel(k) : isEn(k) ? enWord(k) : k;
+const EN_SITES = ["form", "measure", "salary", "philosophy", "water", "school", "act", "window"];
+const LANG = {
+  eng: ["English", "英语", ""], enm: ["Middle English", "中古英语", "c. 1100–1500"], ang: ["Old English", "古英语", "c. 450–1100"],
+  fro: ["Old French", "古法语", "c. 800–1400"], xno: ["Anglo-Norman", "盎格鲁-诺曼法语", "c. 1066–1400"], frm: ["Middle French", "中古法语", "c. 1400–1600"],
+  fra: ["French", "法语", ""], lat: ["Latin", "拉丁语", ""], grc: ["Ancient Greek", "古希腊语", ""], non: ["Old Norse", "古诺尔斯语", "c. 700–1350"],
+  ita: ["Italian", "意大利语", ""], spa: ["Spanish", "西班牙语", ""], por: ["Portuguese", "葡萄牙语", ""], dum: ["Middle Dutch", "中古荷兰语", ""],
+  nld: ["Dutch", "荷兰语", ""], deu: ["German", "德语", ""], gml: ["Middle Low German", "中古低地德语", ""], goh: ["Old High German", "古高地德语", ""],
+  ara: ["Arabic", "阿拉伯语", ""], fas: ["Persian", "波斯语", ""], heb: ["Hebrew", "希伯来语", ""], hin: ["Hindi", "印地语", ""], san: ["Sanskrit", "梵语", ""],
+  gle: ["Irish", "爱尔兰语", ""], cat: ["Catalan", "加泰罗尼亚语", ""], ron: ["Romanian", "罗马尼亚语", ""], swe: ["Swedish", "瑞典语", ""], dan: ["Danish", "丹麦语", ""], pro: ["Old Provençal", "古普罗旺斯语", ""], tur: ["Turkish", "土耳其语", ""], jpn: ["Japanese", "日语", ""], zho: ["Chinese", "汉语", ""], cmn: ["Chinese", "汉语", ""],
+  /* Wiktionary language codes */
+  en: ["English", "英语", ""], la: ["Latin", "拉丁语", ""], "LL.": ["Late Latin", "晚期拉丁语", "c. 200–600"], "ML.": ["Medieval Latin", "中世纪拉丁语", "c. 500–1500"], "VL.": ["Vulgar Latin", "通俗拉丁语", ""],
+  "la-lat": ["Late Latin", "晚期拉丁语", "c. 200–600"], "la-med": ["Medieval Latin", "中世纪拉丁语", "c. 500–1500"], "la-vul": ["Vulgar Latin", "通俗拉丁语", ""], "la-new": ["New Latin", "新拉丁语", ""],
+  fr: ["French", "法语", ""], it: ["Italian", "意大利语", ""], es: ["Spanish", "西班牙语", ""], pt: ["Portuguese", "葡萄牙语", ""], de: ["German", "德语", ""], nl: ["Dutch", "荷兰语", ""],
+  da: ["Danish", "丹麦语", ""], sv: ["Swedish", "瑞典语", ""], nb: ["Norwegian", "挪威语", ""], nn: ["Norwegian", "挪威语", ""], no: ["Norwegian", "挪威语", ""], is: ["Icelandic", "冰岛语", ""], fo: ["Faroese", "法罗语", ""], fy: ["West Frisian", "西弗里斯兰语", ""],
+  gmh: ["Middle High German", "中古高地德语", "c. 1050–1350"], osx: ["Old Saxon", "古撒克逊语", ""], ofs: ["Old Frisian", "古弗里斯兰语", ""], frk: ["Frankish", "法兰克语", ""], odt: ["Old Dutch", "古荷兰语", ""], got: ["Gothic", "哥特语", "c. 350"],
+  "gem-pro": ["Proto-Germanic", "原始日耳曼语", "reconstructed"], "gmw-pro": ["Proto-West Germanic", "原始西日耳曼语", "reconstructed"], "ine-pro": ["Proto-Indo-European", "原始印欧语", "reconstructed"],
+  "itc-pro": ["Proto-Italic", "原始意大利语族语", "reconstructed"], "cel-pro": ["Proto-Celtic", "原始凯尔特语", "reconstructed"], "grk-pro": ["Proto-Hellenic", "原始希腊语", "reconstructed"],
+  el: ["Greek", "希腊语", ""], "grc-koi": ["Koine Greek", "通用希腊语", ""], ar: ["Arabic", "阿拉伯语", ""], fa: ["Persian", "波斯语", ""], he: ["Hebrew", "希伯来语", ""], sa: ["Sanskrit", "梵语", ""],
+  hi: ["Hindi", "印地语", ""], ja: ["Japanese", "日语", ""], zh: ["Chinese", "汉语", ""], ru: ["Russian", "俄语", ""], tr: ["Turkish", "土耳其语", ""], ga: ["Irish", "爱尔兰语", ""], cy: ["Welsh", "威尔士语", ""],
+  ca: ["Catalan", "加泰罗尼亚语", ""], ro: ["Romanian", "罗马尼亚语", ""], oc: ["Occitan", "奥克语", ""], gl: ["Galician", "加利西亚语", ""], lt: ["Lithuanian", "立陶宛语", ""], pl: ["Polish", "波兰语", ""], cs: ["Czech", "捷克语", ""]
+};
+const langOf = c => LANG[c] || [c.toUpperCase(), "", ""];
+/* origin families, coloured like the strata of a borehole log */
+const ORIGIN = {
+  greek: ["Greek", "希腊语", "#3E6FA8"], latin: ["Latin", "拉丁语", "#A8443A"], french: ["French", "法语", "#7A5AA6"],
+  norse: ["Old Norse", "古诺尔斯语", "#2F857F"], old_english: ["Old English", "古英语", "#55803F"], germanic: ["Dutch / German", "荷兰语 / 德语", "#A27A2A"], other: ["Other", "其他", "#7E6A5C"]
+};
+function originOf(chain) {
+  const ls = chain.map(n => n[0]).filter(l => !/-pro$|^p_/.test(l));
+  if (ls.some(l => ["grc", "el", "grc-koi"].includes(l))) return "greek";
+  if (ls.some(l => ["fro", "xno", "frm", "fra", "fr", "pro"].includes(l))) return "french";
+  if (ls.some(l => ["lat", "la", "LL.", "ML.", "VL.", "la-lat", "la-med", "la-vul", "la-new"].includes(l))) return "latin";
+  if (ls.includes("non")) return "norse";
+  if (ls.some(l => ["dum", "nld", "nl", "deu", "de", "gml", "goh", "gmh", "frk", "odt", "osx"].includes(l))) return "germanic";
+  if (ls.every(l => ["eng", "en", "enm", "ang"].includes(l))) return "old_english";
+  return "other";
+}
+const GLOSS = {
+  "lat:lex": ["law", "法律"], "lat:stare": ["to stand", "站立"], "lat:sto": ["to stand", "站立"], "lat:status": ["standing, condition", "状态"], "lat:charta": ["paper, document", "纸、文书"],
+  "grc:χάρτης": ["sheet of papyrus", "纸张"], "grc:χαράσσω": ["to engrave", "刻"], "lat:carrus": ["wagon", "车"], "lat:carricare": ["to load a wagon", "装车"], "lat:classis": ["class, division", "等级"],
+  "lat:pax": ["peace", "和平"], "lat:forma": ["shape", "形状"], "lat:populus": ["people", "人民"], "lat:campus": ["field", "田野"], "lat:colo": ["to farm, to live in", "耕种、居住"],
+  "lat:directus": ["straight", "直的"], "grc:εἴδω": ["to see", "看见"], "lat:capsa": ["box", "盒子"], "lat:capere": ["to take", "拿、取"], "lat:capio": ["to take", "拿、取"], "lat:gens": ["clan, people", "氏族"],
+  "lat:securus": ["free from care", "无忧的"], "lat:computare": ["to count", "计算"], "lat:connecto": ["to tie together", "连接"], "lat:cooperire": ["to cover completely", "覆盖"],
+  "lat:aequus": ["level, equal", "平等的"], "lat:aequalis": ["equal", "相等的"], "lat:hospes": ["guest, host", "客人、主人"], "lat:respectus": ["a looking back", "回顾"], "lat:tornare": ["to turn", "转动"],
+  "lat:audio": ["to hear", "听"], "lat:lego": ["to read, to choose", "读、选"], "lat:condicio": ["agreement, condition", "条件"], "lat:conditio": ["agreement, condition", "条件"], "lat:condico": ["to agree on", "约定"],
+  "lat:construo": ["to pile up, to build", "建造"], "lat:gradus": ["step", "台阶"], "lat:gradi": ["to walk", "走"], "lat:sequor": ["to follow", "跟随"], "lat:ago": ["to drive, to do", "推动、做"],
+  "lat:fallere": ["to deceive", "欺骗"], "lat:legalis": ["of the law", "法律的"], "lat:norma": ["carpenter's square, rule", "曲尺、规范"], "lat:senex": ["old man", "老人"], "lat:oriens": ["rising (sun), east", "东方"],
+  "lat:casus": ["a fall, chance", "跌落、偶然"], "grc:δίσκος": ["disc", "圆盘"], "lat:discus": ["disc", "圆盘"], "lat:divido": ["to divide", "分开"], "lat:grossus": ["thick", "粗"],
+  "lat:idea": ["idea", "理念"], "grc:ἰδέα": ["form, idea", "形式、理念"], "lat:iocus": ["joke", "玩笑"], "lat:numerus": ["number", "数"], "lat:servus": ["slave, servant", "奴仆"], "lat:via": ["road", "道路"],
+  "lat:video": ["to see", "看"], "lat:augeo": ["to increase", "增加"], "lat:valeo": ["to be strong", "强壮"], "lat:caput": ["head", "头"], "lat:clarus": ["clear, bright", "清楚、明亮"],
+  "lat:cultus": ["cultivated, care", "耕作、照料"], "lat:cyclus": ["circle", "圆"], "grc:κύκλος": ["circle, wheel", "圆、轮"], "lat:cor": ["heart", "心"], "lat:unus": ["one", "一"], "lat:primus": ["first", "第一"],
+  "lat:provideo": ["to see ahead", "预见"], "lat:spondeo": ["to promise", "承诺"], "lat:solidus": ["solid", "坚固的"], "lat:torqueo": ["to twist", "扭"], "lat:turris": ["tower", "塔"], "lat:brevis": ["short", "短"],
+  "lat:civis": ["citizen", "公民"], "lat:commercium": ["trade", "贸易"], "lat:electus": ["chosen", "被选出的"], "lat:facio": ["to make, to do", "做"], "lat:falsus": ["false", "假的"], "lat:fungor": ["to perform", "履行"],
+  "lat:functio": ["performance", "执行"], "lat:indico": ["to point out", "指出"], "lat:interpretor": ["to explain", "解释"], "lat:membrum": ["limb", "肢体"], "lat:papyrus": ["papyrus", "纸莎草"],
+  "grc:πάπυρος": ["papyrus", "纸莎草"], "lat:realis": ["real", "真实的"], "lat:res": ["thing", "事物"], "lat:laborare": ["to work", "劳动"], "lat:servare": ["to keep", "保存"], "lat:domus": ["house", "房屋"],
+  "lat:instruo": ["to build, to equip", "建造、装备"], "grc:μέτρον": ["measure", "尺度"], "lat:regalis": ["royal", "王室的"], "lat:rex": ["king", "国王"], "lat:rego": ["to rule, to guide", "统治、引导"],
+  "lat:alter": ["other", "另一个"], "lat:auctor": ["maker, author", "作者"], "lat:cultura": ["farming", "耕作"], "lat:humanus": ["human", "人的"], "lat:homo": ["person", "人"], "lat:perfectus": ["finished", "完成的"],
+  "lat:popularis": ["of the people", "民众的"], "lat:privatus": ["private", "私人的"], "grc:ἔχω": ["to have", "有"], "lat:verto": ["to turn", "转"], "lat:itero": ["to repeat", "重复"], "lat:iterum": ["again", "再次"],
+  "lat:laus": ["praise", "赞美"], "lat:activus": ["active", "主动的"], "lat:curro": ["to run", "跑"], "lat:damnum": ["loss", "损失"], "lat:frequens": ["crowded, often", "频繁的"], "lat:industria": ["hard work", "勤劳"],
+  "lat:magister": ["master, teacher", "老师"], "lat:materia": ["matter, timber", "材料、木料"], "lat:mater": ["mother", "母亲"], "grc:φράσις": ["way of speaking", "措辞"], "grc:φράζω": ["to tell", "说明"],
+  "lat:punctum": ["point", "点"], "lat:promptus": ["ready", "现成的"], "lat:probo": ["to test", "检验"], "lat:probus": ["good, honest", "正直的"], "lat:secretus": ["set apart", "分开的"], "lat:socius": ["companion", "同伴"],
+  "lat:cedo": ["to go, to yield", "走、让步"], "lat:tempus": ["time", "时间"], "lat:cancer": ["crab", "蟹"], "grc:καρκίνος": ["crab", "蟹"], "lat:curvus": ["curved", "弯曲的"], "lat:defendo": ["to ward off", "防御"],
+  "lat:offendo": ["to strike against", "冒犯"], "grc:ὄργανον": ["tool", "工具"], "lat:tolero": ["to bear", "忍受"], "lat:vis": ["force", "力"], "lat:inter": ["between", "之间"], "lat:volvere": ["to roll", "滚"],
+  "lat:fingere": ["to shape", "塑造"], "lat:levare": ["to lift", "举起"], "grc:ἤλεκτρον": ["amber", "琥珀"], "lat:gaudere": ["to rejoice", "高兴"], "lat:firmus": ["firm", "坚固的"], "lat:iustus": ["just, fair", "公正的"],
+  "lat:locus": ["place", "地方"], "lat:necesse": ["necessary", "必要的"], "lat:pars": ["part", "部分"], "lat:ligo": ["to tie", "捆绑"], "lat:sedeo": ["to sit", "坐"], "lat:suffero": ["to bear", "承受"],
+  "lat:testa": ["pot, shell", "瓦罐"], "lat:titulus": ["label, title", "标签、标题"], "lat:varius": ["changing, varied", "多样的"], "lat:variatio": ["change", "变化"], "grc:ἀήρ": ["air", "空气"], "lat:carbo": ["charcoal", "木炭"],
+  "lat:colonus": ["farmer, settler", "农夫"], "lat:gratus": ["pleasing, thankful", "感激的"], "lat:dico": ["to say", "说"], "lat:divinus": ["of the gods", "神圣的"], "lat:divus": ["god", "神"],
+  "lat:domesticus": ["of the house", "家庭的"], "lat:extra": ["outside", "外面"], "grc:φαίνω": ["to show", "显现"], "grc:φύσις": ["nature", "自然"], "lat:poto": ["to drink", "喝"], "lat:sacer": ["holy", "神圣的"],
+  "grc:κλῆρος": ["lot, share", "签、份"], "lat:conservare": ["to keep safe", "保存"], "lat:internus": ["inner", "内部的"], "lat:piper": ["pepper", "胡椒"], "lat:serenus": ["clear, calm", "晴朗"],
+  "lat:actio": ["action", "行动"], "lat:arguere": ["to make clear", "论证"], "grc:κατηγορία": ["accusation, category", "指控、范畴"], "lat:committere": ["to bring together, to entrust", "委托"],
+  "lat:concipere": ["to take in", "构想"], "lat:converto": ["to turn around", "转变"], "lat:copia": ["plenty", "丰富"], "grc:κρίνω": ["to judge", "判断"], "lat:designare": ["to mark out", "标出"],
+  "lat:destruere": ["to tear down", "拆毁"], "lat:distinguere": ["to separate", "区分"], "lat:ingenium": ["natural talent", "天赋"], "lat:super": ["above", "之上"], "lat:impleo": ["to fill up", "装满"],
+  "lat:involvere": ["to roll in", "卷入"], "lat:liber": ["free; book", "自由的；书"], "grc:λογική": ["logic", "逻辑"], "lat:maritus": ["husband", "丈夫"], "lat:mensura": ["a measuring", "测量"],
+  "lat:mensus": ["measured", "量过的"], "lat:metior": ["to measure", "测量"], "lat:mens": ["mind", "心智"], "lat:natus": ["born", "出生的"], "lat:nascor": ["to be born", "出生"], "lat:notus": ["known", "已知的"],
+  "lat:novus": ["new", "新的"], "grc:ἐλαία": ["olive", "橄榄"], "lat:pagina": ["page", "页"], "lat:per": ["through", "通过"], "lat:pretium": ["price, value", "价格"], "lat:processus": ["a going forward", "前进"],
+  "lat:sal": ["salt", "盐"], "lat:salarium": ["salt money, pay", "盐钱、薪俸"], "lat:quantitas": ["how-much-ness, amount", "数量"], "lat:quantus": ["how much", "多少"], "lat:excavo": ["to hollow out", "挖空"],
+  "lat:excavatio": ["a hollowing out", "挖掘"], "lat:submitto": ["to put under, to lower", "放低、置于下"], "lat:philosophia": ["love of wisdom", "爱智慧"], "grc:φιλοσοφία": ["love of wisdom", "爱智慧"],
+  "grc:φιλόσοφος": ["lover of wisdom", "爱智者"], "grc:διάγραμμα": ["figure, plan", "图形"], "grc:γράμμα": ["letter, drawing", "字母、画"], "lat:fundatio": ["a founding", "奠基"], "lat:contractus": ["agreement", "契约"],
+  "lat:applicatio": ["a joining to", "附加"], "lat:retentio": ["a holding back", "保留"], "lat:concretus": ["grown together, hardened", "凝结的"], "lat:schola": ["school, leisure for study", "学校"],
+  "grc:σχολή": ["leisure, study", "闲暇、学习"], "lat:lingua": ["tongue, language", "舌头、语言"], "ang:word": ["word", "词"], "ang:wæter": ["water", "水"], "ang:modor": ["mother", "母亲"], "ang:æppel": ["apple", "苹果"],
+  "ang:hus": ["house", "房屋"], "ang:land": ["land", "土地"], "ang:weorc": ["work", "工作"], "ang:freond": ["friend", "朋友"], "ang:boc": ["book", "书"], "ang:leoht": ["light", "光"], "ang:bedd": ["bed", "床"]
+};
+const AFFIX = {
+  "-ness": ["state of being", "……的状态"], "-ment": ["result, action", "结果、行为"], "-tion": ["act, result", "行为、结果"], "-ion": ["act, result", "行为、结果"], "-er": ["person who", "……的人"], "-or": ["person who", "……的人"],
+  "-ly": ["in a way", "……地"], "-ful": ["full of", "充满"], "-less": ["without", "没有"], "-able": ["can be", "能够被"], "-ity": ["state, quality", "性质"], "-al": ["relating to", "……的"], "-ous": ["full of", "多……的"],
+  "-ive": ["tending to", "倾向于"], "-ize": ["to make", "使……化"], "-ise": ["to make", "使……化"], "-ist": ["person who", "……者"], "-ism": ["belief, practice", "主义"], "-y": ["having, like", "有……的"], "-ish": ["somewhat", "有点"],
+  "-ship": ["state, skill", "身份、技能"], "-hood": ["state", "状态"], "-dom": ["realm, state", "领域"], "-ing": ["action", "动作"], "-ed": ["done", "已……的"], "-en": ["made of, to make", "使……"], "-ic": ["relating to", "……的"],
+  "-ance": ["state, act", "状态"], "-ence": ["state, act", "状态"], "-ant": ["one who", "……者"], "-ent": ["one who", "……者"], "-ery": ["place, practice", "场所、行业"], "-logy": ["study of", "……学"], "-phone": ["sound", "声音"], "-graph": ["writing", "写、记"],
+  "un-": ["not", "不"], "re-": ["again, back", "再、回"], "pre-": ["before", "之前"], "dis-": ["apart, not", "分开、不"], "mis-": ["wrongly", "错误地"], "in-": ["not, into", "不、进入"], "im-": ["not, into", "不、进入"],
+  "sub-": ["under", "下"], "super-": ["above", "超"], "inter-": ["between", "之间"], "trans-": ["across", "跨越"], "tele-": ["far", "远"], "bio-": ["life", "生命"], "geo-": ["earth", "地"], "auto-": ["self", "自"],
+  "micro-": ["small", "微"], "anti-": ["against", "反"], "co-": ["together", "共同"], "ex-": ["out, former", "出、前任"], "non-": ["not", "非"], "over-": ["too much, above", "过度"], "under-": ["below, too little", "不足"],
+  "out-": ["beyond", "超过"], "post-": ["after", "之后"], "semi-": ["half", "半"], "multi-": ["many", "多"], "mono-": ["one", "单"], "photo-": ["light", "光"], "en-": ["to make, into", "使"], "be-": ["make, around", "使"], "a-": ["on, not", "在、无"]
+};
+/* Parse the English etymology out of a Wiktionary page's wikitext. Pure function, shared with the page. */
+function parseWikt(wt) {
+  const enStart = wt.search(/^==\s*English\s*==\s*$/m);
+  if (enStart < 0) return null;
+  let en = wt.slice(enStart + 1);
+  const next = en.search(/^==[^=].*==\s*$/m);
+  if (next > 0) en = en.slice(0, next);
+  const m = en.match(/^===\s*Etymology(?:\s*\d+)?\s*===\s*$([\s\S]*?)(?=^===|$(?![\s\S]))/m);
+  if (!m) return null;
+  let body = m[1].replace(/<ref[^>]*\/>/g, "").replace(/<ref[\s\S]*?<\/ref>/g, "").replace(/<!--[\s\S]*?-->/g, "");
+  const chain = [], parts = [], cognates = [];
+  const seen = new Set();
+  const CH = new Set(["inh", "inh+", "inh-lite", "der", "der+", "der-lite", "bor", "bor+", "lbor", "slbor", "obor", "ubor", "uder", "calque", "cal", "psm", "lbor+", "translit", "semantic loan", "sl", "inherited", "derived", "borrowed", "learned borrowing"]);
+  const AF = new Set(["af", "affix", "prefix", "pre", "suffix", "suf", "compound", "com", "confix", "con", "blend"]);
+  const CG = new Set(["cog", "cognate"]);
+  const LEAD = { "inh+": "Inherited from ", "der+": "Derived from ", "bor+": "Borrowed from ", "lbor+": "Learned borrowing from ", "uder": "", "calque": "Calque of ", "cal": "Calque of ", "psm": "Phono-semantic matching of " };
+  const roots = [];
+  const textParts = [];
+  let last = 0;
+  const re = /\{\{([^{}]*)\}\}/g;
+  let t;
+  const clean = x => (x || "").replace(/\[\[(?:[^|\]]*\|)?([^\]]*)\]\]/g, "$1").replace(/'''?/g, "").trim();
+  while ((t = re.exec(body))) {
+    textParts.push(body.slice(last, t.index)); last = re.lastIndex;
+    const raw = t[1].split("|");
+    const name = raw[0].trim().toLowerCase();
+    const pos = [], named = {};
+    for (const r of raw.slice(1)) { const k = r.indexOf("="); if (k > 0 && /^[a-z0-9]+$/.test(r.slice(0, k).trim())) named[r.slice(0, k).trim()] = r.slice(k + 1).trim(); else pos.push(r.trim()); }
+    if (CH.has(name)) {
+      const lang = pos[1], term = clean(pos[2] || ""), gloss = clean(named.t || named.gloss || pos[4] || "");
+      if (lang && term && term !== "-") {
+        const key = lang + ":" + term;
+        if (!seen.has(key)) { seen.add(key); chain.push({ lang, term, gloss }); }
+        if (LEAD[name]) textParts.push(LEAD[name]);
+        textParts.push({ lang, term, gloss });
+      } else if (lang) textParts.push({ lang, term: "", gloss: "" });
+    } else if (name === "root") {
+      const lang = pos[1];
+      for (const r of pos.slice(2)) { const term = clean(r); if (lang && term) roots.push({ lang, term, gloss: "", root: true }); }
+    } else if (AF.has(name)) {
+      const ps = []; for (const x of pos.slice(1)) { if (!x) break; ps.push(clean(x)); }
+      if ((name === "prefix" || name === "pre") && ps[0] && !/-$/.test(ps[0])) ps[0] += "-";
+      if ((name === "suffix" || name === "suf") && ps.length > 1 && !/^-/.test(ps[ps.length - 1])) ps[ps.length - 1] = "-" + ps[ps.length - 1];
+      if (!parts.length) parts.push(...ps);
+      textParts.push(ps.join(" + "));
+    } else if (CG.has(name)) {
+      const lang = pos[0], term = clean(pos[1] || "");
+      if (lang && term) cognates.push({ lang, term, gloss: clean(named.t || pos[3] || "") });
+      if (term) textParts.push({ lang, term, gloss: "" });
+    } else if (name === "m" || name === "mention" || name === "l" || name === "link" || name === "m+") {
+      const term = clean(pos[1] || ""), gloss = clean(named.t || pos[3] || "");
+      textParts.push(gloss ? `${term} (“${gloss}”)` : term);
+    } else if (name === "gloss" || name === "gl") {
+      textParts.push(`(“${clean(pos[0])}”)`);
+    } else if (name === "doublet" || name === "dbt") {
+      textParts.push(pos.slice(1).map(clean).join(", "));
+    } else if (name === "etydate" || name === "etyl") {
+      /* drop */
+    } else if (name === "w" || name === "lw") {
+      textParts.push(clean(pos[pos.length - 1] || pos[0]));
+    }
+  }
+  textParts.push(body.slice(last));
+  for (const r of roots) if (!seen.has(r.lang + ":" + r.term)) { seen.add(r.lang + ":" + r.term); chain.push(r); }
+  return { chain, parts, cognates, textParts };
+}
+
+/* Word dictionary (ECDICT + MorphyNet + Greek & Latin roots), split by first letter and loaded when needed. */
+const DICT = {}, DICTP = {};
+let RT = null, RTP = null;
+function loadShard(L) {
+  if (!/^[a-z]$/.test(L || "") || DICT[L]) return Promise.resolve();
+  return DICTP[L] || (DICTP[L] = fetch("dict-" + L + ".json").then(r => r.ok ? r.json() : {}).catch(() => ({})).then(j => { DICT[L] = j; }));
+}
+function loadRoots() {
+  return RTP || (RTP = fetch("roots.json").then(r => r.ok ? r.json() : null).catch(() => null).then(j => { RT = j; }));
+}
+const DI = w => (w && DICT[w[0]] && DICT[w[0]][w]) || null;
+const TAG_ORDER = ["IELTS", "TOEFL", "GRE", "CET-4", "CET-6", "考研", "高考", "中考"];
+function partMeaning(pc) {
+  const [label, kind, ref] = pc;
+  if (typeof ref === "number" && RT) { const R = RT.roots[ref]; return { en: R[1], zh: R[4] || "", sub: `${R[2]}${R[3] ? " · " + R[3] : ""}` }; }
+  if (typeof ref === "string" && RT && RT.aff[ref]) { const a = RT.aff[ref]; return { en: a[0], zh: a[1], sub: "" }; }
+  if (kind === "w") { const e = DI(label); return { en: "", zh: e && e.t ? e.t[0].replace(/^[a-z]+\.\s*/, "").split(/[,，]/)[0] : "", sub: "" }; }
+  return { en: "", zh: "", sub: "" };
+}
+function drawParts(board, w) {
+  const e = DI(w);
+  if (!e || (!e.s && !e.r)) return false;
+  const pieces = e.s || [];
+  const placed = new Set(pieces.filter(pc => typeof pc[2] === "number").map(pc => pc[2]));
+  const extra = (e.r || []).filter(i => !placed.has(i));
+  const box = el("div", "build");
+  box.append(el("div", "label", "Roots & affixes 词根词缀"));
+  const row = el("div", "wparts");
+  const fam = el("div", "wfam"); fam.hidden = true;
+  let openBtn = null;
+  const KIND = { p: "Prefix 前缀", s: "Suffix 后缀", r: "Root 词根", w: "Word 词", x: "" };
+  const showFam = (btn, pc) => {
+    if (openBtn === btn) { btn.setAttribute("aria-expanded", "false"); fam.hidden = true; openBtn = null; return; }
+    if (openBtn) openBtn.setAttribute("aria-expanded", "false");
+    openBtn = btn; btn.setAttribute("aria-expanded", "true");
+    fam.textContent = ""; fam.hidden = false;
+    const [label, kind, ref] = pc;
+    let title = label, sub = "", mean = "", list = [], total = 0;
+    if (typeof ref === "number" && RT) {
+      const R = RT.roots[ref]; title = R[0]; mean = R[1] + (R[4] ? " · " + R[4] : ""); sub = `${R[2]}${R[3] ? " · from " + R[3] : ""}`;
+      const f = RT.fam[ref] || [0]; total = f[0]; list = f.slice(1);
+    } else if (RT && RT.aff[ref]) {
+      const a = RT.aff[ref]; mean = a[0] + (a[1] ? " · " + a[1] : ""); total = a[2]; list = a.slice(3);
+      sub = kind === "p" ? "Prefix 前缀" : "Suffix 后缀";
+    }
+    const h = el("h4", "", title); if (sub) h.append(el("small", "", sub));
+    fam.append(h);
+    if (mean) fam.append(el("div", "fm", "Meaning 意思: " + mean));
+    if (list.length) {
+      fam.append(el("div", "label", `${total} word${total === 1 ? "" : "s"} in our dictionary ${kind === "r" || typeof ref === "number" ? "share this root" : "use it"} · 同${kind === "r" ? "根" : "缀"}词`));
+      const fl = el("div", "fl");
+      for (const x of list) {
+        const b = el("button", x === w ? "here" : ""); b.type = "button"; b.textContent = x;
+        if (x !== w) b.addEventListener("click", () => open("en:" + x, true));
+        fl.append(b);
+      }
+      fam.append(fl);
+      if (total > list.length) fam.append(el("div", "more", `Showing the ${list.length} most common.`));
+    }
+  };
+  const chip = (pc) => {
+    const [label, kind, ref] = pc;
+    const m = partMeaning(pc);
+    const b = el("button", "wp " + kind); b.type = "button";
+    b.append(el("span", "wk", KIND[kind] || ""), el("span", "wl", label));
+    const meanTxt = [m.en, m.zh].filter(Boolean).join(" · ");
+    if (meanTxt) b.append(el("span", "wm", meanTxt));
+    if (kind === "x") b.disabled = true;
+    else if (kind === "w") { if (label === w) b.disabled = true; else b.addEventListener("click", () => open("en:" + label, true)); }
+    else { b.setAttribute("aria-expanded", "false"); b.addEventListener("click", () => showFam(b, pc)); }
+    return b;
+  };
+  pieces.forEach((pc, i) => { if (i) row.append(el("span", "plus", "+")); row.append(chip(pc)); });
+  if (extra.length) {
+    if (pieces.length) row.append(el("span", "plus", "·"));
+    for (const i of extra) row.append(chip([RT ? RT.roots[i][0].split(",")[0].trim() : "root", "r", i]));
+  }
+  box.append(row, fam);
+  if (pieces.length) box.append(el("div", "more", "Tap a part to see other words built with it. 点一下看同根词"));
+  board.append(box);
+  return true;
+}
+
+/* Live lookups from Wiktionary (free and open). Used when the page is online; local data is the fallback. */
+const WK = {};
+function wkText(tp) {
+  return tp.map(x => typeof x === "string" ? x : x.term ? `${langOf(x.lang)[0]} ${x.term}${x.gloss ? " (“" + x.gloss + "”)" : ""}` : langOf(x.lang)[0])
+    .join("").replace(/\[\[(?:[^|\]]*\|)?([^\]]*)\]\]/g, "$1").replace(/'{2,3}/g, "").replace(/\{\{[^}]*\}\}/g, "")
+    .replace(/<[^>]+>/g, "").replace(/\s+([,.;:)])/g, "$1").replace(/([,;])\s*(?=[,.;])/g, "").replace(/\s+/g, " ").replace(/^[\s,.;:]+/, "").trim();
+}
+async function fetchWikt(w) {
+  if (WK[w] !== undefined) return WK[w];
+  try { const c = JSON.parse(localStorage.getItem("gw.wk." + w) || "null"); if (c) return (WK[w] = c); } catch {}
+  try {
+    const url = "https://en.wiktionary.org/w/api.php?action=parse&format=json&formatversion=2&prop=wikitext&redirects=1&origin=*&page=" + encodeURIComponent(w);
+    const ctl = new AbortController(); const timer = setTimeout(() => ctl.abort(), 7000);
+    const r = await fetch(url, { signal: ctl.signal }); clearTimeout(timer);
+    if (!r.ok) throw 0;
+    const j = await r.json();
+    const p = j && j.parse && j.parse.wikitext ? parseWikt(j.parse.wikitext) : null;
+    const out = p && (p.chain.length || p.parts.length) ? { chain: p.chain.filter(n => n.lang !== "en"), parts: p.parts, cognates: p.cognates, text: wkText(p.textParts) } : null;
+    WK[w] = out;
+    try { localStorage.setItem("gw.wk." + w, JSON.stringify(out)); } catch {}
+    return out;
+  } catch { WK[w] = null; return null; }
+}
+
+function enLookup(w) {
+  if (!EN) return null;
+  if (EN[w]) return w;
+  const tries = [];
+  for (const [suf, rep] of [["ies", "y"], ["es", ""], ["s", ""], ["ed", ""], ["ed", "e"], ["ing", ""], ["ing", "e"], ["ly", ""], ["ers", ""], ["er", ""], ["ors", ""], ["or", ""], ["ness", ""], ["ment", ""]])
+    if (w.endsWith(suf) && w.length - suf.length >= 3) tries.push(w.slice(0, w.length - suf.length) + rep);
+  return tries.find(t => EN[t]) || null;
+}
+/* the full chain, following English-to-English steps (happiness → happy → …) */
+function enChain(w) {
+  if (WK[w] && WK[w].chain.length) return WK[w].chain.map(n => [n.lang, n.term, n.gloss || ""]);
+  if (!EN || !EN[w]) return [];
+  const out = [], seen = new Set([w]);
+  let cur = EN[w], guard = 0;
+  while (cur && guard++ < 6) {
+    const ch = cur[1];
+    let jumped = false;
+    for (const n of ch) {
+      out.push(n);
+      if (n[0] === "eng" && EN[n[1]] && !seen.has(n[1]) && n === ch[ch.length - 1]) { seen.add(n[1]); cur = EN[n[1]]; jumped = true; }
+    }
+    if (!jumped) break;
+  }
+  return out;
+}
+function buildEnIndex() {
+  ENIDX = new Map();
+  for (const [w, v] of Object.entries(EN)) {
+    for (const n of v[1]) if (n[0] !== "eng") { const k = n[0] + ":" + n[1]; if (!ENIDX.has(k)) ENIDX.set(k, []); ENIDX.get(k).push(w); }
+  }
+}
+async function loadEN() {
+  if (EN) return;
+  try { const r = await fetch("en.json"); if (r.ok) EN = await r.json(); } catch {}
+}
+function enGloss(n) { return GLOSS[n[0] + ":" + n[1]] || null; }
+function enLayers(w) {
+  const v = EN && EN[w], chain = enChain(w);
+  const groups = [];
+  for (const n of chain) {
+    if (n[0] === "eng" || n[0] === "en") continue;
+    const g = groups[groups.length - 1];
+    const gl = n[2] ? [n[2], ""] : (GLOSS[n[0] + ":" + n[1]] || null);
+    if (g && g.lang === n[0]) { g.terms.push(n[1]); g.gl.push(gl); } else groups.push({ lang: n[0], terms: [n[1]], gl: [gl] });
+  }
+  while (groups.length > 4) { const a = groups.splice(groups.length - 2, 2); groups.push({ lang: a[0].lang, terms: a[0].terms.concat(a[1].terms), gl: a[0].gl.concat(a[1].gl), mixed: a[1].lang }); }
+  return { v, chain, groups };
+}
+function enBranches(w) {
+  const fam = EN && EN[w] && EN[w][4];
+  if (!fam) return { list: [], groups: [], rootChar: "", rootLang: "", sub: "" };
+  const root = fam[0], groups = fam[1];
+  const zh0 = x => (EN[x] && EN[x][3][0]) || [];
+  const list = [];
+  for (const [top, kids] of groups) {
+    list.push({ c: top, py: zh0(top)[0] || "", add: "", m: "", here: top === w, en: true });
+    for (const k of kids) list.push({ c: k, py: zh0(k)[0] || "", add: "↳ " + top, m: "", en: true, here: k === w });
+  }
+  const g = enGloss(root);
+  const sub = root[0] === "eng"
+    ? `Words that grew out of ${w}. Tap a leaf to visit it.`
+    : `All of these grew from ${langOf(root[0])[0]} ${root[1]}${g ? " (“" + g[0] + "”)" : ""}. Each side branch holds words built on the word beside it. Tap a leaf to visit it.`;
+  return { list, groups, rootChar: root[0] === "eng" ? w : root[1], rootLang: root[0], sub };
+}
+
+function drawVineEn() {
+  const wrap = $("vineWrap"); wrap.textContent = "";
+  const w = enWord(cur);
+  const head = el("div", "shaft-head"); head.append(el("h2", "", "Branches 同根分支"));
+  wrap.append(head);
+  const card = el("div", "mapcard");
+  const B = EN && EN[w] ? enBranches(w) : { groups: [] };
+  if (!B.groups.length) { card.append(el("p", "sub", EN ? "No related English words in our data for this word yet." : "Loading…")); wrap.append(card); if (EN) drawCousins(wrap, w); return; }
+  card.append(el("p", "sub", B.sub));
+  const tree = el("div", "etree");
+  const top = el("div", "etop");
+  top.append(el("div", "vroot long", B.rootChar), el("div", "vroot-l", B.rootLang === "eng" ? "Root 词根 · English" : `Root 词根 · ${langOf(B.rootLang)[0]} ${langOf(B.rootLang)[1]}`));
+  tree.append(top);
+  const trunk = el("div", "ebranch");
+  const go = (btn, leaf, word, here) => {
+    btn.addEventListener("click", () => {
+      sunlight(btn, leaf);
+      if (here) return;
+      const calm = matchMedia("(prefers-reduced-motion: reduce)").matches;
+      setTimeout(() => open("en:" + word, true), calm ? 150 : 1000);
+    });
+  };
+  B.groups.forEach(([topW, kids], i) => {
+    const g = el("div", "egroup" + (i % 2 ? " alt" : ""));
+    const btn = el("button", "leafbtn"); btn.type = "button"; btn.setAttribute("aria-label", "Visit " + topW);
+    const leaf = el("div", "eleaf" + (topW === w ? " here" : "")); leaf.append(el("span", "", topW)); btn.append(leaf);
+    go(btn, leaf, topW, topW === w);
+    const meta = el("div", "emeta");
+    if (topW === w) meta.append(el("span", "you", "You are here"));
+    const z = (EN[topW] && EN[topW][3][0]) || null; if (z) meta.append(el("span", "ezh", z[0]));
+    const main = el("div", "emain"); main.append(btn, meta);
+    g.append(main);
+    if (kids.length) {
+      const twig = el("div", "etwig");
+      for (const k of kids) {
+        const b2 = el("button", "leafbtn small"); b2.type = "button"; b2.setAttribute("aria-label", "Visit " + k);
+        const l2 = el("div", "sleaf" + (k === w ? " here" : "")); l2.append(el("span", "", k)); b2.append(l2);
+        const zk = (EN[k] && EN[k][3][0]) || null; if (zk) b2.title = zk[0];
+        go(b2, l2, k, k === w);
+        twig.append(b2);
+      }
+      g.append(twig);
+    }
+    trunk.append(g);
+  });
+  tree.append(trunk);
+  card.append(el("h3", "", "In English 英语里的同根词"), tree, el("div", "ground"));
+  wrap.append(card);
+  drawCousins(wrap, w);
+}
+
+function cousinsOf(w) {
+  const c = EN && EN[w] && EN[w][5];
+  if (c) return c;
+  const wk = WK[w];
+  if (!wk || !wk.cognates.length) return null;
+  const by = {};
+  for (const k of wk.cognates) { if (/^(en|enm|ang)$/.test(k.lang) || !k.term) continue; by[k.lang] = by[k.lang] || []; if (!by[k.lang].includes(k.term)) by[k.lang].push(k.term); }
+  const groups = Object.entries(by).slice(0, 8).map(([l, ts]) => [l, ts.slice(0, 3)]);
+  const ch = enChain(w), deep = ch.filter(n => !/^(en|eng|enm|ang)$/.test(n[0])).pop();
+  return groups.length && deep ? [[deep[0], deep[1]], groups] : null;
+}
+/* Second tree: relatives of the word in other languages. */
+function drawCousins(wrap, w) {
+  const c = cousinsOf(w);
+  const card = el("div", "mapcard cousins");
+  card.append(el("h3", "", "In other languages 其他语言的亲戚"));
+  if (!c) { card.append(el("p", "sub", "No relatives in other languages found in our data for this word.")); wrap.append(card); return; }
+  const [root, groups] = c;
+  const g = enGloss(root);
+  card.append(el("p", "sub", `Words in other languages that grew from the same ${langOf(root[0])[0]} root ${root[1]}${g ? " (“" + g[0] + "”)" : ""}. Each side branch is one language.`));
+  const tree = el("div", "etree");
+  const top = el("div", "etop");
+  top.append(el("div", "vroot long", root[1]), el("div", "vroot-l", `Root 词根 · ${langOf(root[0])[0]} ${langOf(root[0])[1]}`));
+  tree.append(top);
+  const trunk = el("div", "ebranch");
+  groups.forEach(([lang, words], i) => {
+    const grp = el("div", "egroup" + (i % 2 ? " alt" : ""));
+    const btn = el("button", "leafbtn"); btn.type = "button"; btn.setAttribute("aria-label", langOf(lang)[0]);
+    const leaf = el("div", "eleaf lang"); leaf.append(el("span", "", langOf(lang)[0])); btn.append(leaf);
+    btn.addEventListener("click", () => sunlight(btn, leaf));
+    const meta = el("div", "emeta"); meta.append(el("span", "ezh", langOf(lang)[1]));
+    const main = el("div", "emain"); main.append(btn, meta);
+    grp.append(main);
+    const twig = el("div", "etwig");
+    for (const t of words) {
+      const b2 = el("button", "leafbtn small"); b2.type = "button";
+      const l2 = el("div", "sleaf"); l2.append(el("span", "", t)); b2.append(l2);
+      b2.addEventListener("click", () => sunlight(b2, l2));
+      twig.append(b2);
+    }
+    grp.append(twig);
+    trunk.append(grp);
+  });
+  tree.append(trunk);
+  card.append(tree, el("div", "ground"));
+  wrap.append(card);
+}
+
+function drawBoardEn(key) {
+  const w = enWord(key), v = EN && EN[w], wk = WK[w], e = DI(w);
+  const board = $("board"); board.textContent = "";
+  board.append(el("div", "big en", w));
+  const head = el("div", "row");
+  if (e && e.p) head.append(el("span", "ph", "/" + e.p + "/"));
+  if (e && (e.g || e.o)) {
+    const tags = el("span", "tags");
+    for (const t of TAG_ORDER) if (e.g && e.g.includes(t)) tags.append(el("span", "tag" + (t === "IELTS" ? " ielts" : ""), t));
+    if (e.o) tags.append(el("span", "tag", "Oxford 3000"));
+    head.append(tags);
+  }
+  if (head.childNodes.length) board.append(head);
+  const zh = v ? v[3] : [];
+  if (e && e.t) {
+    const sn = el("div", "senses");
+    for (const line of e.t) { const m = line.match(/^([a-z]+\.)\s*(.*)$/); const d = el("div"); if (m) { d.append(el("b", "", m[1]), document.createTextNode(m[2])); } else d.textContent = line; sn.append(d); }
+    board.append(sn);
+  } else {
+    board.append(el("div", "py", zh.length ? zh.map(z => z[0]).join("、") : ""));
+    const known = v || wk || e;
+    board.append(el("div", "def", zh.length ? zh.map(z => z[1]).join(" · ") : known ? "" : (wk === undefined || !DICT[w[0]]) ? "Looking it up…" : "We couldn’t find this word yet. Check the spelling?"));
+  }
+  if (e && e.d) for (const d of e.d) board.append(el("div", "endef", d));
+  const row = el("div", "row");
+  if (enChain(w).length) {
+    const o = originOf(enChain(w));
+    const chip = el("span", "ochip", `${ORIGIN[o][1]} · ${ORIGIN[o][0]}`); chip.style.setProperty("--oc", ORIGIN[o][2]);
+    row.append(chip);
+  }
+  const save = el("button", "save"); save.type = "button";
+  const paint = () => { const on = getSaved().includes(key); save.setAttribute("aria-pressed", on); save.textContent = on ? "★ Saved" : "☆ Save"; };
+  save.addEventListener("click", () => { const l = getSaved(); setSaved(l.includes(key) ? l.filter(x => x !== key) : [key, ...l]); paint(); });
+  paint(); row.append(save);
+  board.append(row);
+  const etyHere = board;
+  const drawEty = () => { if (!(wk && wk.text)) return;
+    const ety = el("div", "build");
+    ety.append(el("div", "label", "Etymology 词源 · from Wiktionary"), el("p", "ety", wk.text));
+    const a = el("a", "src-link", "Read the full entry on Wiktionary ↗"); a.href = "https://en.wiktionary.org/wiki/" + encodeURIComponent(w) + "#English"; a.target = "_blank"; a.rel = "noopener";
+    ety.append(a); etyHere.append(ety);
+  };
+  const hasParts = drawParts(board, w);
+  /* the meaning of a part word (un + happy + ness) may live in another letter's file: load it, then redraw once */
+  if (hasParts) {
+    const need = ((DI(w) || {}).s || []).filter(pc => pc[1] === "w" && !DICT[pc[0][0]]).map(pc => pc[0][0]);
+    if (need.length) Promise.all(need.map(loadShard)).then(() => { if (cur === key) drawBoard(key); });
+  }
+  const partsList = hasParts ? [] : (wk && wk.parts.length) ? wk.parts : (v ? v[2] : []);
+  if (partsList.length) {
+    const build = el("div", "build");
+    build.append(el("div", "label", "How it’s built 构词"));
+    const parts = el("div", "parts");
+    for (const p of partsList) {
+      const g = AFFIX[p];
+      const box = el("div", "part");
+      const t = el("div"); t.append(el("div", "pr", /^-/.test(p) ? "Suffix 后缀" : /-$/.test(p) ? "Prefix 前缀" : "Word 词"), el("div", "pm", g ? `${g[0]} ${g[1]}` : (EN[p] && EN[p][3][0] ? EN[p][3][0][0] : "")));
+      const pc = el("div", "pc", p); pc.style.fontFamily = "var(--display)"; pc.style.fontSize = "20px";
+      box.append(pc, t); parts.append(box);
+    }
+    build.append(parts); board.append(build);
+  }
+  drawEty();
+}
+
+function drawShaftEn() {
+  const shaft = $("shaft"); shaft.textContent = "";
+  shaft.append(el("div", "surface"));
+  const w = enWord(cur), v = EN && EN[w];
+  if (!v && !enChain(w).length && !DI(w)) { maxDepth = 0; $("depth").textContent = ""; $("digBtn").disabled = true; $("allBtn").disabled = true; $("refill").disabled = true; return; }
+  const { groups } = enLayers(w);
+  const layers = [{ key: "today", lang: "eng", today: true }].concat(groups.map((g, i) => ({ key: "g" + i, ...g })));
+  const n = layers.length;
+  const SOILS = ["Topsoil", "Subsoil", "Clay", "Weathered rock", "Bedrock"], DEPTHS = ["0.0", "1.5", "3.0", "4.5", "6.0"];
+  maxDepth = n;
+  layers.forEach((ly, i) => {
+    const pos = n === 1 ? 0 : Math.round(i * 4 / (n - 1));
+    const L = el("div", `layer l${pos + 1}`); L.dataset.k = ly.key;
+    const log = el("div", "log"); log.append(el("div", "m", DEPTHS[pos] + " m"), el("div", "", SOILS[pos]));
+    const body = el("div", "body");
+    const li = langOf(ly.lang);
+    const era = el("div", "era", ly.today ? "今天 Today" : `${li[1]} ${li[0]}`);
+    if (!ly.today && li[2]) era.append(el("small", "", li[2]));
+    body.append(era);
+    if (ly.today) {
+      body.append(el("div", "terms", w));
+      const de = DI(w);
+      if (de && de.p) body.append(el("div", "gl", "/" + de.p + "/"));
+      if ((!v || !v[3].length) && de && de.t) body.append(el("div", "gl", de.t.slice(0, 2).join("　")));
+      if (v && v[3].length) { const z = el("div", "zhw"); for (const x of v[3]) { const s2 = el("span", "", x[0]); s2.append(el("small", "", x[1])); z.append(s2); } body.append(z); }
+      const pl = (WK[w] && WK[w].parts.length) ? WK[w].parts : (v ? v[2] : []);
+      if (pl.length) body.append(el("div", "gl", "Built from " + pl.join(" + ")));
+    } else {
+      const t = el("div", "terms");
+      ly.terms.forEach((term, k) => { if (k) t.append(el("span", "arrow-l", "←")); t.append(document.createTextNode(term)); });
+      body.append(t);
+      ly.terms.forEach((term, k) => {
+        const g = ly.gl[k];
+        if (g) { const d = el("div", "gl"); d.append(el("b", "", term), document.createTextNode(` · “${g[0]}”${g[1] ? " · " + g[1] : ""}`)); body.append(d); }
+      });
+      if (/-pro$/.test(ly.lang)) body.append(el("div", "note", "Reconstructed 构拟: nobody wrote this word down. Scholars rebuilt it by comparing the languages that came from it."));
+      if (i === n - 1) body.append(el("div", "note", "The deepest layer our data reaches for this word."));
+    }
+    L.append(log, body);
+    if (!dug.has(ly.key)) {
+      const cover = el("button", "cover"); cover.type = "button";
+      cover.setAttribute("aria-label", `Dig ${ly.today ? "today" : li[0]}`);
+      cover.append(el("span", "tool", "⛏"), el("span", "", `Tap to dig · ${ly.today ? "今天 Today" : li[1] + " " + li[0]}`), el("i", "trowel", "⛏"));
+      cover.addEventListener("click", e => digOne(e, ly.key));
+      L.append(cover);
+    }
+    shaft.append(L);
+  });
+  $("depth").textContent = n > 1 ? `${dug.size}/${n} layers dug · tap any layer` : `${dug.size}/1 layer dug`;
+  $("digBtn").disabled = dug.size >= n; $("allBtn").disabled = dug.size >= n; $("refill").disabled = dug.size === 0;
+}
+
+/* ---------- Word book ---------- */
+const SAVE_AT = "groundwork.savedAt";
+function savedAt() { try { return JSON.parse(localStorage.getItem(SAVE_AT) || "{}"); } catch { return {}; } }
+const _setSaved = setSaved;
+setSaved = function (list) {
+  const at = savedAt(); const now = new Date().toISOString().slice(0, 10);
+  for (const k of list) if (!at[k]) at[k] = now;
+  for (const k of Object.keys(at)) if (!list.includes(k)) delete at[k];
+  try { localStorage.setItem(SAVE_AT, JSON.stringify(at)); } catch {}
+  _setSaved(list);
+};
+function entryRow(k) {
+  const at = savedAt()[k] || "";
+  if (isEn(k)) {
+    const w = enWord(k), v = EN && EN[w];
+    const chain = v ? enChain(w) : [];
+    const o = v ? ORIGIN[originOf(chain)][0] : "";
+    const root = chain.filter(n => n[0] !== "eng").slice(-1)[0];
+    const path = chain.filter(n => n[0] !== "eng").map(n => `${langOf(n[0])[0]} ${n[1]}`).join(" < ");
+    const e = DI(w);
+    const zhTxt = e && e.t ? e.t.join(" / ") : v ? v[3].map(z => z[0]).join(" / ") : "";
+    const parts = e && e.s ? e.s.map(pc => { const m = partMeaning(pc); return pc[0] + (m.en ? ` (${m.en})` : ""); }).join(" + ") : "";
+    const tags = e && e.g ? TAG_ORDER.filter(t => e.g.includes(t)).join(" ") : "";
+    return ["English", w, zhTxt, e && e.p ? "/" + e.p + "/" : "", o, root ? `${langOf(root[0])[0]} ${root[1]}` : "", path, parts, tags, at];
+  }
+  const d = info(k), sw = SW[k];
+  return ["汉字", k, d ? d.def : "", d ? d.py : "", d && TYPE[d.type] ? TYPE[d.type][1] : "", sw ? `${sw[0]}，${sw[1]}` : "", "", "", "", at];
+}
 function drawSaved() {
   const box = $("saved"); box.textContent = "";
   const l = getSaved();
-  if (!l.length) { box.append(el("p", "hint", "Nothing saved yet. Tap ☆ Save on a character.")); return; }
-  for (const c of l) { const b = el("button", "", c); b.type = "button"; b.addEventListener("click", () => open(c, true)); box.append(b); }
+  $("wbCount").textContent = l.length ? `· ${l.length}` : "";
+  $("exportCsv").disabled = !l.length; $("copyList").disabled = !l.length;
+  if (!l.length) { box.append(el("p", "hint", "Nothing saved yet. Tap ☆ Save on a word to add it to your word book.")); return; }
+  for (const c of l) {
+    const b = el("button", (isEn(c) ? "en " : "") + "wb"); b.type = "button";
+    b.append(document.createTextNode(label(c)));
+    const z = isEn(c) ? (EN && EN[enWord(c)] && EN[enWord(c)][3][0] ? EN[enWord(c)][3][0][0] : "") : ((info(c) || {}).py || "");
+    if (z) b.append(el("small", "", z));
+    b.addEventListener("click", () => open(c, true));
+    box.append(b);
+  }
 }
+async function wordbookRows() {
+  const en = getSaved().filter(isEn);
+  if (en.length) await Promise.all([loadEN(), loadRoots(), ...[...new Set(en.map(k => enWord(k)[0]))].map(loadShard)]);
+  return getSaved().map(entryRow);
+}
+function csvCell(x) { x = String(x == null ? "" : x); return /[",\n]/.test(x) ? `"${x.replace(/"/g, '""')}"` : x; }
+$("exportCsv").addEventListener("click", async () => {
+  const rows = await wordbookRows();
+  const head = ["Type", "Word", "Chinese / meaning", "Pinyin / phonetic", "Origin / type", "Root", "Path", "Word parts", "Exam tags", "Saved on"];
+  const csv = "﻿" + [head, ...rows].map(r => r.map(csvCell).join(",")).join("\r\n");
+  try {
+    const url = URL.createObjectURL(new Blob([csv], { type: "text/csv;charset=utf-8" }));
+    const a = document.createElement("a"); a.href = url; a.download = `groundwork-word-book-${new Date().toISOString().slice(0, 10)}.csv`;
+    document.body.append(a); a.click(); a.remove(); setTimeout(() => URL.revokeObjectURL(url), 2000);
+    $("wbMsg").textContent = "Downloaded. Open it in Excel, Numbers or Google Sheets, or import it into Anki or Quizlet. 已下载。";
+  } catch { $("wbMsg").textContent = "This browser blocked the download. Try Copy instead. 下载被拦截，请用复制。"; }
+});
+$("copyList").addEventListener("click", async () => {
+  const rows = await wordbookRows();
+  const text = rows.map(r => r[0] === "English" ? [r[1], r[3], r[2], r[7]].filter(Boolean).join("\t") : `${r[1]}\t${r[3]}\t${r[2]}`).join("\n");
+  try { await navigator.clipboard.writeText(text); $("wbMsg").textContent = "Copied. Paste it into Notes or a spreadsheet. 已复制。"; }
+  catch { $("wbMsg").textContent = "Copy didn’t work in this browser. Try Export CSV. 复制失败，请用导出。"; }
+});
+
+/* ---------- Classics reader: original plays and poems ---------- */
+let ST = null, STP = null, lastStory = null;
+const PLAY = {}, PLAYP = {};
+const READ_KEY = "groundwork.read.classics", COLOR_KEY = "groundwork.colors";
+function loadStories() { return STP || (STP = fetch("plays.json").then(r => r.ok ? r.json() : null).catch(() => null).then(j => { ST = j || { authors: [], works: [] }; })); }
+function loadPlay(id) { return PLAYP[id] || (PLAYP[id] = fetch("play-" + id + ".json").then(r => r.ok ? r.json() : null).catch(() => null).then(j => { PLAY[id] = j; })); }
+/* keys: story:  ·  story:<author>  ·  story:<author>/<work>  ·  story:<author>/<work>/<part> */
+function storyParts(k) { const [a, w, n] = k.slice(6).split("/"); return { a: a || "", w: w || "", n: n === undefined || n === "" ? -1 : +n }; }
+function storyLabel(k) {
+  const { a, w, n } = storyParts(k);
+  if (!ST) return "Classics";
+  const work = ST.works.find(x => x.id === w), au = ST.authors.find(x => x.id === a);
+  if (work && n >= 0) return `${work.t} · ${work.parts[n] ? work.parts[n].h : ""}`;
+  if (work) return work.t;
+  return au ? au.t : "Classics";
+}
+function getRead() { try { return new Set(JSON.parse(localStorage.getItem(READ_KEY) || "[]")); } catch { return new Set(); } }
+function markRead(key) { try { const r = getRead(); r.add(key); localStorage.setItem(READ_KEY, JSON.stringify([...r])); } catch {} }
+function colorsOn() { try { return localStorage.getItem(COLOR_KEY) !== "off"; } catch { return true; } }
+const minutes = n => Math.max(1, Math.round(n / 150));
+const fmt = n => n.toLocaleString("en");
+const ORIGIN_CACHE = new Map();
+/* a few common words where the open etymology data is known to be wrong */
+const ORIGIN_FIX = { as: "old_english", found: "old_english", pop: "old_english", log: "old_english", ass: "latin", make: "old_english", tell: "old_english", bin: "old_english", quite: "french", act: "french", plain: "french", perch: "french", form: "french", formal: "french", formality: "french" };
+/* old forms used in the 19th-century retellings: smote -> smite, asketh -> ask, thou -> you */
+const ARCHAIC = { slew: "slay", slain: "slay", smote: "smite", smitten: "smite", sware: "swear", drave: "drive", spake: "speak", bare: "bear", brake: "break",
+  clave: "cleave", gat: "get", hath: "have", hast: "have", hadst: "have", doth: "do", dost: "do", didst: "do", art: "be", wast: "be", wert: "be",
+  shalt: "shall", wilt: "will", canst: "can", couldst: "could", wouldst: "would", shouldst: "should", mayest: "may", mightest: "might", saith: "say",
+  thou: "you", thee: "you", thy: "your", thine: "your", ye: "you", unto: "to", durst: "dare", wot: "know", wist: "know", holpen: "help", digged: "dig", seeth: "see", doeth: "do", goeth: "go", bade: "bid", badest: "bid", haply: "perhaps", tis: "it" };
+function archaicBase(w, has) {
+  if (ARCHAIC[w]) return ARCHAIC[w];
+  if (has(w)) return null;
+  for (const suf of ["eth", "est", "edst", "st"]) {
+    if (w.length - suf.length < 2 || !w.endsWith(suf)) continue;
+    const stem = w.slice(0, -suf.length);
+    for (const c of [stem + "e", stem, stem.replace(/(.)\1$/, "$1"), stem.replace(/i$/, "y")]) if (c.length > 1 && has(c)) return c;
+  }
+  return null;
+}
+function wordOrigin(w) {
+  if (!EN) return null;
+  if (ORIGIN_CACHE.has(w)) return ORIGIN_CACHE.get(w);
+  const old = archaicBase(w, x => !!EN[x]);
+  if (old) { const o = wordOrigin(old); ORIGIN_CACHE.set(w, o); return o; }
+  const base = EN[w] ? w : enLookup(w);
+  const ch = base ? enChain(base) : [];
+  const eng = ch.filter(n => n[0] === "eng").map(n => n[1]);     // making -> make
+  const o = ORIGIN_FIX[w] || ORIGIN_FIX[base] || eng.map(x => ORIGIN_FIX[x]).find(Boolean) || (ch.length ? originOf(ch) : null);
+  ORIGIN_CACHE.set(w, o); return o;
+}
+async function drawReader(c) {
+  const box = $("reader");
+  if (!ST) { box.textContent = ""; box.append(el("p", "hint", "Loading… 正在加载")); await loadStories(); if (cur !== c) return; }
+  if (!EN) loadEN().then(() => { if (cur === c && storyParts(c).n >= 0) drawReader(c); });
+  const { a, w, n } = storyParts(c);
+  const au = ST.authors.find(x => x.id === a), work = ST.works.find(x => x.id === w && x.a === a);
+  if (work && n >= 0 && !PLAY[w]) { box.textContent = ""; box.append(el("p", "hint", `Loading ${work.t}… 正在加载`)); await loadPlay(w); if (cur !== c) return; }
+  box.textContent = "";
+  if (!au) return drawShelf(box);
+  if (!work) return drawAuthor(box, au);
+  if (n < 0 || !PLAY[w] || !PLAY[w].parts[n]) return drawContents(box, au, work);
+  drawPart(box, au, work, n);
+}
+function navBar(box, label, key, right) {
+  const nav = el("div", "rd-nav");
+  const b = el("button", "btn ghost sm", "← " + label); b.type = "button";
+  b.addEventListener("click", () => open(key, true));
+  nav.append(b, el("span", "count", right || ""));
+  box.append(nav);
+}
+function drawShelf(box) {
+  const head = el("div", "rd-head");
+  head.append(el("h2", "", "Classics 原典"),
+    el("p", "sub", "Original plays and poems, free and out of copyright: Shakespeare in his own words, and the Greek tragedies in full English translation. While you read, tap any word to see its meaning and where it comes from. 公版原典：莎士比亚原文，和希腊悲剧的完整英译。读的时候点任何一个词，就能看到意思和来源。"));
+  box.append(head);
+  const read = getRead(), shelf = el("div", "bshelf");
+  for (const au of ST.authors) {
+    const list = ST.works.filter(x => x.a === au.id);
+    const plays = list.filter(x => x.id !== "sonnets").length, sonnets = list.some(x => x.id === "sonnets");
+    const done = list.filter(x => x.parts.some((p, i) => read.has(`${x.id}/${i}`))).length;
+    const card = el("button", "bcard " + au.id); card.type = "button";
+    card.append(el("span", "bt", au.t), el("span", "bz", `${au.z} · ${au.era}`), el("span", "bby", au.ztr), el("span", "bab", au.zabout),
+      el("span", "bn", `${plays} plays${sonnets ? " + 154 sonnets" : ""}${done ? ` · ${done} started` : ""}`));
+    card.addEventListener("click", () => open("story:" + au.id, true));
+    shelf.append(card);
+  }
+  box.append(shelf);
+}
+function drawAuthor(box, au) {
+  navBar(box, "All 全部", "story:", "");
+  const head = el("div", "rd-head");
+  head.append(el("h2", "", au.t), el("div", "zt", `${au.z} · ${au.era}`), el("p", "sub", `${au.tr}. ${au.zabout}`));
+  box.append(head);
+  const read = getRead(), grid = el("div", "fgrid");
+  ST.works.filter(x => x.a === au.id).forEach((x, i) => {
+    const doneParts = x.parts.filter((p, j) => read.has(`${x.id}/${j}`)).length;
+    const b = el("button", "fcard" + (doneParts === x.parts.length ? " read" : "")); b.type = "button";
+    const unit = x.id === "sonnets" ? "poems" : au.id === "shakespeare" ? "scenes" : "parts";
+    b.append(el("span", "no", String(i + 1)), el("span", "ft", x.t), el("span", "fz", `${x.z} · ${x.zk}`), el("span", "fs", x.s),
+      el("span", "fn", `${fmt(x.n)} words · ${x.parts.length} ${unit}${doneParts && doneParts < x.parts.length ? ` · ${doneParts} read` : ""}`));
+    b.addEventListener("click", () => open(`story:${au.id}/${x.id}`, true));
+    grid.append(b);
+  });
+  box.append(grid);
+  const src = el("p", "rd-src", `Text from ${au.srcName}. Public domain. `);
+  const a = el("a", "", "Source ↗"); a.href = au.src; a.target = "_blank"; a.rel = "noopener"; src.append(a);
+  box.append(src);
+}
+function drawContents(box, au, work) {
+  navBar(box, `${au.t} · ${au.z}`, "story:" + au.id, `${fmt(work.n)} words · about ${minutes(work.n)} min`);
+  const head = el("div", "rd-head");
+  head.append(el("h2", "", work.t), el("div", "zt", `${work.z} · ${work.k} ${work.zk}`), el("p", "sub", work.s));
+  box.append(head);
+  const read = getRead();
+  const sonnets = work.id === "sonnets";
+  const list = el("div", sonnets ? "sgrid" : "plist");
+  work.parts.forEach((p, i) => {
+    const b = el("button", (sonnets ? "sitem" : "pitem") + (read.has(`${work.id}/${i}`) ? " read" : "")); b.type = "button";
+    if (sonnets) b.append(el("span", "sn", String(i + 1)), el("span", "sf", p.first || ""));
+    else b.append(el("span", "ph", p.h), el("span", "pz", p.zh), el("span", "pn", `${fmt(p.n)} words · ~${minutes(p.n)} min`));
+    b.addEventListener("click", () => open(`story:${au.id}/${work.id}/${i}`, true));
+    list.append(b);
+  });
+  box.append(list);
+  const src = el("p", "rd-src", `${au.tr}. Public domain. `);
+  const a = el("a", "", "Source ↗"); a.href = work.src; a.target = "_blank"; a.rel = "noopener"; src.append(a);
+  box.append(src);
+}
+function storyPara(block) {
+  const verse = typeof block !== "string";
+  const p = el("p", verse ? "verse" : "");
+  const lines = verse ? block.v : [block];
+  const re = /[A-Za-zÀ-ÖØ-öø-ÿ]+(?:['’][A-Za-zÀ-ÖØ-öø-ÿ]+)*/g;
+  lines.forEach((text, li) => {
+    /* verse: one block per line, so a wrapped line is indented and still reads as one line */
+    const host = verse ? el("span", "vl") : p;
+    if (verse) p.append(host);
+    /* each run of non-space text is kept together, so a comma or dash never starts a new line */
+    text.split(/(\s+)/).forEach(tok => {
+      if (!tok) return;
+      if (/^\s+$/.test(tok)) { host.append(document.createTextNode(" ")); return; }
+      const box = el("span", "tok");
+      appendWords(box, tok, re);
+      host.append(box);
+    });
+  });
+  return p;
+}
+/* names of the characters in the part being read: shown as names, not dictionary words */
+let CUR_NAMES = new Set();
+function appendWords(p, text, re) {
+    let last = 0, m;
+    re.lastIndex = 0;
+    while ((m = re.exec(text))) {
+      if (m.index > last) p.append(document.createTextNode(text.slice(last, m.index)));
+      const raw = m[0], w = raw.toLowerCase().replace(/[’']s$/, "").replace(/[’']/g, "").normalize("NFD").replace(/[\u0300-\u036f]/g, "").replace(/æ/g, "ae").replace(/œ/g, "oe");
+      const b = el("button", "fw", raw); b.type = "button"; b.dataset.w = w;
+      const isName = /^[A-ZÀ-Ö]/.test(raw) && CUR_NAMES.has(w);
+      if (isName) b.dataset.name = "1";
+      const o = isName ? null : wordOrigin(w);
+      if (o && o !== "old_english") { b.dataset.o = o; b.style.setProperty("--oc", ORIGIN[o][2]); }
+      p.append(b); last = re.lastIndex;
+    }
+    if (last < text.length) p.append(document.createTextNode(text.slice(last)));
+}
+function drawPart(box, au, work, n) {
+  const part = PLAY[work.id].parts[n];
+  markRead(`${work.id}/${n}`);
+  navBar(box, `${work.t} · Contents 目录`, `story:${au.id}/${work.id}`, `${n + 1} / ${work.parts.length} · ${fmt(part.n)} words`);
+  const head = el("div", "rd-head");
+  head.append(el("h2", "", part.h), el("div", "zt", `${work.t} · ${work.z}${part.zh && work.id !== "sonnets" ? " · " + part.zh : ""}`));
+  box.append(head);
+  const on = colorsOn();
+  const tog = el("button", "btn ghost sm", on ? "Colours on: word origins 词源颜色 ✓" : "Colour words by origin 按词源上色"); tog.type = "button";
+  tog.setAttribute("aria-pressed", on);
+  tog.addEventListener("click", () => { try { localStorage.setItem(COLOR_KEY, on ? "off" : "on"); } catch {} drawReader(cur); });
+  const legend = el("div", "legend");
+  legend.append(tog);
+  if (on) {
+    for (const o of ["latin", "french", "greek", "norse", "germanic", "other"]) {
+      const li = el("span", "li"); const sw = el("span", "sw"); sw.style.setProperty("--oc", ORIGIN[o][2]);
+      li.append(sw, document.createTextNode(`${ORIGIN[o][0]} ${ORIGIN[o][1]}`)); legend.append(li);
+    }
+    legend.append(el("span", "li plain", "No line = Old English, or not in our data 无下划线：古英语本土词，或暂无数据"));
+  }
+  box.append(legend);
+  CUR_NAMES = new Set();
+  for (const blk of PLAY[work.id].parts.flatMap(q => q.b)) if (blk.s) for (const x of blk.s.toLowerCase().split(/[^a-zà-ÿ]+/)) if (x.length > 2 && !["first", "second", "third", "king", "queen", "lord", "lady", "chorus", "messenger", "servant", "old", "man", "woman", "boy", "the", "and", "of", "all", "both", "another", "attendant", "nurse", "guard", "soldier", "watchman", "herald", "gentleman", "doctor", "officer", "captain", "porter", "murderer", "witch", "witches", "ghost", "priest", "sailor", "clown", "fool", "prince", "duke", "earl", "knight", "page", "shepherd", "slave", "god", "goddess", "leader", "maid", "maidens", "women", "men", "elders", "citizen", "citizens"].includes(x)) CUR_NAMES.add(x);
+  const story = el("div", "story play" + (on ? " colors" : "") + (work.id === "sonnets" ? " sonnet" : ""));
+  for (const b of part.b) {
+    if (b.d !== undefined) { story.append(el("p", "sd", b.d)); continue; }
+    const sp = el("div", "speech");
+    if (b.s) sp.append(el("div", "who", b.s));
+    for (const q of b.p) {
+      if (q && q.h) { sp.append(el("div", "ode", q.h)); continue; }
+      sp.append(storyPara(q));
+    }
+    story.append(sp);
+  }
+  story.addEventListener("click", e => { const t = e.target.closest(".fw"); if (t) peek(t); });
+  box.append(story);
+  const nav2 = el("div", "rd-nav");
+  const prev = work.parts[n - 1], next = work.parts[n + 1];
+  const pb = el("button", "btn ghost sm", prev ? "← " + prev.h : ""); pb.type = "button"; pb.hidden = !prev;
+  if (prev) pb.addEventListener("click", () => open(`story:${au.id}/${work.id}/${n - 1}`, true));
+  const nb = el("button", "btn sm", next ? next.h + " →" : "Back to contents 回到目录"); nb.type = "button";
+  nb.addEventListener("click", () => open(next ? `story:${au.id}/${work.id}/${n + 1}` : `story:${au.id}/${work.id}`, true));
+  nav2.append(pb, nb); box.append(nav2);
+  const src = el("p", "rd-src", `${au.tr}. Public domain. `);
+  const a = el("a", "", "Source ↗"); a.href = work.src; a.target = "_blank"; a.rel = "noopener"; src.append(a);
+  box.append(src);
+}
+/* Tap a word in a story: a small card with its meaning, without leaving the story. */
+let peekBtn = null;
+function closePeek() { $("peek").hidden = true; if (peekBtn) peekBtn.classList.remove("on"); peekBtn = null; }
+async function peek(btn) {
+  if (peekBtn === btn) return closePeek();
+  if (peekBtn) peekBtn.classList.remove("on");
+  peekBtn = btn; btn.classList.add("on");
+  const w0 = btn.dataset.w, box = $("peek");
+  box.hidden = false; box.textContent = ""; box.append(el("div", "pk-w", btn.textContent));
+  if (!EN) await loadEN();
+  await Promise.all([loadShard(w0[0]), loadRoots()]);
+  const old = archaicBase(w0, x => !!(DI(x) || (EN && EN[x])));
+  if (old) await loadShard(old[0]);
+  const e0 = DI(old || w0);
+  const w = old && !(e0 && e0.x) ? old : e0 && e0.x ? e0.x : (e0 || (EN && EN[w0])) ? w0 : (enLookup(w0) || w0);
+  if (w !== w0) await loadShard(w[0]);
+  if (peekBtn !== btn) return;
+  const e = DI(w);
+  box.textContent = "";
+  const x = el("button", "pk-x", "×"); x.type = "button"; x.setAttribute("aria-label", "Close"); x.addEventListener("click", closePeek);
+  const top = el("div", "pk-top");
+  top.append(el("span", "pk-w", w));
+  if (e && e.p) top.append(el("span", "pk-ph", "/" + e.p + "/"));
+  if (w !== w0) top.append(el("span", "pk-from", `(${btn.textContent} → ${w}${old ? " · old form 古旧写法" : ""})`));
+  box.append(x, top);
+  if (btn.dataset.name) { box.append(el("div", "pk-zh", "A character in this play. 剧中人物。")); return; }
+  if (e && e.t) for (const line of e.t.slice(0, 3)) { const m = line.match(/^([a-z]+\.)\s*(.*)$/); const d = el("div", "pk-zh"); if (m) d.append(el("b", "", m[1]), document.createTextNode(m[2])); else d.textContent = line; box.append(d); }
+  else if (EN && EN[w] && EN[w][3].length) box.append(el("div", "pk-zh", EN[w][3].map(z => z[0]).join("、")));
+  else if (/^[A-ZÀ-Ö]/.test(btn.textContent)) box.append(el("div", "pk-zh", "A name in the text. 人名或地名。"));
+  else box.append(el("div", "pk-zh", "No meaning in our dictionary yet. 词典里还没有这个词。"));
+  const row = el("div", "pk-row");
+  const o = wordOrigin(w);
+  if (o) { const chip = el("span", "ochip", `${ORIGIN[o][1]} · ${ORIGIN[o][0]}`); chip.style.setProperty("--oc", ORIGIN[o][2]); row.append(chip); }
+  const dig = el("button", "btn sm", "⛏ Dig into it 挖下去"); dig.type = "button";
+  dig.addEventListener("click", () => { closePeek(); open("en:" + w, true); });
+  const key = "en:" + w, save = el("button", "save"); save.type = "button";
+  const paint = () => { const s2 = getSaved().includes(key); save.setAttribute("aria-pressed", s2); save.textContent = s2 ? "★ Saved" : "☆ Save"; };
+  save.addEventListener("click", () => { const l = getSaved(); setSaved(l.includes(key) ? l.filter(z => z !== key) : [key, ...l]); paint(); });
+  paint(); row.append(dig, save); box.append(row);
+}
+document.addEventListener("keydown", e => { if (e.key === "Escape" && !$("peek").hidden) closePeek(); });
 
 /* ---------- Open a character ---------- */
 function open(c, scroll, fromHistory) {
   if (!fromHistory && c !== cur) {
     trail.push(c);
-    try { if (cur) { history.pushState({ c }, "", "#" + encodeURIComponent(c)); pushed = true; } else history.replaceState({ c }, "", "#" + encodeURIComponent(c)); } catch { pushed = false; }
+    try { history.replaceState({ c }, "", "#" + encodeURIComponent(c)); } catch {}
   }
   cur = c; dug = new Set(); mapOpen = false;
+  const fab = isStory(c);
+  document.body.classList.toggle("reading", fab); $("reader").hidden = !fab; $("rdTab").setAttribute("aria-selected", fab);
+  closePeek();
+  if (fab) {
+    lastStory = c;
+    $("zhTab").setAttribute("aria-selected", false); $("enTab").setAttribute("aria-selected", false);
+    $("q").placeholder = "Type an English word, e.g. measure"; $("q").style.fontFamily = "var(--display)";
+    drawReader(c).then(drawBack); drawBack();
+    if (scroll) $("reader").scrollIntoView({ behavior: "smooth", block: "start" });
+    return;
+  }
+  if (isEn(c)) lastEn = c; else lastZh = c;
+  $("zhTab").setAttribute("aria-selected", !isEn(c)); $("enTab").setAttribute("aria-selected", isEn(c));
+  $("q").placeholder = isEn(c) ? "Type an English word, e.g. measure" : "Type a character 输入一个字, or an English meaning";
+  $("q").style.fontFamily = isEn(c) ? "var(--display)" : "";
+  if (isEn(c) && !EN) { loadEN().then(() => { drawSaved(); if (cur === c) { drawSites(); drawBoard(c); drawVine(); drawShaft(); drawJade(); } }); }
+  if (isEn(c) && (!DICT[enWord(c)[0]] || !RT)) {
+    Promise.all([loadShard(enWord(c)[0]), loadRoots()]).then(() => { if (cur === c) { drawBoard(c); if (dug.size === 0) drawShaft(); } });
+  }
+  if (isEn(c) && WK[enWord(c)] === undefined) {
+    fetchWikt(enWord(c)).then(() => { if (cur === c) { drawBoard(c); drawVine(); drawShaft(); if (!mapOpen) drawJade(); } });
+  }
   drawSites(); drawBoard(c); drawVine(); drawShaft(); drawJade(); drawBack();
   if (scroll) $("board").scrollIntoView({ behavior: "smooth", block: "start" });
 }
 function drawBack() {
   const b = $("back"), prev = trail[trail.length - 2];
   b.hidden = !prev;
-  if (prev) { b.textContent = ""; b.append(el("span", "", "← Back"), el("span", "bk", prev)); }
+  if (prev) { b.textContent = ""; const bk = el("span", "bk", label(prev)); if (isEn(prev) || isStory(prev)) { bk.style.fontFamily = "var(--display)"; bk.style.fontSize = "15px"; } b.append(el("span", "", "← Back"), bk); }
 }
-function goBack() {
+/* Back always goes one step back through the places you visited, using our own trail. */
+function stepBack() {
   if (trail.length < 2) return;
-  if (pushed && history.state && history.state.c === cur) { history.back(); return; }
-  trail.pop(); open(trail[trail.length - 1], true, true);
+  trail.pop();
+  const prev = trail[trail.length - 1];
+  try { history.replaceState({ c: prev }, "", "#" + encodeURIComponent(prev)); } catch {}
+  open(prev, true, true);
 }
-window.addEventListener("popstate", e => {
-  let c = e.state && e.state.c;
-  if (!c) { try { const h = decodeURIComponent(location.hash.slice(1)); if (h && HAN.test(h)) c = Array.from(h)[0]; } catch {} }
-  if (!c || c === cur) return;
-  if (trail[trail.length - 2] === c) trail.pop(); else trail.push(c);
-  open(c, true, true);
-});
+function goBack() { stepBack(); }
 
 /* ---------- Search ---------- */
 function stripTones(s) { return s.normalize("NFD").replace(/[̀-ͯ]/g, "").toLowerCase(); }
@@ -947,6 +2190,19 @@ $("search").addEventListener("submit", e => {
   e.preventDefault();
   const q = $("q").value.trim(); const res = $("results"); res.textContent = ""; $("msg").textContent = "";
   if (!q) return;
+  if ((isEn(cur) || isStory(cur)) && /^[A-Za-z][A-Za-z' -]*$/.test(q)) {
+    const run = async () => {
+      const w = q.toLowerCase().replace(/[^a-z]/g, "");
+      if (w.length < 2) return;
+      await loadShard(w[0]);
+      const e = DI(w);
+      let hit = e && e.x ? e.x : (e || (EN && EN[w])) ? w : enLookup(w);
+      if (hit && hit !== w) { await loadShard(hit[0]); $("msg").textContent = `Showing “${hit}”, the base form of “${q}”.`; }
+      open("en:" + (hit || w), true);
+    };
+    if (!EN) { $("msg").textContent = "Loading the English dictionary…"; loadEN().then(() => { $("msg").textContent = ""; run(); }); } else run();
+    return;
+  }
   const hans = Array.from(q).filter(ch => HAN.test(ch));
   if (hans.length) {
     const c = hans[0];
@@ -979,15 +2235,18 @@ function addResult(c) {
 
 /* ---------- Controls ---------- */
 $("digBtn").addEventListener("click", () => digOne(null));
-$("allBtn").addEventListener("click", () => { for (const st of STRATA) dug.add(st.key); drawShaft(); });
+$("allBtn").addEventListener("click", () => { for (const L of $("shaft").querySelectorAll(".layer")) dug.add(L.dataset.k); drawShaft(); });
 $("refill").addEventListener("click", () => { dug = new Set(); drawShaft(); });
 $("back").addEventListener("click", goBack);
-$("enTab").addEventListener("click", () => { $("msg").textContent = "The English mode is coming soon. 英文模式即将上线。"; });
+$("enTab").addEventListener("click", () => { if (!isEn(cur)) { $("results").textContent = ""; $("msg").textContent = ""; open(lastEn || "en:form", false); } });
+$("zhTab").addEventListener("click", () => { if (isEn(cur) || isStory(cur)) { $("results").textContent = ""; $("msg").textContent = ""; open(lastZh || "申", false); } });
+$("rdTab").addEventListener("click", () => { if (!isStory(cur)) { $("results").textContent = ""; $("msg").textContent = ""; open(lastStory || "story:", false); } });
+let lastEn = null, lastZh = null;
 
 /* ---------- Boot ---------- */
 (async () => {
-  let start = "申";
-  try { const h = decodeURIComponent(location.hash.slice(1)); if (h && HAN.test(h)) start = Array.from(h)[0]; } catch {}
+  let start = "en:form";
+  try { const h = decodeURIComponent(location.hash.slice(1)); if (isEn(h) || isStory(h)) start = h; else if (h && HAN.test(h)) start = Array.from(h)[0]; } catch {}
   drawSaved();
   open(start, false);
   await loadDB();
