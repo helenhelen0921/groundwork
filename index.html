@@ -454,16 +454,16 @@ form.search { display: flex; gap: 8px; }
 .controls { display: flex; gap: 8px; flex-wrap: wrap; }
 .controls .btn { padding: 10px 18px; }
 
-/* excavation map: a jade disc (玉璧) buried in the pit; lightning cracks it open */
+/* excavation map: a jade disc (玉璧) on a rosewood stand; a thread of lightning links it to the sky */
 .jade-wrap { display: flex; flex-direction: column; align-items: center; }
 .pit { position: relative; width: 100%; height: 250px; display: grid; place-items: center; border-radius: 14px; overflow: hidden; transition: height .7s ease, opacity .7s;
   background: radial-gradient(60% 34% at 50% 82%, color-mix(in srgb, var(--s5) 80%, black) 0 60%, transparent 61%), linear-gradient(var(--s3), var(--s4)); }
 .pit::before { content: ""; position: absolute; inset: 0; opacity: .2; pointer-events: none;
   background-image: radial-gradient(circle at 20% 30%, rgba(0,0,0,.6) 0 1px, transparent 1.5px), radial-gradient(circle at 70% 60%, rgba(255,255,255,.5) 0 1px, transparent 1.5px); background-size: 23px 19px, 31px 27px; }
 .pit.gone { height: 0; opacity: 0; }
-.jade { position: relative; width: 176px; height: 176px; border: 0; padding: 0; background: transparent; cursor: pointer; filter: drop-shadow(0 10px 10px rgba(0,0,0,.45)); animation: float 3.6s ease-in-out infinite; }
+.jade { position: relative; width: 176px; height: 186px; border: 0; padding: 0; background: transparent; cursor: pointer; filter: drop-shadow(0 10px 10px rgba(0,0,0,.45)); }
 @keyframes float { 50% { transform: translateY(-5px); } }
-.jhalf { position: absolute; inset: 0; border-radius: 50%; transition: transform 1s cubic-bezier(.3,.7,.3,1), opacity 1s;
+.jhalf { position: absolute; left: 13px; top: 0; width: 150px; height: 150px; border-radius: 50%; transition: transform 1s cubic-bezier(.3,.7,.3,1), opacity 1s;
   background:
     radial-gradient(circle at 34% 28%, rgba(255,255,255,.6), transparent 20%),
     radial-gradient(circle, transparent 0 57%, rgba(10,50,35,.28) 58%, transparent 60%),
@@ -474,7 +474,22 @@ form.search { display: flex; gap: 8px; }
 .jhalf::after { content: ""; position: absolute; inset: 0; border-radius: 50%;
   background: linear-gradient(115deg, transparent 35%, rgba(255,255,255,.45) 48%, transparent 60%) -180px 0 / 360px 100% no-repeat; animation: glint 4.5s ease-in-out infinite; }
 @keyframes glint { 0%, 55% { background-position: -180px 0; } 85%, 100% { background-position: 200px 0; } }
-.jade.vanish { animation: vanish .9s ease-in forwards; pointer-events: none; }
+.jade.vanish { pointer-events: none; }
+/* the rosewood stand (紫檀底座): the disc sits in its cradle */
+.jstand { position: absolute; left: 0; bottom: 0; width: 176px; height: 58px; z-index: 2; transition: opacity .8s .5s; }
+.jaura { position: absolute; left: -12px; top: -25px; width: 200px; height: 200px; border-radius: 50%; pointer-events: none; opacity: 0; transition: opacity .35s;
+  background: radial-gradient(closest-side, transparent 0 22%, rgba(225, 255, 238, .9) 48%, rgba(160, 230, 195, .4) 72%, transparent); }
+.jade.lit .jaura { opacity: 1; }
+.jade.lit .jhalf { filter: brightness(1.22) saturate(1.1); }
+.jade.vanish .jhalf { animation: ascend .95s ease-in forwards; }
+.jade.vanish .jaura { animation: ascend .95s ease-in forwards; }
+.jade.vanish .jstand { opacity: 0; }
+@keyframes ascend { 0% { transform: none; opacity: 1; } 35% { transform: translateY(-6px) scale(1.04); filter: brightness(1.35); }
+  100% { transform: translateY(-34px) scale(.82); opacity: 0; filter: blur(8px) brightness(1.5); } }
+/* on the jade the bolt is a thread of light from the sky to its rim, held for a moment */
+.pit.link.strike .bolt { animation: hold 1.3s ease-out forwards; }
+.pit.link .bolt .b-main { stroke-width: 2.2; stroke-dasharray: 60; stroke-dashoffset: 60; }
+@keyframes hold { 0% { opacity: 0; } 8% { opacity: 1; } 16% { opacity: .45; } 24% { opacity: 1; } 78% { opacity: 1; } 100% { opacity: 0; } }
 /* a fine, forked bolt that strikes the jade */
 .pit .bolt { position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; z-index: 3; opacity: 0; }
 .pit .bolt path { fill: none; stroke: url(#bg); stroke-linecap: round; stroke-linejoin: round; vector-effect: non-scaling-stroke;
@@ -554,6 +569,45 @@ form.search { display: flex; gap: 8px; }
 .chest.open .c-lid { transform: perspective(500px) rotateX(-115deg) translateY(-4px); }
 .chest.open .c-glow { opacity: 1; transform: translateY(-46px) scale(1.8, 2.6); }
 .chest.vanish { animation: vanish .7s ease-in forwards; pointer-events: none; }
+/* gold: a heap inside the chest and coins that spill out (金声玉振 — jade for Chinese, gold for English) */
+.c-heap { position: absolute; left: 15%; right: 15%; bottom: 80px; height: 36px; border-radius: 50% 50% 6px 6px / 100% 100% 6px 6px;
+  background: radial-gradient(circle at 18% 70%, #FFF3BE 0 3px, transparent 4px), radial-gradient(circle at 38% 38%, #FFF3BE 0 3.5px, transparent 4.5px),
+    radial-gradient(circle at 58% 60%, #FFF7D2 0 3px, transparent 4px), radial-gradient(circle at 74% 34%, #FFF3BE 0 2.5px, transparent 3.5px),
+    radial-gradient(circle at 88% 72%, #FFF3BE 0 3px, transparent 4px), radial-gradient(circle at 50% 18%, #FFFBE6 0 2px, transparent 3px),
+    linear-gradient(#FBE07A, #E0AE38 55%, #A9781F);
+  box-shadow: 0 -4px 22px rgba(255, 214, 94, .85), inset 0 0 0 1px rgba(120, 80, 10, .35);
+  transform: scaleY(0); transform-origin: 50% 100%; transition: transform .55s cubic-bezier(.3, 1.6, .5, 1) .25s; }
+.chest.open .c-heap { transform: scaleY(1); }
+/* closed: the lid sits ajar on a heap of gold, coins over the rim, a glow in the gap */
+.chest:not(.open) .c-lid { transform: perspective(500px) rotateX(-22deg) translateY(-22px) rotate(-3deg); }
+.chest:not(.open) .c-heap { transform: scaleY(.92); }
+.chest:not(.open) .c-glow { opacity: .55; transform: translateY(6px) scale(1.25, 1); animation: gleam 2.4s ease-in-out infinite; }
+@keyframes gleam { 50% { opacity: .9; } }
+.c-drip, .c-hang { position: absolute; z-index: 3; width: 15px; height: 15px; margin-left: -7px; border-radius: 50%; pointer-events: none;
+  background: radial-gradient(circle at 34% 30%, #FFFBE0 0 12%, #FFE27A 30%, #F2BE3A 62%, #B98620 100%);
+  box-shadow: inset 0 0 0 1.5px rgba(150, 100, 15, .75), 0 0 6px rgba(255, 210, 80, .6); transform: rotate(var(--r, 0deg)) scaleY(.62); }
+/* a short string of coins hanging over the front */
+.c-hang { top: 54px; width: 12px; height: 12px; margin-left: -6px; transform: none; transform-origin: 50% 0; animation: sway 3s ease-in-out var(--d, 0s) infinite;
+  box-shadow: 0 9px 0 -1px #E9B53A, 0 18px 0 -2px #D9A12E, inset 0 0 0 1.5px rgba(150, 100, 15, .75), 0 0 6px rgba(255, 210, 80, .6); }
+@keyframes sway { 50% { transform: rotate(5deg); } }
+.chest.open .c-drip, .chest.open .c-hang { transition: opacity .3s; opacity: 0; }
+.gold { position: absolute; left: 50%; top: calc(50% - 22px); width: 0; height: 0; z-index: 3; pointer-events: none; }
+.coin { position: absolute; left: 0; top: 0; animation: coin-x var(--dur) linear var(--delay) both; }
+.coin b { display: block; animation: coin-y var(--dur) var(--delay) both; }
+.coin i { display: block; width: var(--sz); height: var(--sz); margin: calc(var(--sz) / -2) 0 0 calc(var(--sz) / -2); border-radius: 50%;
+  background: radial-gradient(circle at 34% 30%, #FFFBE0 0 12%, #FFE27A 30%, #F2BE3A 62%, #B98620 100%);
+  box-shadow: inset 0 0 0 1.5px rgba(150, 100, 15, .75), inset 0 0 0 3px rgba(255, 238, 160, .55), 0 0 8px rgba(255, 210, 80, .75);
+  animation: coin-flip .38s linear var(--delay) var(--spins); }
+@keyframes coin-x { 0% { transform: translateX(0); opacity: 0; } 5% { opacity: 1; } 100% { transform: translateX(var(--dx)); opacity: 1; } }
+@keyframes coin-y {
+  0% { transform: translateY(0) scale(.45) rotate(0deg); animation-timing-function: cubic-bezier(.15, .75, .4, 1); }
+  42% { transform: translateY(calc(var(--up) * -1)) scale(1) rotate(var(--tilt)); animation-timing-function: cubic-bezier(.55, 0, .9, .45); }
+  88% { transform: translateY(var(--land)) scale(1) rotate(var(--tilt)); animation-timing-function: ease-out; }
+  94% { transform: translateY(calc(var(--land) - 7px)) scale(1) rotate(var(--tilt)); animation-timing-function: ease-in; }
+  100% { transform: translateY(var(--land)) scale(1, .55) rotate(var(--tilt)); } }
+@keyframes coin-flip { 0%, 100% { transform: scaleX(1); } 50% { transform: scaleX(.12); filter: brightness(1.25); } }
+.glint { position: absolute; color: #FFF3BE; text-shadow: 0 0 8px rgba(255, 214, 94, 1), 0 0 2px #fff; opacity: 0; animation: twinkle .9s ease-out var(--delay) both; }
+@keyframes twinkle { 0% { opacity: 0; transform: scale(.2) rotate(0deg); } 40% { opacity: 1; transform: scale(1.2) rotate(45deg); } 100% { opacity: 0; transform: scale(.4) rotate(90deg); } }
 /* parchment */
 .parch-wrap { width: 100%; display: none; flex-direction: column; opacity: 0; transition: opacity .8s ease; }
 .parch-wrap.show { display: flex; }
@@ -584,14 +638,14 @@ form.search { display: flex; gap: 8px; }
 .kin .kw { font-family: var(--antique); font-style: italic; font-size: 17px; }
 .wax { position: absolute; right: 22px; bottom: 16px; width: 50px; height: 50px; display: grid; place-items: center; color: #F5D9C8; font-family: var(--antique); font-size: 26px;
   background: radial-gradient(circle at 35% 30%, #D2584A, #8E1F1A 70%); border-radius: 48% 52% 46% 54% / 52% 46% 54% 48%; box-shadow: 0 2px 4px rgba(60,10,5,.45), inset 0 0 0 4px rgba(120,20,15,.6); transform: rotate(-8deg); }
-@media (prefers-reduced-motion: reduce) { .chest { animation: none; } .c-lid, .c-glow, .parch-wrap, .parch .ptext { transition: none; } }
+@media (prefers-reduced-motion: reduce) { .chest { animation: none; } .c-lid, .c-glow, .c-heap, .parch-wrap, .parch .ptext { transition: none; } .gold { display: none; } }
 /* back */
 .back[hidden] { display: none !important; }
 .back { position: fixed; z-index: 20; left: max(16px, env(safe-area-inset-left, 0px)); bottom: max(16px, env(safe-area-inset-bottom, 0px));
   display: inline-flex; align-items: center; gap: 8px; border: 1.5px solid var(--line); background: var(--paper); color: var(--ink);
   border-radius: 999px; padding: 8px 14px; font-weight: 600; font-size: 14px; box-shadow: 0 4px 14px rgba(0,0,0,.18); }
 .back .bk { font-family: var(--han); font-size: 18px; }
-@media (prefers-reduced-motion: reduce) { .jade, .jhalf::after { animation: none; } .pit, .scroll, .sheet, .paper .ptext { transition: none; } .pit .bolt, .pit.strike::after { display: none; } }
+@media (prefers-reduced-motion: reduce) { .jade, .jhalf::after, .c-hang, .chest .c-glow { animation: none !important; } .pit, .scroll, .sheet, .paper .ptext { transition: none; } .pit .bolt, .pit.strike::after { display: none; } }
 /* minimal flow */
 .flow { list-style: none; margin: 0; padding: 0; position: relative; display: flex; flex-direction: column; gap: 14px; }
 .flow::before { content: ""; position: absolute; left: 6px; top: 8px; bottom: 8px; width: 2px; background: rgba(244,236,226,.35); }
@@ -1191,14 +1245,24 @@ function drawJade() {
   const jade = el("button", "jade"); jade.type = "button";
   jade.setAttribute("aria-expanded", mapOpen);
   jade.setAttribute("aria-label", "Open the jade to read the map");
-  jade.append(el("span", "jhalf"));
+  jade.append(el("span", "jaura"), el("span", "jhalf"));
+  jade.insertAdjacentHTML("beforeend", `<svg class="jstand" viewBox="0 0 176 58" aria-hidden="true">
+    <defs><linearGradient id="rw" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#8A4430"/><stop offset=".45" stop-color="#5A2717"/><stop offset="1" stop-color="#2E120A"/></linearGradient>
+    <linearGradient id="rwg" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#C79A3E"/><stop offset=".5" stop-color="#F3D88A"/><stop offset="1" stop-color="#B08530"/></linearGradient></defs>
+    <path fill="url(#rw)" d="M28 7 Q31 0 38 3 Q88 27 138 3 Q145 0 148 7 L152 19 L24 19 Z"/>
+    <path fill="none" stroke="url(#rwg)" stroke-width="1.3" d="M40 6.5 Q88 29.5 136 6.5"/>
+    <circle cx="33" cy="11" r="2.2" fill="url(#rwg)"/><circle cx="143" cy="11" r="2.2" fill="url(#rwg)"/>
+    <rect x="42" y="19" width="92" height="11" fill="url(#rw)"/>
+    <path fill="none" stroke="rgba(255,210,170,.22)" stroke-width="1" d="M46 24.5 H130"/>
+    <path fill="url(#rw)" d="M18 30 H158 Q167 30 167 38 V43 H9 V38 Q9 30 18 30 Z"/>
+    <path fill="none" stroke="url(#rwg)" stroke-width="1.2" d="M14 33.5 H162"/>
+    <path fill="url(#rw)" d="M11 43 H42 Q36 53 26 56 Q16 57 12 51 Q16 50 18 47 Z M165 43 H134 Q140 53 150 56 Q160 57 164 51 Q160 50 158 47 Z M58 43 H118 Q103 51 88 51 Q73 51 58 43 Z"/>
+  </svg>`);
+  pit.classList.add("link");
   pit.append(jade);
   pit.insertAdjacentHTML("beforeend", `<svg class="bolt" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true">
     <defs><linearGradient id="bg" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#FFFFFF" stop-opacity=".2"/><stop offset=".5" stop-color="#FFF6D2"/><stop offset="1" stop-color="#FFE08A"/></linearGradient></defs>
-    <path class="b-main" d="M57 -2 L53 9 L56 13 L50 24 L53 28 L49 38 L50 44"/>
-    <path class="b-fork" d="M53 9 L47 15 L45 21"/>
-    <path class="b-fork" d="M50 24 L57 30 L59 35"/>
-    <path class="b-fork" d="M53 28 L46 32"/>
+    <path class="b-main" d="M52 -2 L49.2 2.6 L51.6 5.4 L48.8 9.2 L50.6 11.4 L50 13.6"/>
   </svg>`);
   const cap = el("p", "jade-cap", isEn(cur) ? "Tap the jade to see how the word travelled. 点开玉璧，看词源流变" : "Tap the jade to read how the meaning changed. 点开玉璧，看字义流变");
   box.append(pit, cap);
@@ -1272,9 +1336,10 @@ function drawJade() {
     mapOpen = true; jade.setAttribute("aria-expanded", "true");
     const calm = instant || matchMedia("(prefers-reduced-motion: reduce)").matches;
     if (!calm) pit.classList.add("strike");
-    setTimeout(() => jade.classList.add("vanish"), calm ? 0 : 420);
-    setTimeout(() => { pit.classList.add("gone"); cap.hidden = true; scroll.classList.add("show"); }, calm ? 0 : 1250);
-    setTimeout(() => scroll.classList.add("open"), calm ? 0 : 1600);
+    setTimeout(() => jade.classList.add("lit"), calm ? 0 : 200);
+    setTimeout(() => jade.classList.add("vanish"), calm ? 0 : 1150);
+    setTimeout(() => { pit.classList.add("gone"); cap.hidden = true; scroll.classList.add("show"); }, calm ? 0 : 2000);
+    setTimeout(() => scroll.classList.add("open"), calm ? 0 : 2300);
   };
   jade.addEventListener("click", () => { if (!mapOpen) openIt(false); });
   if (mapOpen) openIt(true);
@@ -1282,6 +1347,29 @@ function drawJade() {
 
 
 /* English map: a treasure chest. Lightning strikes, the lid opens, and a parchment unrolls. */
+/* 金声玉振: Chinese characters keep jade, English words keep gold.
+   Coins burst from the open chest, arc out and rain onto the floor of the pit. */
+function spillGold(pit) {
+  const g = el("div", "gold"); g.setAttribute("aria-hidden", "true");
+  const W = Math.max(90, Math.min(pit.clientWidth / 2 - 14, 210));
+  const N = 38;
+  for (let i = 0; i < N; i++) {
+    const side = i % 2 ? 1 : -1;
+    const dx = side * (12 + Math.pow(Math.random(), 0.8) * (W - 12));
+    const dur = 0.85 + Math.random() * 0.6;
+    const c = el("span", "coin"), b = el("b"), f = el("i");
+    c.style.cssText = `--dx:${dx.toFixed(0)}px;--up:${(35 + Math.random() * 55).toFixed(0)}px;--land:${(92 + Math.random() * 34).toFixed(0)}px;` +
+      `--dur:${dur.toFixed(2)}s;--delay:${(i * 0.026 + Math.random() * 0.12).toFixed(2)}s;--sz:${(11 + Math.random() * 8).toFixed(0)}px;` +
+      `--spins:${Math.max(1, Math.round(dur / 0.38))};--tilt:${(Math.random() * 60 - 30).toFixed(0)}deg`;
+    b.append(f); c.append(b); g.append(c);
+  }
+  for (let k = 0; k < 9; k++) {
+    const t = el("span", "glint", "✦");
+    t.style.cssText = `left:${(Math.random() * 2 - 1) * W * 0.9}px;top:${(-90 + Math.random() * 120).toFixed(0)}px;--delay:${(0.2 + Math.random() * 1.3).toFixed(2)}s;font-size:${(10 + Math.random() * 10).toFixed(0)}px`;
+    g.append(t);
+  }
+  pit.append(g);
+}
 function drawChest() {
   const wrap = $("mapWrap"); wrap.textContent = "";
   const w = enWord(cur), v = EN && EN[w];
@@ -1291,7 +1379,9 @@ function drawChest() {
   const pit = el("div", "pit");
   const chest = el("button", "chest"); chest.type = "button";
   chest.setAttribute("aria-expanded", mapOpen); chest.setAttribute("aria-label", "Open the treasure chest to read the map");
-  chest.innerHTML = `<span class="c-glow"></span><span class="c-lid"><span class="c-band"></span><span class="c-band r"></span></span><span class="c-box"><span class="c-band"></span><span class="c-band r"></span><span class="c-lock"></span></span>`;
+  chest.innerHTML = `<span class="c-glow"></span><span class="c-heap"></span><span class="c-lid"><span class="c-band"></span><span class="c-band r"></span></span><span class="c-box"><span class="c-band"></span><span class="c-band r"></span><span class="c-lock"></span></span>` +
+    [[44, 47, -20], [56, 51, 10], [68, 46, -8], [118, 49, 14], [131, 45, -16], [142, 52, 6], [96, 50, 0]].map(([x, y, r]) => `<span class="c-drip" style="left:${x}px;top:${y}px;--r:${r}deg"></span>`).join("") +
+    `<span class="c-hang" style="left:60px"></span><span class="c-hang" style="left:124px;--d:.6s"></span>`;
   pit.append(chest);
   pit.insertAdjacentHTML("beforeend", `<svg class="bolt" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true">
     <defs><linearGradient id="bg2" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#FFFFFF" stop-opacity=".2"/><stop offset=".5" stop-color="#FFF6D2"/><stop offset="1" stop-color="#FFE08A"/></linearGradient></defs>
@@ -1359,9 +1449,10 @@ function drawChest() {
     const calm = instant || matchMedia("(prefers-reduced-motion: reduce)").matches;
     if (!calm) pit.classList.add("strike");
     setTimeout(() => chest.classList.add("open"), calm ? 0 : 380);
-    setTimeout(() => chest.classList.add("vanish"), calm ? 0 : 1300);
-    setTimeout(() => { pit.classList.add("gone"); cap.hidden = true; scroll.classList.add("show"); }, calm ? 0 : 2000);
-    setTimeout(() => scroll.classList.add("open"), calm ? 0 : 2300);
+    if (!calm) setTimeout(() => spillGold(pit), 560);
+    setTimeout(() => chest.classList.add("vanish"), calm ? 0 : 2500);
+    setTimeout(() => { pit.classList.add("gone"); cap.hidden = true; scroll.classList.add("show"); }, calm ? 0 : 3150);
+    setTimeout(() => scroll.classList.add("open"), calm ? 0 : 3450);
   };
   chest.addEventListener("click", () => { if (!mapOpen) openIt(false); });
   if (mapOpen) openIt(true);
