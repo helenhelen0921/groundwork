@@ -88,7 +88,7 @@ header { display: flex; justify-content: space-between; align-items: flex-end; g
 .navbtn .ni { font-size: 13px; line-height: 1; opacity: .75; }
 .navbtn .nc { font-family: var(--mono); font-size: 11px; min-width: 18px; padding: 1px 6px; border-radius: 999px; background: var(--hivis); color: var(--on-hivis); text-align: center; }
 .navbtn .nc:empty { display: none; }
-@media (max-width: 420px) { .navbtn { padding: 7px 11px; font-size: 12px; } }
+@media (max-width: 420px) { .navbtn { padding: 7px 9px; font-size: 12px; gap: 4px; } .nav { gap: 5px; } .tab { padding: 6px 8px; } }
 
 /* ---------- Word book page ---------- */
 .wbpage { display: flex; flex-direction: column; gap: 14px; }
@@ -182,6 +182,74 @@ body.reading .wordonly { display: none !important; }
 .bcard.aeschylus { background: linear-gradient(160deg, #24455e, #142634); }
 .bcard.sophocles { background: linear-gradient(160deg, #2c4a3e, #172a23); }
 .bcard.euripides { background: linear-gradient(160deg, #4b3a62, #261d33); }
+.bcard.gushi { background: linear-gradient(160deg, #7c2f22, #3a1510); }
+.bcard .bt.han, h2.han, .han { font-family: var(--han); }
+/* the shelf: each folder is a cloth-bound book */
+.books { display: flex; flex-direction: column; gap: 22px; max-width: 640px; padding: 4px 10px 10px 0; }
+.book { --bk: #2E4A3B; position: relative; display: grid; grid-template-columns: 30px minmax(0, 1fr); min-height: 176px; border: 0; padding: 0; background: none; text-align: left; font: inherit; cursor: pointer; color: #F3E7CC;
+  filter: drop-shadow(0 10px 12px rgba(40, 25, 10, .28)); transition: transform .2s ease; }
+.book.drama { --bk: #5B2328; }
+.book:hover { transform: translateY(-3px) rotate(-.3deg); }
+/* the page block peeking out at the right and the bottom */
+.book::before { content: ""; position: absolute; left: 36px; right: -7px; top: 7px; bottom: -7px; z-index: -1; border-radius: 0 6px 6px 0;
+  background: repeating-linear-gradient(0deg, #F5EEDC 0 2px, #DCCFB1 2px 3px); box-shadow: 0 1px 0 #BFAF8D; }
+.book .spine { border-radius: 7px 0 0 7px; position: relative;
+  background: linear-gradient(90deg, rgba(0,0,0,.42), rgba(255,255,255,.12) 45%, rgba(0,0,0,.3)), var(--bk); }
+.book .spine::before, .book .spine::after { content: ""; position: absolute; left: 3px; right: 3px; height: 9px; border-top: 1.5px solid #D9B865; border-bottom: 1.5px solid #D9B865; opacity: .8; }
+.book .spine::before { top: 16px; } .book .spine::after { bottom: 16px; }
+.book .cover { position: relative; display: flex; flex-direction: column; gap: 4px; padding: 24px 28px 20px; border-radius: 0 9px 9px 0;
+  background: radial-gradient(120% 90% at 30% 20%, rgba(255,255,255,.10), transparent 60%),
+    repeating-linear-gradient(45deg, rgba(255,255,255,.035) 0 1px, transparent 1px 3px), repeating-linear-gradient(-45deg, rgba(0,0,0,.05) 0 1px, transparent 1px 3px), var(--bk);
+  box-shadow: inset 0 0 0 1px rgba(255,255,255,.06), inset 0 0 50px rgba(0,0,0,.35), inset 3px 0 6px rgba(0,0,0,.35); }
+.book .cover::before { content: ""; position: absolute; inset: 10px; border: 1.5px solid rgba(217, 184, 101, .55); border-radius: 4px; pointer-events: none; }
+.book .cover::after { content: ""; position: absolute; inset: 15px; border: 1px solid rgba(217, 184, 101, .25); border-radius: 3px; pointer-events: none; }
+.book .bk-k { font-family: var(--han); font-size: 14px; letter-spacing: .3em; color: #D9B865; opacity: .9; }
+.book .bk-t { font-family: var(--display); font-size: 40px; font-weight: 700; line-height: 1; letter-spacing: .02em;
+  color: #E7C977; text-shadow: 0 1px 0 rgba(0,0,0,.45), 0 0 1px rgba(255,236,170,.6); }
+.book .bk-s { font-size: 14px; line-height: 1.5; color: #EADDBE; margin-top: 8px; max-width: 46ch; }
+.book .bk-n { font-family: var(--mono); font-size: 11.5px; color: #CDBB8E; margin-top: auto; padding-top: 12px; }
+.book .ribbon { position: absolute; right: 44px; top: -4px; width: 13px; height: 54px; background: linear-gradient(90deg, #8E1F1A, #B8352B 50%, #8E1F1A);
+  clip-path: polygon(0 0, 100% 0, 100% 100%, 50% 82%, 0 100%); box-shadow: 0 2px 3px rgba(0,0,0,.3); }
+.book.drama .ribbon { background: linear-gradient(90deg, #A8822E, #E2C26A 50%, #A8822E); }
+/* the list of Chinese poems */
+.zlist { display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 8px; }
+.zitem { text-align: left; border: 1px solid var(--line); background: var(--paper); color: var(--ink); border-radius: 12px; padding: 10px 12px; display: grid; grid-template-columns: 26px minmax(0, 1fr); gap: 1px 8px; font: inherit; cursor: pointer; }
+.zitem:hover { border-color: var(--ink); }
+.zitem .zn { font-family: var(--mono); font-size: 11px; color: var(--muted); grid-row: span 3; padding-top: 4px; }
+.zitem .zh1 { font-family: var(--han); font-size: 17px; font-weight: 600; }
+.zitem .za { font-size: 13px; color: var(--muted); }
+.zitem .zf { font-family: var(--han); font-size: 13px; color: var(--muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.zitem.read .za::after { content: " · read ✓"; }
+/* a Chinese poem on rice paper */
+.poem { background: radial-gradient(120% 80% at 50% 0%, #FBF7EE, var(--paper)); border: 1px solid var(--line); border-radius: 14px; padding: 30px 18px 26px; text-align: center; display: flex; flex-direction: column; align-items: center; gap: 4px; }
+.poem .pt { font-family: var(--han); font-size: 28px; line-height: 1.3; margin: 0; }
+.poem .pa { font-family: var(--han); font-size: 15px; color: var(--muted); }
+.poem .ptools { display: flex; gap: 10px; align-items: center; justify-content: center; flex-wrap: wrap; margin: 8px 0 14px; }
+.poem .phint { font-size: 12.5px; color: var(--muted); }
+.poem .pre { font-family: var(--han); font-size: 15px; line-height: 1.9; color: #5d554c; text-align: left; text-indent: 2em; max-width: 36em; margin: 0 0 18px; }
+.poem .stz { margin: 0 0 16px; }
+.poem .ln { font-family: var(--han); font-size: 21px; line-height: 2; letter-spacing: .05em; margin: 0; }
+.poem .cl { white-space: nowrap; }
+.poem .pre .cl { white-space: normal; }
+@media (max-width: 520px) { .poem .ln { font-size: 18.5px; letter-spacing: .02em; } .poem .pt { font-size: 24px; } .poem { padding: 24px 12px 22px; } }
+.zc { font: inherit; color: inherit; background: none; border: 0; padding: 0; margin: 0; cursor: pointer; border-radius: 4px; letter-spacing: inherit; }
+.zc:hover { background: rgba(240, 138, 46, .14); }
+.zc.on { background: rgba(240, 138, 46, .28); box-shadow: 0 0 0 2px rgba(240, 138, 46, .28); }
+.peek .pk-w.han { font-family: var(--han); font-size: 36px; }
+.peek .pk-sw { font-family: var(--han); font-size: 13.5px; color: var(--muted); }
+/* speaker buttons */
+.say { display: inline-flex; align-items: center; gap: 5px; border: 1.5px solid var(--line); background: transparent; color: var(--ink); border-radius: 999px; padding: 3px 9px; font: inherit; font-size: 12px; font-weight: 600; cursor: pointer; vertical-align: middle; }
+.say[hidden] { display: none; }
+.say:hover { border-color: var(--ink); }
+.say .spk { width: 16px; height: 16px; fill: none; stroke: currentColor; stroke-width: 1.7; stroke-linecap: round; stroke-linejoin: round; }
+.say .spk path:first-child { fill: currentColor; stroke: none; }
+.say.on { background: var(--ink); color: var(--paper); border-color: var(--ink); }
+.say.on .w1 { animation: wave 1s ease-in-out infinite; } .say.on .w2 { animation: wave 1s ease-in-out .25s infinite; }
+@keyframes wave { 50% { opacity: .2; } }
+.sayen { display: inline-flex; align-items: center; gap: 4px; vertical-align: middle; }
+.accent { border: 0; background: none; color: var(--muted); font-family: var(--mono); font-size: 11px; font-weight: 600; letter-spacing: .06em; padding: 3px 4px; cursor: pointer; border-bottom: 1px dotted currentColor; }
+.accent:hover { color: var(--ink); }
+.board .py .say { margin-left: 10px; font-size: 12px; }
 .plist { display: grid; grid-template-columns: repeat(auto-fill, minmax(210px, 1fr)); gap: 8px; }
 .pitem, .sitem { text-align: left; border: 1px solid var(--line); background: var(--paper); color: var(--ink); border-radius: 12px; padding: 10px 12px; display: flex; flex-direction: column; gap: 2px; font: inherit; cursor: pointer; }
 .pitem:hover, .sitem:hover { border-color: var(--ink); }
@@ -378,6 +446,7 @@ form.search { display: flex; gap: 8px; }
 .paw { width: 15px; height: 15px; fill: none; stroke: currentColor; stroke-width: 1.6; flex: none; }
 .save[aria-pressed="true"] .paw { fill: currentColor; stroke: none; }
 .navbtn .paw { width: 14px; height: 14px; fill: currentColor; stroke: none; display: block; }
+.navbtn .bki { width: 15px; height: 15px; fill: currentColor; display: block; }
 .build { grid-column: 1 / -1; margin-top: 10px; border-top: 1px dashed var(--line); padding-top: 12px; display: flex; flex-direction: column; gap: 8px; }
 .parts { display: flex; flex-wrap: wrap; gap: 8px; }
 .part { display: flex; align-items: center; gap: 8px; background: var(--bg); border-radius: 8px; padding: 6px 10px; }
@@ -762,11 +831,11 @@ footer p { margin: 0; max-width: 70ch; }
     <nav class="nav" aria-label="Sections">
       <div class="tabs" role="tablist" aria-label="Language">
         <button class="tab" role="tab" aria-selected="true" type="button" id="ideaTab"><span class="tl">One idea, many words</span><span class="ts">One idea</span></button>
-        <button class="tab" role="tab" aria-selected="false" type="button" id="enTab">English words</button>
-        <button class="tab" role="tab" aria-selected="false" type="button" id="zhTab">汉字 Characters</button>
+        <button class="tab" role="tab" aria-selected="false" type="button" id="enTab">English</button>
+        <button class="tab" role="tab" aria-selected="false" type="button" id="zhTab">汉字</button>
       </div>
-      <button class="navbtn" type="button" id="wbTab" aria-pressed="false"><span class="ni"><svg class="paw" viewBox="0 0 24 24" aria-hidden="true"><ellipse cx="12" cy="16.3" rx="4.7" ry="3.9"/><ellipse cx="5.5" cy="10.8" rx="2" ry="2.5" transform="rotate(-22 5.5 10.8)"/><ellipse cx="9.3" cy="6.5" rx="2.1" ry="2.7" transform="rotate(-8 9.3 6.5)"/><ellipse cx="14.7" cy="6.5" rx="2.1" ry="2.7" transform="rotate(8 14.7 6.5)"/><ellipse cx="18.5" cy="10.8" rx="2" ry="2.5" transform="rotate(22 18.5 10.8)"/></svg></span>Word book<span class="nc" id="wbCount"></span></button>
-      <button class="navbtn" type="button" id="rdTab" aria-pressed="false"><span class="ni" aria-hidden="true">❦</span>Classics</button>
+      <button class="navbtn" type="button" id="wbTab" aria-pressed="false"><span class="ni"><svg class="paw" viewBox="0 0 24 24" aria-hidden="true"><ellipse cx="12" cy="16.3" rx="4.7" ry="3.9"/><ellipse cx="5.5" cy="10.8" rx="2" ry="2.5" transform="rotate(-22 5.5 10.8)"/><ellipse cx="9.3" cy="6.5" rx="2.1" ry="2.7" transform="rotate(-8 9.3 6.5)"/><ellipse cx="14.7" cy="6.5" rx="2.1" ry="2.7" transform="rotate(8 14.7 6.5)"/><ellipse cx="18.5" cy="10.8" rx="2" ry="2.5" transform="rotate(22 18.5 10.8)"/></svg></span>Vocab<span class="nc" id="wbCount"></span></button>
+      <button class="navbtn" type="button" id="rdTab" aria-pressed="false"><span class="ni"><svg class="bki" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 5.5C5.5 4.3 8.6 4.2 11.2 5.6V19c-2.6-1.3-5.7-1.2-8.2 0Z"/><path d="M21 5.5c-2.5-1.2-5.6-1.3-8.2.1V19c2.6-1.3 5.7-1.2 8.2 0Z"/></svg></span>Reading</button>
     </nav>
   </header>
 
@@ -777,13 +846,13 @@ footer p { margin: 0; max-width: 70ch; }
   <div class="results" id="results"></div>
   <p class="hint" id="msg"></p>
 
-  <section class="reader" id="reader" aria-label="Classics" hidden></section>
+  <section class="reader" id="reader" aria-label="Reading" hidden></section>
 
-  <section class="wbpage" id="wbPage" aria-label="Word book" hidden>
+  <section class="wbpage" id="wbPage" aria-label="Vocab" hidden>
     <div class="wb-top">
       <div>
         <div class="label">Your collection</div>
-        <h2>Word book</h2>
+        <h2>Vocab</h2>
         <p class="sub" id="wbSub"></p>
         <p class="wb-known" id="wbKnown"></p>
       </div>
@@ -833,6 +902,7 @@ footer p { margin: 0; max-width: 70ch; }
 
   <footer>
     <p>Character data (pinyin, English definitions and structure) comes from <a href="https://github.com/skishore/makemeahanzi" target="_blank" rel="noopener">Make Me a Hanzi</a> by Shaunak Kishore, derived from Unicode’s Unihan database and CJKlib. It is used under the LGPL-3.0; see <a href="DATA-LICENSE.txt">DATA-LICENSE.txt</a>.</p>
+    <p>The Chinese poems (高中必背古诗词) come from the <a href="https://github.com/chinese-poetry/chinese-poetry">chinese-poetry</a> project (MIT licence), converted to simplified characters and checked against school editions; the poems themselves are in the public domain. Voices come from your own device’s speech engine.</p>
     <p>The classics are public domain. Shakespeare’s plays and sonnets and Francis Storr’s Sophocles (1912) come from <a href="https://standardebooks.org/" target="_blank" rel="noopener">Standard Ebooks</a> (CC0). E. P. Coleridge’s Euripides (1891; <i>Bacchae</i> tr. T. A. Buckley, 1850) and Herbert Weir Smyth’s Aeschylus (1926) come from the <a href="https://www.perseus.tufts.edu/" target="_blank" rel="noopener">Perseus Digital Library</a> (markup CC BY-SA 3.0). Chinese titles and summaries were added for this app.</p>
     <p>When you are online, English etymologies are looked up live from <a href="https://en.wiktionary.org/" target="_blank" rel="noopener">Wiktionary</a> (text under CC BY-SA). Without a connection, the page uses its own data below.</p>
     <p>Pronunciation, Chinese meanings, English definitions and exam tags come from <a href="https://github.com/skywind3000/ECDICT" target="_blank" rel="noopener">ECDICT</a> (MIT). Greek and Latin roots are adapted from Wikipedia’s <a href="https://en.wikipedia.org/wiki/List_of_Greek_and_Latin_roots_in_English" target="_blank" rel="noopener">List of Greek and Latin roots in English</a> (CC BY-SA 4.0). Prefix and suffix families come from <a href="https://github.com/kbatsuren/MorphyNet" target="_blank" rel="noopener">MorphyNet</a> (CC BY-SA 3.0). roots.json and the dict folder are shared under CC BY-SA.</p>
@@ -1018,7 +1088,8 @@ function drawBoard(c) {
   const s = SITES[c], d = info(c);
   const board = $("board"); board.textContent = "";
   board.append(el("div", "big", c));
-  board.append(el("div", "py", (s && s.py) || (d && d.py) || ""));
+  const pyRow = el("div", "py"); pyRow.append((s && s.py) || (d && d.py) || "", sayBtn(c, "zh-CN"));
+  board.append(pyRow);
   board.append(el("div", "def", (s && s.def) || (d && d.def) || "No dictionary entry."));
   const row = el("div", "row");
   if (d && TYPE[d.type]) row.append(el("span", "chip", `${TYPE[d.type][1]} · ${TYPE[d.type][0]}`));
@@ -1487,7 +1558,7 @@ function isStory(k) { return typeof k === "string" && k.startsWith("story:"); }
 /* key "idea:<Chinese>" is the One idea, many words page (the home page) */
 function isIdea(k) { return typeof k === "string" && k.startsWith("idea:"); }
 const ideaQ = k => k.slice(5) || "羊";
-const label = k => isIdea(k) ? ideaQ(k) : k === "book:" ? "Word book" : isStory(k) ? storyLabel(k) : isEn(k) ? enWord(k) : k;
+const label = k => isIdea(k) ? ideaQ(k) : k === "book:" ? "Vocab" : isStory(k) ? storyLabel(k) : isEn(k) ? enWord(k) : k;
 const EN_SITES = ["form", "measure", "salary", "philosophy", "water", "school", "act", "window"];
 const LANG = {
   eng: ["English", "英语", ""], enm: ["Middle English", "中古英语", "c. 1100–1500"], ang: ["Old English", "古英语", "c. 450–1100"],
@@ -1925,6 +1996,7 @@ function drawBoardEn(key) {
   board.append(el("div", "big en", w));
   const head = el("div", "row");
   if (e && e.p) head.append(el("span", "ph", "/" + e.p + "/"));
+  head.append(sayEn(w));
   if (e && (e.g || e.o)) {
     const tags = el("span", "tags");
     for (const t of TAG_ORDER) if (e.g && e.g.includes(t)) tags.append(el("span", "tag" + (t === "IELTS" ? " ielts" : ""), t));
@@ -2161,7 +2233,7 @@ async function drawBook() {
   if (!l.length) {
     box.textContent = "";
     const empty = el("div", "wb-empty");
-    empty.append(el("p", "", "Nothing saved yet."), el("p", "hint", "Tap the paw Save button on any English word, or on a word card while you read the Classics. The word and its family (other English words with the same meaning) will appear here."));
+    empty.append(el("p", "", "Nothing saved yet."), el("p", "hint", "Tap the paw Save button on any English word, or on a word card while you read. The word and its family (other English words with the same meaning) will appear here."));
     box.append(empty);
     return;
   }
@@ -2195,6 +2267,7 @@ async function drawBook() {
     if (known.has(r.f.w)) card.classList.add("known-main");
     top.append(go);
     if (r.f.p) top.append(el("span", "wb-ph", r.f.p));
+    top.append(sayEn(r.f.w));
     if (r.f.o && ORIGIN[r.f.o]) top.append(el("span", "ochip", ORIGIN[r.f.o][0]));
     const rm = el("button", "wb-rm", "×"); rm.type = "button"; rm.title = "Remove from word book"; rm.setAttribute("aria-label", `Remove ${r.f.w}`);
     rm.addEventListener("click", () => setSaved(getSaved().filter(z => z !== r.k)));
@@ -2240,21 +2313,85 @@ $("copyList").addEventListener("click", async () => {
   catch { $("wbMsg").textContent = "Copy didn’t work in this browser. Try Export CSV."; }
 });
 
-/* ---------- Classics reader: original plays and poems ---------- */
+/* ---------- Speech: the device's own voice reads words aloud ---------- */
+const SPEAK_ICON = '<svg class="spk" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 9.5h3.2L12 5.6v12.8l-4.8-3.9H4Z"/><path class="w1" d="M15.2 9.2a4 4 0 0 1 0 5.6"/><path class="w2" d="M17.8 6.8a7.4 7.4 0 0 1 0 10.4"/></svg>';
+const CAN_SPEAK = typeof window !== "undefined" && "speechSynthesis" in window && typeof SpeechSynthesisUtterance !== "undefined";
+const ACCENTS = [["en-AU", "AU"], ["en-GB", "UK"], ["en-US", "US"]];
+const ACCENT_KEY = "groundwork.accent";
+let ACCENT = "en-AU";
+try { ACCENT = localStorage.getItem(ACCENT_KEY) || "en-AU"; } catch {}
+if (CAN_SPEAK) { try { speechSynthesis.getVoices(); speechSynthesis.addEventListener("voiceschanged", () => speechSynthesis.getVoices()); } catch {} }
+/* the best voice for a language: an exact match, nicer ("Enhanced", "Premium", Siri) voices first */
+function pickVoice(lang) {
+  let vs = [];
+  try { vs = speechSynthesis.getVoices(); } catch {}
+  const norm = x => (x || "").replace("_", "-").toLowerCase();
+  const want = norm(lang), base = want.split("-")[0];
+  const score = v => (norm(v.lang) === want ? 0 : norm(v.lang).startsWith(base) ? 10 : 99) + (/premium|enhanced|siri|natural|neural/i.test(v.name) ? -3 : 0) + (v.localService ? 0 : 1);
+  const best = vs.filter(v => norm(v.lang).startsWith(base)).sort((a, b) => score(a) - score(b))[0];
+  return best || null;
+}
+let SPEAKING = null;
+function speak(text, lang, btn) {
+  if (!CAN_SPEAK || !text) return;
+  try {
+    speechSynthesis.cancel();
+    if (SPEAKING) SPEAKING.classList.remove("on");
+    if (SPEAKING === btn) { SPEAKING = null; return; }   // a second tap stops it
+    const u = new SpeechSynthesisUtterance(text);
+    u.lang = lang; const v = pickVoice(lang); if (v) u.voice = v;
+    u.rate = lang.startsWith("zh") ? 0.8 : 0.9;
+    if (btn) { btn.classList.add("on"); SPEAKING = btn; }
+    u.onend = u.onerror = () => { if (btn) btn.classList.remove("on"); if (SPEAKING === btn) SPEAKING = null; };
+    speechSynthesis.speak(u);
+  } catch {}
+}
+/* a speaker button; text may be a function so it is read at tap time */
+function sayBtn(text, lang, label) {
+  const b = el("button", "say"); b.type = "button";
+  b.innerHTML = SPEAK_ICON + (label ? `<span>${label}</span>` : "");
+  b.setAttribute("aria-label", label || "Listen"); b.title = "Listen";
+  if (!CAN_SPEAK) { b.hidden = true; return b; }
+  b.addEventListener("click", e => { e.stopPropagation(); speak(typeof text === "function" ? text() : text, typeof lang === "function" ? lang() : lang, b); });
+  return b;
+}
+/* English: speaker + a small accent switch (AU / UK / US), remembered on this device */
+function sayEn(word) {
+  const wrap = el("span", "sayen");
+  if (!CAN_SPEAK) return wrap;
+  const acc = el("button", "accent"); acc.type = "button"; acc.title = "Accent: tap to change";
+  const paintAcc = () => { acc.textContent = (ACCENTS.find(a => a[0] === ACCENT) || ACCENTS[0])[1]; };
+  acc.addEventListener("click", e => {
+    e.stopPropagation();
+    const i = ACCENTS.findIndex(a => a[0] === ACCENT);
+    ACCENT = ACCENTS[(i + 1) % ACCENTS.length][0];
+    try { localStorage.setItem(ACCENT_KEY, ACCENT); } catch {}
+    for (const x of document.querySelectorAll(".accent")) x.textContent = (ACCENTS.find(a => a[0] === ACCENT) || ACCENTS[0])[1];
+    speak(word, ACCENT, null);
+  });
+  paintAcc();
+  wrap.append(sayBtn(word, () => ACCENT), acc);
+  return wrap;
+}
+
+/* ---------- Reading: Poetry and Drama, each a book on the shelf ---------- */
 let ST = null, STP = null, lastStory = null;
 const PLAY = {}, PLAYP = {};
 const READ_KEY = "groundwork.read.classics", COLOR_KEY = "groundwork.colors";
 function loadStories() { return STP || (STP = fetch("plays.json").then(r => r.ok ? r.json() : null).catch(() => null).then(j => { ST = j || { authors: [], works: [] }; })); }
 function loadPlay(id) { return PLAYP[id] || (PLAYP[id] = fetch("play-" + id + ".json").then(r => r.ok ? r.json() : null).catch(() => null).then(j => { PLAY[id] = j; })); }
 /* keys: story:  ·  story:<author>  ·  story:<author>/<work>  ·  story:<author>/<work>/<part> */
+/* keys: story: (the shelf) · story:~poetry · story:~drama (the two books) · story:<author> · story:<author>/<work> · …/<part> */
 function storyParts(k) { const [a, w, n] = k.slice(6).split("/"); return { a: a || "", w: w || "", n: n === undefined || n === "" ? -1 : +n }; }
+const FOLDERS = { poetry: { t: "Poetry", z: "诗歌" }, drama: { t: "Drama", z: "戏剧" } };
 function storyLabel(k) {
   const { a, w, n } = storyParts(k);
-  if (!ST) return "Classics";
+  if (a.startsWith("~") && FOLDERS[a.slice(1)]) return FOLDERS[a.slice(1)].t;
+  if (!ST) return "Reading";
   const work = ST.works.find(x => x.id === w), au = ST.authors.find(x => x.id === a);
-  if (work && n >= 0) return `${work.t} · ${work.parts[n] ? work.parts[n].h : ""}`;
-  if (work) return work.t;
-  return au ? au.t : "Classics";
+  if (work && n >= 0) return work.zh ? (work.parts[n] ? work.parts[n].h : work.z) : `${work.t} · ${work.parts[n] ? work.parts[n].h : ""}`;
+  if (work) return work.zh ? work.z : work.t;
+  return au ? au.t : "Reading";
 }
 function getRead() { try { return new Set(JSON.parse(localStorage.getItem(READ_KEY) || "[]")); } catch { return new Set(); } }
 function markRead(key) { try { const r = getRead(); r.add(key); localStorage.setItem(READ_KEY, JSON.stringify([...r])); } catch {} }
@@ -2298,9 +2435,11 @@ async function drawReader(c) {
   const au = ST.authors.find(x => x.id === a), work = ST.works.find(x => x.id === w && x.a === a);
   if (work && n >= 0 && !PLAY[w]) { box.textContent = ""; box.append(el("p", "hint", `Loading ${work.t}… 正在加载`)); await loadPlay(w); if (cur !== c) return; }
   box.textContent = "";
+  if (a.startsWith("~") && FOLDERS[a.slice(1)]) return drawFolder(box, a.slice(1));
   if (!au) return drawShelf(box);
   if (!work) return drawAuthor(box, au);
   if (n < 0 || !PLAY[w] || !PLAY[w].parts[n]) return drawContents(box, au, work);
+  if (work.zh) return drawPoemZh(box, au, work, n);
   drawPart(box, au, work, n);
 }
 function navBar(box, label, key, right) {
@@ -2312,29 +2451,65 @@ function navBar(box, label, key, right) {
 }
 function drawShelf(box) {
   const head = el("div", "rd-head");
-  head.append(el("h2", "", "Classics 原典"),
-    el("p", "sub", "Original plays and poems, free and out of copyright: Shakespeare in his own words, and the Greek tragedies in full English translation. While you read, tap any word to see its meaning and where it comes from. 公版原典：莎士比亚原文，和希腊悲剧的完整英译。读的时候点任何一个词，就能看到意思和来源。"));
+  head.append(el("h2", "", "Reading"),
+    el("p", "sub", "Old poems and plays, free and out of copyright. While you read, tap any English word or Chinese character to see what it means and where it comes from."));
+  box.append(head);
+  const read = getRead(), shelf = el("div", "books");
+  for (const g of ["poetry", "drama"]) {
+    const works = ST.works.filter(x => (x.g || "drama") === g);
+    const started = works.filter(x => x.parts.some((p, i) => read.has(`${x.id}/${i}`))).length;
+    const bk = el("button", "book " + g); bk.type = "button";
+    const cover = el("span", "cover");
+    const titles = g === "poetry"
+      ? works.map(x => x.zh ? `${x.z} · ${x.parts.length}` : `Shakespeare’s ${x.t} · ${x.parts.length}`)
+      : ST.authors.filter(au => works.some(x => x.a === au.id)).map(au => au.t.replace("William ", ""));
+    cover.append(el("span", "bk-k", FOLDERS[g].z), el("span", "bk-t", FOLDERS[g].t),
+      el("span", "bk-s", titles.join("  ·  ")),
+      el("span", "bk-n", g === "poetry" ? `${works.reduce((t, x) => t + x.parts.length, 0)} poems${started ? ` · ${started} started` : ""}` : `${works.length} plays${started ? ` · ${started} started` : ""}`));
+    bk.append(el("span", "spine"), cover, el("span", "ribbon"));
+    bk.addEventListener("click", () => open("story:~" + g, true));
+    shelf.append(bk);
+  }
+  box.append(shelf);
+}
+function drawFolder(box, g) {
+  navBar(box, "Reading", "story:", "");
+  const head = el("div", "rd-head");
+  head.append(el("h2", "", FOLDERS[g].t), el("div", "zt", FOLDERS[g].z));
   box.append(head);
   const read = getRead(), shelf = el("div", "bshelf");
-  for (const au of ST.authors) {
-    const list = ST.works.filter(x => x.a === au.id);
-    const plays = list.filter(x => x.id !== "sonnets").length, sonnets = list.some(x => x.id === "sonnets");
-    const done = list.filter(x => x.parts.some((p, i) => read.has(`${x.id}/${i}`))).length;
-    const card = el("button", "bcard " + au.id); card.type = "button";
-    card.append(el("span", "bt", au.t), el("span", "bz", `${au.z} · ${au.era}`), el("span", "bby", au.ztr), el("span", "bab", au.zabout),
-      el("span", "bn", `${plays} plays${sonnets ? " + 154 sonnets" : ""}${done ? ` · ${done} started` : ""}`));
-    card.addEventListener("click", () => open("story:" + au.id, true));
-    shelf.append(card);
+  if (g === "poetry") {
+    for (const x of ST.works.filter(w => w.g === "poetry")) {
+      const au = ST.authors.find(q => q.id === x.a);
+      const done = x.parts.filter((q, i) => read.has(`${x.id}/${i}`)).length;
+      const card = el("button", "bcard " + (x.zh ? "gushi" : au.id)); card.type = "button";
+      if (x.zh) card.append(el("span", "bt han", x.z), el("span", "bz", x.t), el("span", "bab", x.s));
+      else card.append(el("span", "bt", x.t), el("span", "bz", `${au.t} · ${au.era}`), el("span", "bab", x.s));
+      card.append(el("span", "bn", `${x.parts.length} poems${done ? ` · ${done} read` : ""}`));
+      card.addEventListener("click", () => open(`story:${au.id}/${x.id}`, true));
+      shelf.append(card);
+    }
+  } else {
+    for (const au of ST.authors) {
+      const list = ST.works.filter(x => x.a === au.id && x.g === "drama");
+      if (!list.length) continue;
+      const done = list.filter(x => x.parts.some((q, i) => read.has(`${x.id}/${i}`))).length;
+      const card = el("button", "bcard " + au.id); card.type = "button";
+      card.append(el("span", "bt", au.t), el("span", "bz", `${au.z} · ${au.era}`), el("span", "bby", au.ztr), el("span", "bab", au.id === "shakespeare" ? "四大悲剧：哈姆雷特、麦克白、李尔王、奥赛罗，都是 400 年前的原文。每部剧按「幕 / 场」分页。" : au.zabout),
+        el("span", "bn", `${list.length} plays${done ? ` · ${done} started` : ""}`));
+      card.addEventListener("click", () => open("story:" + au.id, true));
+      shelf.append(card);
+    }
   }
   box.append(shelf);
 }
 function drawAuthor(box, au) {
-  navBar(box, "All 全部", "story:", "");
+  navBar(box, "Drama", "story:~drama", "");
   const head = el("div", "rd-head");
-  head.append(el("h2", "", au.t), el("div", "zt", `${au.z} · ${au.era}`), el("p", "sub", `${au.tr}. ${au.zabout}`));
+  head.append(el("h2", "", au.t), el("div", "zt", `${au.z} · ${au.era}`), el("p", "sub", `${au.tr}.`));
   box.append(head);
   const read = getRead(), grid = el("div", "fgrid");
-  ST.works.filter(x => x.a === au.id).forEach((x, i) => {
+  ST.works.filter(x => x.a === au.id && (x.g || "drama") === "drama").forEach((x, i) => {
     const doneParts = x.parts.filter((p, j) => read.has(`${x.id}/${j}`)).length;
     const b = el("button", "fcard" + (doneParts === x.parts.length ? " read" : "")); b.type = "button";
     const unit = x.id === "sonnets" ? "poems" : au.id === "shakespeare" ? "scenes" : "parts";
@@ -2349,11 +2524,27 @@ function drawAuthor(box, au) {
   box.append(src);
 }
 function drawContents(box, au, work) {
-  navBar(box, `${au.t} · ${au.z}`, "story:" + au.id, `${fmt(work.n)} words · about ${minutes(work.n)} min`);
+  if (work.g === "poetry") navBar(box, "Poetry", "story:~poetry", work.zh ? `${work.parts.length} poems · ${fmt(work.n)} characters` : `${fmt(work.n)} words · about ${minutes(work.n)} min`);
+  else navBar(box, `${au.t} · ${au.z}`, "story:" + au.id, `${fmt(work.n)} words · about ${minutes(work.n)} min`);
   const head = el("div", "rd-head");
-  head.append(el("h2", "", work.t), el("div", "zt", `${work.z} · ${work.k} ${work.zk}`), el("p", "sub", work.s));
+  if (work.zh) head.append(el("h2", "han", work.z), el("div", "zt", work.t), el("p", "sub", work.s));
+  else head.append(el("h2", "", work.t), el("div", "zt", `${work.z} · ${work.k} ${work.zk}`), el("p", "sub", work.s));
   box.append(head);
   const read = getRead();
+  if (work.zh) {
+    const list = el("div", "zlist");
+    work.parts.forEach((q, i) => {
+      const b = el("button", "zitem" + (read.has(`${work.id}/${i}`) ? " read" : "")); b.type = "button";
+      b.append(el("span", "zn", String(i + 1)), el("span", "zh1", q.h), el("span", "za", q.zh), el("span", "zf", q.first));
+      b.addEventListener("click", () => open(`story:${au.id}/${work.id}/${i}`, true));
+      list.append(b);
+    });
+    box.append(list);
+    const src = el("p", "rd-src", "Text from the chinese-poetry project (MIT licence), checked against school editions. Public domain. ");
+    const a = el("a", "", "Source ↗"); a.href = work.src; a.target = "_blank"; a.rel = "noopener"; src.append(a);
+    box.append(src);
+    return;
+  }
   const sonnets = work.id === "sonnets";
   const list = el("div", sonnets ? "sgrid" : "plist");
   work.parts.forEach((p, i) => {
@@ -2452,6 +2643,67 @@ function drawPart(box, au, work, n) {
   const a = el("a", "", "Source ↗"); a.href = work.src; a.target = "_blank"; a.rel = "noopener"; src.append(a);
   box.append(src);
 }
+function drawPoemZh(box, au, work, n) {
+  const P = PLAY[work.id].parts[n];
+  markRead(`${work.id}/${n}`);
+  navBar(box, `${work.z} · Contents`, `story:${au.id}/${work.id}`, `${n + 1} / ${work.parts.length}`);
+  const poem = el("article", "poem");
+  poem.append(el("h2", "pt", P.h), el("div", "pa", `〔${P.d}〕${P.a}`));
+  const whole = () => [P.h.replace(/（.*?）/g, "") + "。", P.a + "。", ...P.st.flat()].join("");
+  const tools = el("div", "ptools");
+  tools.append(sayBtn(whole, "zh-CN", "Read aloud"), el("span", "phint", "Tap a character to see it in 汉字."));
+  poem.append(tools);
+  /* each clause stays on one line with its punctuation, so a line only breaks between clauses */
+  const chars = text => {
+    const f = document.createDocumentFragment();
+    for (const clause of text.match(/[^，。！？；：、]+[，。！？；：、]*|[，。！？；：、]+/g) || []) {
+      const cl = el("span", "cl");
+      for (const ch of Array.from(clause)) {
+        if (/[㐀-鿿\u{20000}-\u{2ffff}]/u.test(ch)) { const b = el("button", "zc", ch); b.type = "button"; b.dataset.c = ch; cl.append(b); }
+        else cl.append(document.createTextNode(ch));
+      }
+      f.append(cl);
+    }
+    return f;
+  };
+  if (P.pre) { const pre = el("p", "pre"); pre.append(chars(P.pre)); poem.append(pre); }
+  for (const st of P.st) {
+    const d = el("div", "stz");
+    for (const line of st) { const l = el("p", "ln"); l.append(chars(line)); d.append(l); }
+    poem.append(d);
+  }
+  poem.addEventListener("click", e => { const t = e.target.closest(".zc"); if (t) peekZh(t); });
+  box.append(poem);
+  const nav2 = el("div", "rd-nav");
+  const prev = work.parts[n - 1], next = work.parts[n + 1];
+  const pb = el("button", "btn ghost sm han", prev ? "← " + prev.h : ""); pb.type = "button"; pb.hidden = !prev;
+  if (prev) pb.addEventListener("click", () => open(`story:${au.id}/${work.id}/${n - 1}`, true));
+  const nb = el("button", "btn sm han", next ? next.h + " →" : "Back to contents"); nb.type = "button";
+  nb.addEventListener("click", () => open(next ? `story:${au.id}/${work.id}/${n + 1}` : `story:${au.id}/${work.id}`, true));
+  nav2.append(pb, nb); box.append(nav2);
+}
+/* tap a character in a poem: pinyin, meaning, a voice, and a way into 汉字 */
+async function peekZh(btn) {
+  if (peekBtn === btn) return closePeek();
+  if (peekBtn) peekBtn.classList.remove("on");
+  peekBtn = btn; btn.classList.add("on");
+  const c = btn.dataset.c, box = $("peek");
+  box.hidden = false; box.textContent = "";
+  if (!DB) { box.append(el("div", "pk-w han", c), el("div", "pk-zh", "Loading…")); await loadDB(); if (peekBtn !== btn) return; box.textContent = ""; }
+  const d = info(c), sw = SW[c];
+  const x = el("button", "pk-x", "×"); x.type = "button"; x.setAttribute("aria-label", "Close"); x.addEventListener("click", closePeek);
+  const top = el("div", "pk-top");
+  top.append(el("span", "pk-w han", c));
+  if (d && d.py) top.append(el("span", "pk-ph", d.py));
+  top.append(sayBtn(c, "zh-CN"));
+  box.append(x, top);
+  box.append(el("div", "pk-zh", d && d.def ? d.def : "Not in our character dictionary yet."));
+  if (sw) box.append(el("div", "pk-sw", `说文：${sw[1].split("。")[0]}。`));
+  const row = el("div", "pk-row");
+  const go = el("button", "btn sm", `Open ${c} in 汉字 →`); go.type = "button";
+  go.addEventListener("click", () => { closePeek(); open(c, true); });
+  row.append(go); box.append(row);
+}
 /* Tap a word in a story: a small card with its meaning, without leaving the story. */
 let peekBtn = null;
 function closePeek() { $("peek").hidden = true; if (peekBtn) peekBtn.classList.remove("on"); peekBtn = null; }
@@ -2475,6 +2727,7 @@ async function peek(btn) {
   const top = el("div", "pk-top");
   top.append(el("span", "pk-w", w));
   if (e && e.p) top.append(el("span", "pk-ph", "/" + e.p + "/"));
+  top.append(sayEn(w));
   if (w !== w0) top.append(el("span", "pk-from", `(${btn.textContent} → ${w}${old ? " · old form 古旧写法" : ""})`));
   box.append(x, top);
   if (btn.dataset.name) { box.append(el("div", "pk-zh", "A character in this play. 剧中人物。")); return; }
@@ -2802,7 +3055,7 @@ $("refill").addEventListener("click", () => { dug = new Set(); drawShaft(); });
 $("back").addEventListener("click", goBack);
 $("enTab").addEventListener("click", () => { if (!isEn(cur)) { $("results").textContent = ""; $("msg").textContent = ""; open(lastEn || "en:form", false); } });
 $("zhTab").addEventListener("click", () => { if (isEn(cur) || isStory(cur) || isBook(cur) || isIdea(cur)) { $("results").textContent = ""; $("msg").textContent = ""; open(lastZh || "申", false); } });
-$("rdTab").addEventListener("click", () => { if (!isStory(cur)) { $("results").textContent = ""; $("msg").textContent = ""; open(lastStory || "story:", true); } });
+$("rdTab").addEventListener("click", () => { $("results").textContent = ""; $("msg").textContent = ""; if (!isStory(cur)) open(lastStory || "story:", true); else if (cur !== "story:") open("story:", true); });
 $("wbTab").addEventListener("click", () => { if (!isBook(cur)) { $("results").textContent = ""; $("msg").textContent = ""; open("book:", true); } });
 $("ideaTab").addEventListener("click", () => { if (!isIdea(cur)) { $("results").textContent = ""; $("msg").textContent = ""; open(lastIdea || "idea:羊", false); } });
 let lastEn = null, lastZh = null, lastIdea = null;

@@ -2,7 +2,7 @@
    Pages and data: try the network first (so a new upload shows up straight away),
    and keep a copy so the app still opens without a connection.
    Fonts: use the saved copy, refresh it in the background. */
-const CACHE = "groundwork-v2";
+const CACHE = "groundwork-v3";
 const CORE = ["./", "index.html", "manifest.webmanifest", "icon-192.png", "icon-512.png", "icon-180.png"];
 
 self.addEventListener("install", e => {

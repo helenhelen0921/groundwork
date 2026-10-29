@@ -1610,3 +1610,14 @@ zh-en.json : Chinese -> English lookup
 Built by reversing the Chinese senses in ECDICT (MIT licence, see above) for
 about 26,000 common English words. The hand-picked word families shown for
 common ideas (羊, 牛, 夹 …) were written for this app.
+
+------------------------------------------------------------
+play-gushi.json : 高中必背古诗词 (Chinese classical poems)
+------------------------------------------------------------
+Texts from chinese-poetry (https://github.com/chinese-poetry/chinese-poetry),
+MIT License, Copyright (c) 2016 JackeyGao. Converted from traditional to
+simplified characters with OpenCC; a few variant characters were changed to
+the forms used in Chinese school textbooks. The poems are in the public domain.
+The selection follows the recommended recitation list in China's 2017
+high-school Chinese curriculum standard (five pieces not in the source data
+are not included).
